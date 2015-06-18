@@ -1,0 +1,439 @@
+/*
+  This file contains the search routine itself and associated time control
+*/
+
+/* #define DEBUG_STACK /* */
+#define HEADER
+#include "arvar.c"
+
+/* the history heuristic bonus for each ply */
+#ifdef HISTORY
+static unsigned hinc[MAXDEPTH]={0,1024,8192,1024,64,8,1,1,1,1,1,1,1};
+#endif
+
+static bool cptrflag[MAXDEPTH]; /* stack of capture flags for each depth    */
+static bool pawnthrt[MAXDEPTH]; /* stack of pawn threat flags for each dpth */
+static movetype mvlist[MAXMOVES]; /* the move list buffer for the search    */
+static bool chkflag[MAXDEPTH];  /* stack of in check flags */
+static int  posscore[MAXDEPTH]; /* stack of positional scores */
+#ifdef DEBUG_STACK
+unsigned minstack=0xFFFF;
+#endif
+
+/* Below are some debugging macros.  It slows the search down quite a bit
+   because of all the printing.  Of course, if DEBUG isn't defined, then
+   no code will be generated.  */
+#ifdef DEBUG
+
+#define NBP_INC()        nbp++
+#define PVM(mv)          PVDEBUGM(depth,mv)
+#define PV0(str)         PVDEBUG(0,depth,str)
+#define PV1(str,a)       PVDEBUG(1,depth,str,a)
+#define PV2(str,a,b)     PVDEBUG(2,depth,str,a,b)
+#define PV3(str,a,b,c)   PVDEBUG(3,depth,str,a,b,c)
+#define PVS(v,m,n)       PVDEBUGS(v,m,n)
+
+PVDEBUGS(v,mv,nxtline) int v;movetype *mv;movetype nxtline[];
+{
+port=2;
+copymv(&nxtline[1],mv);
+pvsenglish(nxtline);
+printf("PVS: score=%d  %s\n",v,pvsmsg);
+port=1;
+}
+
+PVDEBUGM(depth,mv)
+movetype *mv;int depth;
+{int *arg;char mvstr[10];int x;
+port=2;arg=&mv;
+if (level==playlevel)
+  {mvenglish(mv,mvstr);
+   for (x=0;x < (depth-1);x++) printf("   ");
+   printf(" %s\n",mvstr);
+  }
+port=1;
+}
+
+PVDEBUG(params,depth,str)
+char *str;int depth,params;
+{int *arg;char mvstr[10];int x;
+port=2;arg=&str;
+if (level==playlevel)
+  {for (x=0;x < (depth-1);x++) printf("   ");
+   printf(" %s",str);
+   while (params--) printf(" %d",*++arg);
+   printf("\n");
+  }
+port=1;
+}
+
+#else
+#define NBP_INC()
+#define PVM(mv)
+#define PV0(str)
+#define PV1(str,a)
+#define PV2(str,a,b)
+#define PV3(str,a,b,c)
+#define PVS(v,m,n)
+#endif
+
+
+/* used as a counter to know when to check the clock */
+static direct uchar nodecnt;
+
+/* The window for the search */
+static direct int zscore;    /* The 'average' score */
+static direct int zwindow;   /* The search window */
+static direct int research;  /* hi/lo failure research. */
+static direct bool noext;    /* used to guanrantee a two ply search */
+
+/* 18 bytes for arguments, 10+6*MAXDEPTH for local vars
+   per level of depth + 6 overhead = 34 bytes + 6*(MAXDEPTH) per
+   level of depth, MAXDEPTH-3 levels:
+    = 2635 (if MAXDEPTH=20) */
+
+int search(movetype *prevmove,movetype *buffer,
+           int lowbound,int hibound,uchar color,
+           uchar depth,uchar ext,uchar qlevel,movetype *bstline)
+/* this is the recursive routine that searches the move tree.*/
+/* prevmove is a pointer to the move made to get here
+   buffer is the pointer for the move buffer storage
+   lowbound is the lowest score accepted.  Normally called alpha
+   hibound is the highest score accepted.  Normally called beta
+   color is the side to move
+   depth is the current depth (ply level) of the search
+   ext is how many extra plys to search because of things like
+       checks, pawn promotions, etc  NOT YET USED
+   qlevel is how many plys are quiscient search plys
+   bstline is the best line so far
+*/
+{
+movetype *lastmove;
+movetype *illegal;  /* used as a pointer / counter */
+int bstscore,value;
+register movetype *curmove;
+movetype *bestmv;
+bool fullsearch;
+movetype nxtline[MAXDEPTH];
+
+#ifdef DEBUG_STACK
+if(minstack>(unsigned)&nxtline) minstack=(unsigned)&nxtline;
+#endif
+
+/* check to see if break key is pressed */
+/* if (breakpress) return(BIGNUM); */
+
+/* flag no move found yet */
+bestmv=NULL;
+nxtline[depth+1].f=-1;  /* flag end of PVS */
+
+/* terminal node if either king captured */
+if ((kingloc[WHITE]<0) || (kingloc[BLACK]<0))
+    {NBP_INC();PV0("King captured");return(setmate(prevmove,color,depth));}
+
+if ( (depth > 1) && (repetition()))  /* the value of a draw is zero */
+   {prevmove->flags|=REPETITION | EXACT;NBP_INC();
+    PV0("Repetition");return(0);}
+
+/* go ahead and get the score for this node */
+bstscore=evalu8(prevmove,posscore[depth-1],color,lowbound,hibound,depth,
+                &chkflag[depth],qlevel);
+posscore[depth]=bstscore-mtl[color]+mtl[chngcolor(color)];
+if (abs(bstscore) > MAXNONMATE)
+   {bstline[depth].f=-1;NBP_INC();PV1("Mate",bstscore);return(bstscore);}
+PV3("",lowbound,hibound,bstscore);
+
+/* don't go too deep into the tree */
+if (depth >= (MAXDEPTH-3) )
+   {NBP_INC();PV1("Maxdepth",bstscore);return(bstscore);}
+
+fullsearch=FALSE;
+/* a full search is done if:
+   A) (plus 1 extension) this is not a capture search ply and one of::
+      1: you are incheck
+      2: a pawn is about to promote
+      3: the score is within the window and this is a re-capture
+   B) this is a capture search ply and one of:
+      1: this is a king hunt
+      2: if the move won't prune and:
+           i) you are in check
+          ii) a pawn is about to promote
+         iii) the score is within the window and this is a re-capture
+*/
+if (depth <= (level+ext))
+   {if (chkflag[depth] || pawnthrt[depth-1] ||
+          (depth>2 && bstscore>lowbound && bstscore<hibound &&
+           cptrflag[depth-1] && cptrflag[depth-2])
+       )
+     {ext++;fullsearch=TRUE;}
+   }
+else   /* capture search */
+   {if (bstscore >= lowbound &&
+       (chkflag[depth] || pawnthrt[depth-1] ||
+          (depth>2 && bstscore<hibound &&
+            cptrflag[depth-1] && cptrflag[depth-2])
+          )
+       ) fullsearch=TRUE;
+    else if ((depth>4) && chkflag[depth-2] && chkflag[depth-4])
+           fullsearch=TRUE;
+   }
+
+/* don't add any extensions if we aren't supposed to do a qsearch */
+if ((noext) || (!qsearch)) {ext=0;fullsearch=FALSE;}
+
+/* limit the number of extensions.  Mainly because of computer speed */
+{
+  if (depth > (level+(level==1?5:11) ))
+     {PV1("Ext Lim",bstscore);NBP_INC();return(bstscore);}
+}
+
+#ifdef DEBUG
+if ( (depth > level) && (ext)) extcount++;
+if (depth > maxdepth) maxdepth=depth;
+#endif
+
+if ( (depth <= (level+ext)) || fullsearch)   /* regular full search */
+  {if (depth!=1) lastmove=genmoves(buffer,color);
+   else {lastmove=buffer;buffer=mvlist;}
+   if (lastmove==buffer)             /* no moves, stalemate */
+      {prevmove->flags|=STALEMATE | EXACT;NBP_INC();
+       PV1("No moves",bstscore);return(0);}
+   bstscore=-BIGNUM;
+   prevmove->flags|=FULLSRCH;
+#ifdef DEBUG
+   nodes++;
+#endif
+  }
+else {if (qsearch)                             /* capture search */
+         { if (bstscore>=hibound)              /* standing pat */
+              {prevmove->flags|=STANDPAT;NBP_INC();
+               PV1("Stand Pat",bstscore);return(bstscore);}
+           qlevel++;
+           lastmove=gencaps(buffer,color);          /* capture search  */
+           if (lastmove==buffer)                    /* no captues */
+              {NBP_INC();PV1("Endcap",bstscore);return(bstscore);}
+           if (!lastmove)                           /* no moves at all */
+              {prevmove->flags|=STALEMATE | EXACT;NBP_INC();
+               PV0("No moves (C)");return(0);}
+           if (bstscore>lowbound) lowbound=bstscore;
+#ifdef DEBUG
+           capnodes++;
+#endif
+         }
+      else {NBP_INC();return(bstscore);}              /* no capture search */
+     }
+
+illegal=curmove=buffer;
+while (curmove < lastmove)
+   {
+  /* adjust the time limit if this is ply 1    */
+     if ((depth==1) && (tcontrol) && (!timeout) && (curmove!=buffer))
+        {searchtime(research,depth,bstscore,lowbound,zscore,zwindow);
+         research=0;}
+
+     curmove++;
+     PVM(curmove);
+     if (curmove->flags & EXACT)      /* score is already exact */
+        {PV0("Exact, skipping");continue;}
+
+     makemove(curmove);
+     cptrflag[depth]=curmove->flags & (ENPASSANT | CAPTURE);
+     pawnthrt[depth]=curmove->flags & PROMTHRT;
+
+     value=-search(curmove,lastmove,-hibound,-lowbound,chngcolor(color),
+                   depth+1,ext,qlevel,nxtline);
+
+#ifdef DEBUG
+     if (depth==1) {PVS(value,curmove,nxtline);}
+#endif
+
+  /* if we have moved into check, then the move was illegal */
+     if (abs(value) > BIGNUM) illegal++;
+
+     curmove->score=value;
+     unmakemove();
+     if (abs(value) > MAXNONMATE) curmove->flags|=EXACT;
+
+  /* New best? save it */
+     if ( value>bstscore )
+        { memcpy((void*)bstline,(void*)nxtline,sizeof(movetype [MAXDEPTH] ));
+          bstscore=value;copymv(&bstline[depth],curmove);
+          bestmv=curmove;
+          PV1("New Best",bstscore);
+        }
+
+  /* Update the bounds for the search */
+     if (bstscore>lowbound) lowbound=bstscore;
+     if (bstscore>=hibound) {PV2("Beta",bstscore,hibound);break;}
+
+  /* Check for out of time for search */
+     if (((++nodecnt)&63)==0) elaptime();
+     if ((tcontrol) && (level>1) && timeout) {PV0("Timeout");break;}
+
+    }; /* while */
+
+
+#ifdef HISTORY
+if (bestmv)
+   {/* static int x,y; */
+    /* static unsigned h; */
+    static unsigned x;
+    if(addhistory(x=((bestmv->f << 3) << 3)+bestmv->t,hinc[depth]))
+      {scalehistory();addhistory(x,hinc[depth]);PV0("History Overflow");}
+/*
+    writehistory(x,h=(y=readhistory(x))+hinc[depth]);
+    if (y > h)
+      {scalehistory();writehistory(x,readhistory(x)+hinc[depth]);PV0("History Overflow");}
+*/
+   }
+#endif
+
+/* check number of illegal moves */
+if (illegal==lastmove)
+  if (chkflag[depth])
+     {PV2("All moves ILLEGAL. MATE",bstscore,depth);
+     bstscore=-setmate(prevmove,color,depth);}
+  else {PV0("All moves ILLEGAL.  Stalemate");
+        bstscore=0;prevmove->flags|=STALEMATE | EXACT;}
+
+return(bstscore);
+}
+
+void initselect(void)
+/*initialize the var's for the search*/
+{ static int x;
+ for (x=0;x<MAXDEPTH;x++)
+   {pvs[x].f=-1;
+    posscore[x]=0;cptrflag[x]=chkflag[x]=FALSE;
+   }
+ findpieces();
+ estscore=evalu8(mvlist,0,tomove,-BIGNUM,BIGNUM,1,&chkflag[0],FALSE);
+ extratime=0;
+ resetclock();/* breakpress=*/ timeout=FALSE;
+ msg[0]=status[0]=/* pvsmsg[0]=*/ 0;
+ clearhistory();
+ zscore=0;zwindow=20;
+#ifdef DEBUG
+ maxdepth=extcount=nbp=nodes=capnodes=pawnevals=evals=0;
+#endif
+ {
+    extern uchar currow;
+    currow=9;
+    atright();
+    printf("Thinking...");
+ }
+}
+
+void updatewindow(void)
+/* Update the search window width */
+{
+if (zscore==0) zscore=estscore; else zscore=(zscore+estscore*2)/3;
+zwindow=30+abs(zscore/10);
+}
+
+void selectmove(int player)
+/* this selects a move to play */
+/* This is the master routine that calls search to do the dirty work */
+/* To prevent search explosions and guarantee that we will do at least
+   a two ply search without running out of time, I turn off all
+   extensions for the first ply and allow capture search extensions
+   for the second ply.  Plies three and above are done normally.
+   This is done only when time control search is enabled */
+{ static uchar maxlev;
+  static int lowbound,hibound;
+  static movetype *lastmove;
+  static bool tqsrch;   /* temp qsearch holder */
+  static uchar tcontrol0;
+#ifdef DEBUG
+  int depth=1;   /* for DEBUG macros */
+#endif
+
+checkstatus(player);if (mate || draw) return;
+initselect();
+
+lastmove=genmoves(mvlist,player);
+if (lastmove==mvlist) {strcpy(msg,"Stalemate\xE5""draw");return;}
+
+/* check for only 1 move */
+if ((mvlist+1)==lastmove)
+   {copymv(&pvs[1],&mvlist[1]);pvs[2].f=-1;selected();return;}
+
+fast();
+tcontrol0=tcontrol;
+breakctrl=1;
+/* set up for the guaranteed two ply search */
+tqsrch=qsearch;noext=FALSE;
+if (tcontrol) {qsearch=FALSE;noext=TRUE;}
+
+lowbound=-BIGNUM;hibound=BIGNUM;
+
+maxlev=playlevel;if (tcontrol) maxlev=MAXLEVEL;
+for (level=1;level<=maxlev;level++)
+   {
+    PV1("Iteration ",level);PV1("Lowbound ",lowbound);
+    PV1("Hibound ",hibound);PV1("zwindow ",zwindow);
+    PV1("zscore ",zscore);
+
+ /* restore quiescience searching if past two plies */
+    if (level>1) qsearch=tqsrch;
+    if (level>2) noext=FALSE;
+
+    unflag(mvlist,lastmove,FALSE);research=0;
+
+    estscore=search(mvlist,lastmove,lowbound,hibound,player,1,0,0,pvs);
+
+    PV1("Estimated score is ",estscore);
+
+    if (abs(estscore)>MAXNONMATE) break; /* check mate */
+    if (/* breakpress || */ (tcontrol && timeout)) break;
+
+/* windowed search above may have failed.  If so, do with open window */
+    if ((estscore <= lowbound) && (!timeout)/* && (!breakpress) */)
+      {PV0("Search failed low");
+       unflag(mvlist,lastmove,TRUE);scalehistory();updatewindow();
+       research=-1;
+       estscore=search(mvlist,lastmove,-BIGNUM,hibound,player,1,0,0,pvs);
+      }
+   else if ((estscore >= hibound) && (!timeout)/* && (!breakpress) */)
+      {PV0("Search failed High");
+       unflag(mvlist,lastmove,TRUE);scalehistory();updatewindow();
+       research=1;
+       estscore=search(mvlist,lastmove,lowbound,BIGNUM,player,1,0,0,pvs);
+      }
+
+/*    pvsenglish(pvs);
+    PV1("I decided on: ",estscore);PV0(pvsmsg); */
+
+    sort(mvlist,lastmove);scalehistory();updatewindow();
+
+    if (/* breakpress || */ (tcontrol && timeout)) break;
+    if (abs(estscore)>MAXNONMATE)           /* check mate */
+        {PV1("Found checkmate!!!",estscore);break;}
+              /* best move is exact */
+    if ((mvlist[1].flags & EXACT) && (level > 2) )
+        {PV1("Best move is exact",estscore);break;}
+
+ /* if second best move is mate, then no need for further search */
+    if (abs(mvlist[2].score) > MAXNONMATE)
+        {PV2("Second best is mate",estscore,mvlist[2].score);break;}
+
+ /* setup window for next iter */
+    hibound=estscore+PAWNVAL;
+    if (zscore<estscore) lowbound=zscore-PAWNVAL-zwindow;
+    else lowbound=estscore-PAWNVAL-zwindow;
+   }
+
+qsearch=tqsrch;
+selected();
+
+PV0("");
+PV1("Nodes= ",nodes);PV1("Capnodes= ",capnodes);
+PV1("Full Evals= ",evals);PV1("Partial evals= ",nbp);
+PV1("Pawn Evals= ",pawnevals);
+PV1("ExtCount= ",extcount);PV1("Max depth reached= ",maxdepth);
+PV0("");
+slow();
+tcontrol=tcontrol0;
+breakctrl=0;
+}
+

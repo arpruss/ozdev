@@ -1,0 +1,1 @@
+-C8000h -oclockcal.bin -plowpage=8000h,midpage,text,data,bss -mclockcal.map 32k.obj clockcal.obj         libc0.lib liboz.lib libc0.lib liboz.lib 

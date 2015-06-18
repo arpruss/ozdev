@@ -1,0 +1,2160 @@
+LIBOZ.LIB LIBRARY FUNCTIONS
+===========================
+
+CONTENTS
+========
+
+0. PRELIMINARIES
+1. GRAPHICS AND DISPLAY
+1.1. Pixel display functions
+1.2. Text output
+1.2.1. Custom fonts
+1.2.1.A. APPENDIX
+1.3. Page manipulation
+1.4. Grey-scale routines
+2. KEYBOARD AND INPUT
+3. BACKLIGHT AND SCREEN CONTROL
+4. TIME
+5. INTERRUPT HANDLING
+6. SERIAL PORT I/O
+7. FILE I/O
+7.1. File i/o for user data files
+7.2. File i/o for Wizard internal data types
+7.3. File i/o for data memos
+8. AUXILIARY MEMORY	  [48K model only]
+9. MISCELLANEOUS
+
+
+
+
+0. PRELIMINARIES
+
+All the functions assume:
+	#include <oz.h>
+
+Note: That file contains the line:
+	typedef unsigned char byte;
+
+There are two supported link models: 32K and 48K (there is also an
+unsupported 16K model: see ..\changes.txt for information on removal of
+support).  The 32K and 48K models allow 32K for data and code.
+The 48K model additionally has a 16K auxiliary memory area accessible
+via the oz*aux*() functions.  The 32K and 48K models by default use the
+ozcustomisr() interrupt handler.
+
+To link 32K and 48K model programs, use ozlink32 (or ozlink) and
+ozlink48, respectively.
+
+1. GRAPHICS AND DISPLAY
+
+1.1. Pixel display functions
+
+void ozcls(void);
+
+	Clear active page.
+
+int ozpoint(int x, int y, byte color);
+
+	Put a pixel at (x,y) if (x,y) is within the screen boundaries,
+	where color can be WHITE (0), BLACK (1) or XOR (2).  Returns the
+	offset into the screen at which the pixel is found, -1 if
+	the pixel is off-screen.  Full clipping.
+
+void ozline(int x1,int y1,int x2,int y2,byte color);
+
+	Draw a line from (x1,y1) to (x2,y2) where color is as in
+	ozpoint().  Full clipping.
+
+void ozbox(int x, int y, int width, int height);
+
+	Draws an unfilled box with opposite corners (x,y) and
+	(x+width-1,y+height-1).  Full clipping.
+
+void ozfilledbox(int x, int y, int width, int height, byte color);
+
+	Draws a filled box with opposite corners (x,y) and
+	(x+width-1,y+height-1).  Full clipping.  The color parameter is
+	as in ozpoint().
+
+void ozcircle(int x,int y,byte r,byte color);
+
+	Draw a circle of radius r at (x,y).  Color is a bitwise
+	combination of WHITE (0), BLACK (1) or XOR (2) with FILL (4) or
+	UNFILL (0).  The circle is clipped properly, but circles whose
+	diameter is much bigger than the screen height may have some
+	gaps.  Full clipping.
+
+int _ozpoint(byte x, byte y, byte color);
+void _ozline(byte x1,byte y1,byte x2,byte y2,byte color);
+void _ozfilledbox(byte x, byte y, byte width, byte height, byte color);
+
+	Same as ozpoint(), ozline() and ozfilledbox(), respectively,
+	except these do no clipping, and _ozpoint() never returns -1.
+	Disaster can ensue if one of the coordinates is out of bounds.
+	These are faster routines than ozpoint(), ozline() and
+	ozfilledbox() and are also capable of x-coordinate 239 which
+	produces interesting "bleeding".
+
+void _ozvline(byte x,byte y,byte len,byte color);
+
+	A fast non-clipping routine to draw a vertical line from (x,y)
+	of length len;	color is as in ozpoint().
+
+void _ozhline(byte x,byte y,byte len,byte color);
+
+	A fast non-clipping routine to draw a horizontal line from (x,y)
+	of length len;	color is as in ozpoint().
+
+int ozgetpoint(int x, int y);
+
+	Returns 1 if there is a pixel at (x,y);  0 otherwise;  -1 if the
+	point is out of bounds.
+
+void ozdisplayorbyte(unsigned offset, byte v);
+void ozdisplayandbyte(unsigned offset, byte v);
+void ozdisplayputbyte(unsigned offset, byte v);
+
+	These or/and/put (respectively) v at screen-offset offset (a
+	value between 0 and 2399) with v.  Note that
+	ozdisplayorbyte(y*30+x/8,1<<(x%8)) draws a pixel at (x,y),
+	though _ozpoint(x,y,BLACK) will do the same thing probably
+	rather faster.	However, if you're drawing several pixels at the
+	same time within a single byte, the ozdisplay*byte() functions
+	will be faster.  For instance, you can pretty quickly turn the
+	whole screen black in C with:
+
+	{
+	  int i;
+	  for(i=0;i<2400;i++) ozdisplayputbyte(i,255);
+	}
+
+byte ozdisplayinbyte(unsigned offset);
+
+	Returns the value in the active page screen buffer at the
+	specified screen offset.
+
+void _ozputsprite(byte x,byte y,byte height,byte *sprite);
+
+	This draws an 8-bit white image starting at (x,y), of the
+	specified height.  The argument sprite is a pointer to a
+	height*2 bytes long array giving the image in the following
+	format:
+	   image_line_1 mask_line_1 image_line_2 mask_line_2 ... .
+	Each image_line_i mask_line_i pair draws one 8-bit horizontal
+	line of the image.  The image_line_i byte specifies the image for
+	the line, and the mask_line_i byte specifies the mask for the
+	image.	In effect, the screen memory is and'ed with mask_line_i,
+	and then xor'ed with image_line_i.  The exact effect depends on
+	the interplay of the corresponding bits in image_line_i and
+	mask_line_i.
+
+	       image mask
+		0     0    = draw white pixel
+		1     0    = draw black pixel
+		0     1    = transparent (no effect)
+		1     1    = inverse of original pixel
+
+	Moreover, the least significant bit is the left-most bit, so you
+	may have to flip the images right-to-left when planning them.
+
+	For instance, suppose that you want to draw somewhere on the
+	screen a 4x4 bit box, with a 1-bit wide black border, and
+	transparent insides.  Then, you use the following image_line and
+	mask_line pairs (after converting from binary to, say, hex):
+
+	    00001111	11110000
+	    00001001	11110110
+	    00001001	11110110
+	    00001111	11110000
+
+	Remember that the least significant bits (the ones given in
+	binary on the right hand side) are plotted on the left, so this
+	will be right-to-life flipped before drawing.  The image bytes
+	give the outline of the box.  The mask specifies that the image
+	is supposed to be transparent inside the 4x4 bit box, and is
+	also supposed to be transparent outside the 4x4 bit box.
+
+	Converting to hexadecimal, you can draw the above sprite by
+	passing height=4 to _ozputsprite() and using
+	sprite="\x0F\xF0\x09\xF6\x09\xF6\x0F\xF0".
+
+	Note that no clipping is done, so the whole sprite had better
+        fit on the screen--else the program will crash.  However,
+        a sprite that goes off the screen only in its transparent
+        portion should work just fine.
+
+	A basic GPRINT string like "0F09090F" translates into a sprite
+	with 0 mask, i.e., "\x0F\0\x09\0\x09\0\x0F\0".
+
+void __ozputsprite(byte x,byte y,byte height,byte *sprite);
+
+        This is the same as _ozputsprite() except that the sprite memory
+        location must be in psect lowpage or psect beforebss.  DO NOT USE
+        THIS FUNCTION UNLESS YOU REALLY KNOW WHAT YOU ARE DOING.  IT ALSO
+        DOES LESS ERROR CHECKING: if you use height=0, things may crash,
+        for instance.
+
+void ozscroll(unsigned numbytes);
+void ozscrolldown(unsigned numbytes);
+        Scrolls the active page upward/downward by the specified number of
+        bytes.  There are 30 bytes per scanline, so to scroll up 3 scanlines
+        do:
+		ozscroll(90);
+        This does not clear the bottom rows when scrolling down or the
+        top ones when scrolling up--you'll have to do that yourself.
+
+void ozscrollclear(void);
+
+	This is equivalent to ozscroll(300) followed by clearing the
+	bottom 10 scanlines.
+
+void ozscrollleft(byte y,byte m);
+void ozscrollright(byte y,byte m);
+
+        This scrolls m lines of the screen left/right by one pixel,
+        starting at line y.  Thus, to scroll the whole screen left by
+        one pixel, do:
+                ozscrollleft(0,80);
+
+void ozsavescreen(void);
+
+	This saves the screen (or, more precisely, the active page) to
+	a special memory location used for saving screens.  Does not
+	work in grey-scale mode.
+
+	Use in conjunction with ozrestorescreen().  For instance, you
+	can do:
+		ozsavescreen();
+		DisplayHelpScreen();
+		ozgetch();
+		ozrestorescreen();
+	to implement a pop-up help information window.	You can also do
+	this with the screen page switching functions below, but
+	ozsavescreen() also works in ozsinglepage() mode, unlike those
+	functions.
+
+void ozrestorescreen(void);
+
+	This restores a screen (or, more precisely, the active page)
+	saved with ozsavescreen().  Does not work in grey-scale mode.
+
+1.2. Text output
+
+int ozputs(int x, int y, char *string);
+
+	Prints the string at (x,y) in the current Wizard font.	(x,y)
+	should be within the screen, but the string is clipped on the
+	right and bottom.  Returns the x-coordinate where the next
+	character would be printed, so
+		x=ozputs(0,0,"Hel");
+		ozputs(x,0,"lo");
+	prints "Hello" in the upper-left hand corner of the screen, with
+	proper spacing.  If y=-1, then it doesn't print the string, but
+	the return value is the same as with y>=0;  to get the
+	pixel-width of a string, do:
+		width=ozputs(0,-1,string);
+        This function clears an appropriately sized rectangle to draw on.
+
+int ozputch(int x, int y, char c);
+
+	Same as ozputs() but only for a single character.
+        NOTE: ozputch(x,y,'\0') does not work.
+
+int ozputsor(int x, int y, char *string);
+int ozputchor(int x, int y, char *string);
+
+        These are the same as ozputs() and ozputch() respectively, except
+        they do not clear a background rectangle for themselves, but simply
+        OR the text with the background.  You can use ozputsor for poor man's
+        bold:
+                ozsetfont(FONT_PC_LARGE);
+                ozputs(x,y,"This is sort of bold");
+                ozputsor(x+1,y,"This is sort of bold");
+        Here the ozputsor() doesn't erase the text put up by ozputs() but
+        prints it again, offset by one pixel, which makes it look like bold
+        print.
+
+char *ozputsgetend(void);
+
+	Returns a pointer to the first character beyond the right hand
+        margin in the string last passed to ozputs() or ozputsor() and to the
+	terminating null if all characters were printed.  A quick way to
+	check whether ozputs() printed the whole string is to see if
+        *(ozputsgetend()) is zero.  It also works after ozputch() or
+        ozputchor() because internally ozputch() is implemented as a
+        call to ozputs() with a statically allocated string, so
+	*(ozputsgetend()) will be null if the character sent to
+	ozputch() has been printed.
+
+void ozfont(byte fontnum);
+void ozsetfont(byte fontnum);
+
+	Sets the current font to one of FONT_PC_NORMAL, FONT_OZ_NORMAL,
+        FONT_PC_LARGE, FONT_OZ_LARGE, FONT_CUSTOM0, FONT_CUSTOM1 and
+        FONT_TEMPORARY. The default is FONT_PC_NORMAL. The height of the
+        NORMAL fonts is 8 pixels, though the Wizard normally spaces them
+        at 10 pixels. The height of the LARGE fonts is 13 pixels.  The
+        ozfont() and ozsetfont() functions are identical, but
+        ozsetfont() conforms better to my naming conventions and
+        ozfont() is included only for backwards compatibility.  The fonts
+        FONT_CUSTOM0, FONT_CUSTOM1 and FONT_TEMPORARY are described in
+        Section 1.2.1.
+
+byte ozgetfont(void);
+
+	Gets the current font identifier.  See ozsetfont() for the names
+	of the four identifiers.
+
+byte ozgetfontheight(byte f);
+
+	Gets the height of the font with font identifier f.  Use
+	ozgetfontheight(ozgetfont()) to get the height of the current
+	font.
+
+1.2.1. Custom fonts
+
+As of version 0.090, the Hi-Tech C SDK includes support for custom fonts.
+The font format is described in section 1.2.1.A.  One thing that is
+useful for everyone to know is that the first three entries in each font
+are:
+        unsigned checksum;
+        unsigned magic; /* always 0x466F */
+        unsigned length;
+The length includes the header.  The checksum is just a simple sum.
+
+There are two ways of using custom fonts. First, one can just keep as
+many fonts as one can fit in ordinary program memory but one can only
+use them while the program is running.
+
+Second, one can load fonts into two special memory slots whose contents
+are preserved even after the program is terminated and the Wizard turned
+off, though which may not survive battery changes.  The two memory slots
+are located on page 0x503 on OZ/ZQ-750 units and on page 0x40F on all
+other units.  The slots are numbered 0 and 1.  Each font memory slot has
+a maximum font size of MAX_CUSTOM_SLOT_SIZE (=3456) and can store one
+font.  However, as a special hack, if you need to load an extra large
+font, you can load a font up to 2*MAX_CUSTOM_SLOT_SIZE in length into
+slot 0, while clobbering and making unusable slot 1.
+
+It is strongly recommended that programs use slot 0 for their own fonts,
+leaving slot 1 for user-installed fonts.
+
+The fonts, installed in whatever way, should work just fine with
+ozputs(), ozgetch() and ozeditline(), if one just set the right fonts
+with ozsetfont() or ozsetfontpointer().
+
+There are several utilities available to manipulate Wizard fonts.  See
+fonts.txt for descriptions of them.  That file will also tell you about
+font naming conventions and encodings.
+
+
+Here are the library functions available.
+
+
+byte ozscancustomfonts(void);
+
+        This checks the contents of the two font slots, and returns a
+        bitfield.  Bit 0 indicates there is a valid font in slot 0, and
+        bit 1 indicates a valid font in slot 1.  Thus, this can return
+        one of four values.
+
+                0 = no fonts available.
+                1 = MASK_CUSTOM0 = font in slot 0, none in slot 1
+                2 = MASK_CUSTOM1 = font in slot 1, none in slot 0
+                3 = MASK_CUSTOM1 | MASK_CUSTOM0 = fonts in both slots
+
+        This must be called before a program uses the fonts in the two
+        font slots.  Once it has been called, you can use
+        ozsetfont(FONT_CUSTOM0) and ozsetfont(FONT_CUSTOM1) to use the
+        two fonts.  Note:
+
+                FONT_CUSTOM0 = 4
+                FONT_CUSTOM1 = 5
+
+        You MUST call ozscancustomfonts() before your program makes any
+        use of a custom font in a font slot.  If your program modifies
+        the contents of a font slot, it MUST call ozscancustomfonts()
+        again before displaying anything using that font.  Otherwise, a
+        bad crash may occur.
+
+void ozclearcustomfontslot(byte slot);
+
+        This clears the font in the indicated slot, 0 or 1.
+
+void ozwritecustomfontmem(byte slot, byte *fontdata);
+
+        This writes the font pointed to by fontdata to the desired font
+        slot, 0 or 1.  Before using the font, you must call
+        ozscancustomfonts().  Note that the font will remain until the
+        Wizard's batteries are changed or some program overwrites it, but
+        EACH program using the font must call ozscancustomfonts() before
+        using it.
+
+void ozwritecustomfontbyte(byte slot, unsigned offset, byte value);
+
+        This lets you write the font into the slot byte by byte, setting
+        the value at the indicated offset (from 0 to the font length
+        minus one).  Thus, you can read a font from a file "font" to
+        slot 1 somewhat as follows:
+
+                /* (code snipped not tested) */
+                static int h;
+                static unsigned offset;
+                static byte c;
+                h=open("font",O_RDONLY);
+                if(h<0) error_handler("Cannot open font!");
+                offset=0;
+                while(read(h,&c,1)==1) /* read one byte */
+                {
+                  if(offset>=MAX_CUSTOM_FONT_SLOT)
+                        error_handler("Font too big!");
+                  ozwritecustomfontbyte(1,offset,c);
+                }
+                close(h);
+                if(!(MASK_CUSTOM1 & ozscancustomfonts()))
+                      error_handler("Error in registering font!");
+
+void ozsetfontpointer(byte *fontdata);
+
+        This lets ozputs(), ozputch(), ozeditline() and related functions
+        output data in the font pointed to by fontdata.  The font is not
+        loaded in any slot, and so it is lost if the data pointed to by
+        fontdata is destroyed or when the program terminates.  This font
+        is used until a new call to ozsetfont() or to ozsetfontpointer().
+
+        Technically, ozsetfontpointer() registers the given font data as
+        FONT_TEMPORARY (6).  This font identifier can be given as an
+        argument to ozsetfont() or ozgetfontheight().  Thus, to find out
+        the height of the font at fontdata, you can do:
+
+                ozsetfontpointer(fontdata);
+                height=ozgetfontheight(FONT_TEMPORARY);
+
+        After having called ozsetfontpointer(), ozgetfont() returns
+        FONT_TEMPORARY.
+
+        The easiest way to incorporate a custom font into your program is
+        to #include one of the .c font files from the fontpack directory.
+        For instance, to use the lovely Alpha-BK font, you can copy
+        "alpha-bk.c" to your program directory (you may have to rename the
+        file to get around CP/M file length limits: for instance, you may
+        have to rename the file not to have spaces in it).  Then, you can
+        do:
+
+                #include "alpha-bk.c"
+
+                main()
+                {
+                   ozsetfontpointer(alpha_bk_data);
+                   ozputs(0,10,"This is a demo of Alpha-BK");
+                   ozsetfont(FONT_OZ_NORMAL);
+                   ozputs(0,20,"This is OZ_NORMAL");
+                   ozsetfont(FONT_TEMPORARY);
+                   ozputs(0,30,"Back to Alpha-BK);
+                   ozgetch();
+                }
+
+        You will need to look inside the .c file to see the exact name
+        of the font data array.  Usually it is given by the filename with
+        special characters changed to _'s, followed by _data.
+
+1.2.1.A. APPENDIX
+
+The custom font format is as follows.  We start with a 12 byte header in
+the following format.
+
+        struct ozfontheader
+        {
+            unsigned checksum;
+            unsigned magic; /* 0x466F */
+            unsigned length;
+            byte first;
+            byte last;
+            byte bitmap_height;
+            byte line_height;
+            byte maxwidth;
+            byte active;
+        };
+
+After this, the font data follows.  The checksum field contains the
+unsigned sum modulo 65536 of all the data in the font starting with
+and including the magic field of the header and including all the font
+data.  The magic field is always 0x466F for a valid font.  The length
+is the length of the whole font including the header.  Currently, first
+must be equal to zero.  The value last specifies whether this font
+includes characters 0-255 or 0-127, and is allowed to be either 255 or
+127.  The bitmap_height field specifies the physical height of the
+bitmapped font in pixels.  The line_height field is currently not supported,
+but is a recommended line height, perhaps bigger than bitmap_height.  For now,
+set it equal to bitmap_height.  The maxwidth field is the width of the
+largest character, guaranteed to be between 2 and 16, inclusive.  The
+active field is not currently supported.
+
+This is followed by a table of character offset/width entries.  The
+number of entries in the table is last-first+1.  Each entry is of the
+form:
+        struct ozfonttableentry
+        {
+            byte width;
+            unsigned offset;
+        };
+The width specifies the character width (including any needed white space)
+in pixels.  It is guaranteed to be between 2 and 16.  The offset specifies
+the offset to the bitmap data for the character, relative to the
+beginning of the font header.  There is no guarantee that successive
+characters have successive offsets.  Indeed, two different characters can
+share the same offset.  Present fonts, for instance, follow the convention
+that undefined characters get repointed to the bitmap for an asterisk.
+
+At the offset, the data for the font is given.  This data takes up
+bitmap_height bytes if this character width does not exceed 8, and takes
+up 2*bitmap_height bytes if this character width is between 9 and 16.  The
+format for characters of width up to 8 is:
+        byte line_bitmap[bitmap_height];
+For characters of width 9-16, it is:
+        unsigned int line_bitmap[bitmap_height];
+Each line entry contains in its least significant bit the left-hand bit of
+the font entry, and so on bit by bit, padded with zeros if necessary.
+
+
+
+1.3. Page manipulation
+
+The current C library implements two (=MAX_DISPLAYPAGES) display pages,
+numbered 0 and 1.  At any given time the program has an active page and
+a display page, which may or may not be the same.  The active page is
+the page which all graphics functions (ozcls(), ozpoint(), ozputs(),
+etc.--with the exception of ozputs_system() and ozputch_system() which
+do not support multiple display pages) write to or read from.  The
+display page is the page which is currently visible on the Wizard's
+screen.  If the display page is the same as the active page (default at
+startup), then you will immediately see what you write on the screen.
+
+If the display page is not the same as the active page, you will not see
+anything from the graphics functions you call (except in the case of the
+deprecated ozput*_system() functions).	This lets you prepare a new
+screen for the user, which you can then flash instantly on the screen by
+setting the display page equal to the active page.
+
+On program startup, the active and display pages are both 0.  On program
+termination, the active page loses its meaning and the display page is
+automatically reset to 0.
+
+NOTE: You cannot use multiple display pages and grey-scale simultaneously.
+
+There are several functions to manipulate the current display page.
+
+void ozsinglepage(void);
+
+	Call this before calling any auxiliary memory or display page
+	functions to disable the multiple display page functions and
+	give 2400 extra bytes to the auxiliary memory pool.  After you
+	do this, you have only a single display page available: do not
+	use the multi-page functions.
+
+void ozsetactivepage(byte page);
+void ozsetdisplaypage(byte page);
+
+	These two functions set, respectively, the active and display
+	pages to the specified parameter.  The valid values of page are
+	0 and 1.
+
+byte ozgetactivepage(void);
+byte ozgetdisplaypage(void);
+
+	These two functions return, respectively, the current active and
+	display page numbers.  The possible return values are 0 and 1.
+
+void ozdisplayactivepage(void);
+
+	This displays the active page and is equivalent to
+	ozsetdisplaypage(ozgetactivepage()) but slightly faster.
+
+void ozactivatedisplaypage(void);
+
+	This activates the display page and is equivalent to
+	ozsetactivepage(ozgetdisplaypage()) but slightly faster.
+
+void ozswapactivedisplay(void);
+
+	This swaps active_page_number and display_page_number and is
+	equivalent to, but faster than:
+	{
+	   byte temp=ozgetdisplaypage();
+	   ozsetdisplaypage(ozgetactivepage());
+	   ozsetactivepage(temp);
+	}
+
+void ozcopypage(byte dest, byte src);
+
+	This copies the contents of video page src onto the contents of
+	video page dest.  This is useful even if you do not use any
+	other paging functions but if you want to implement help screens
+	or pop up menus in your program.
+
+	For instance, to implement a help screen, you might do something
+	like (assuming you haven't changed pages so that both the active
+	and display pages are page 0):
+
+	if('h'==PressedKey)
+	{
+	  ozcopypage(1,0); /* save current screen in page 1 */
+	  ozcls()	       /* clear screen */
+	  DisplayHelpScreen(); /* show the help screen */
+	  ozgetch();	       /* wait for keystroke */
+	  ozcopypage(0,1); /* restore the original screen from page 1 */
+	}
+
+1.4. Grey-scale routines
+
+In grey-scale mode, there are four shades available: GREYSHADE_WHITE
+(0), GREYSHADE_GREY1 (1), GREYSHADE_GREY2 (2), and GREYSHADE_BLACK (3)
+which the grey-scale routines use as a parameter.  You need to adjust
+the contrast carefully to make both shades show up.  With some contrast
+settings you'll find that GREYSHADE_GREY1 looks almost white and/or that
+GREYSHADE_GREY2 looks almost black.  One suggestion on how to make the
+best of this is to resign yourself to using white, black and only one
+shade of grey.	Choose which shade of grey that is going to be.  I'll
+assume it's GREYSHADE_GREY2, though you can also do it with
+GREYSHADE_GREY1.  Then, adjust your contrast, or have the user adjust
+his contrast, until GREYSHADE_GREY2 looks mid-way between white and
+black.	(You may want your program to include a little contrast
+callibration function using the ozsetcontrast() and ozgetcontrast()
+functions.)  Once you do that, GREYSHADE_GREY1 will probably look almost
+completely white.  (If you chose to work with GREYSHADE_GREY1 instead,
+then at this point GREYSHADE_GREY2 will look almost completely black.)
+Don't worry about that, and just use the three shades GREYSHADE_WHITE,
+GREYSHADE_GREY2 and GREYSHADE_BLACK in your program.
+
+A demo of the grey-scale functions is in gfx\greytest.c.
+
+NOTE 1: Do not mix calls to grey-scale functions and ordinary display
+functions.  For instance, ozcls() and ozputs() won't work properly in
+grey-scale mode.  You need to use ozgreycls() and ozgreyputs() instead.
+
+NOTE 2: If you use grey-scale routines, the multiple display page routines
+will no longer work.
+
+NOTE 3: When the grey-scale routines are enabled, the Wizard is slightly
+slowed down.
+
+TECHNICAL NOTE: The grey-scale routines are implemented by putting bit 0
+of the shade in screen page 0 and bit 1 of the shade in screen page 1,
+and then rapidly switching between the two display pages at the screen
+refresh frequency, except that page 1 gets displayed for two cycles
+while page 1 for only one cycle.
+
+int ozsetgreyscale(byte mode);
+byte ozgetgreyscale(void);
+
+	These functions respectively set and get the grey-scale mode.
+	If mode is 0, then grey-scale functions are off.  If mode is 1,
+	they are on. You should call ozsetgreyscale(1) before calling
+	any other grey-scale functions except possibly ozgreycls().
+	Note that ozsetgreyscale() will return 0 if successful and 1 on
+	error.
+
+void ozgreycls(void);
+int ozgreypoint(int x1,int y1,byte shade);
+int ozgreygetpoint(int x, int y);
+void ozgreycircle(int x,int y,byte r,byte shade);
+void ozgreyline(int x1,int y1,int x2,int y2,byte shade);
+void ozgreyfilledbox(int x,int y,int w,int h,byte shade);
+void ozgreybox(int x,int y,int w,int h,byte shade);
+int ozgreyputs(int x,int y,byte shade,char *s);
+int ozgreyputch(int x,int y,byte shade,char c);
+int ozgreyeditline(byte x0,byte y0,char *s,byte slen,byte xlen,byte shade);
+
+
+	These are all equivalents of the same functions without the
+	"grey".  The main difference is that either instead of a color
+	parameter, they include a shade parameter or else they add a
+	shade parameter where there was none before.  There are some
+	differences mentioned in the notes below.  The shade ranges from
+	0 (GREYSHADE_WHITE) to 3 (GREYSHADE_BLACK).  These functions
+	should only be called after ozsetgreyscale(), except for
+	ozgreycls() which you could also call before ozsetgreyscale().
+	(In fact, it's a good idea to do so, since otherwise,
+	ozsetgreyscale() may flash some junk on the screen.)
+
+	NOTE 1: Do not use GREYSHADE_WHITE with ozgreyput*() or
+	ozgreyeditline().
+
+	NOTE 2: ozgreygetpoint() has return values as in ozgetpoint()
+	except it returns a grey-shade instead of just a 0/1 white/black
+	value.
+
+	NOTE 3: The cursor in ozgreyeditline() is black
+	(GREYSHADE_BLACK) and cannot be changed at present.  The shade
+	parameter only affects the input text, not the cursor.
+
+        NOTE 4: ozgreycircle() does not handle filled circles at all.
+	Use ozgreyfilledcircle() instead.
+
+	NOTE 5: None of the grey-scale functions include XOR capability.
+
+void ozgreyfilledcircle(int x,int y,byte r,byte shade);
+
+	This is the grey-scale equivalent to ozcircle(x,y,r,FILL|color),
+	except with grey-scale.
+
+2. KEYBOARD AND INPUT
+
+int ozeditline(byte x0,byte y0,char *s,byte slen,byte xlen);
+
+	This edits a line of text.  The input happens in an imaginary
+	box whose top-left corner is at (x0,y0), in the current font.
+	The box is of width xlen.  The string is to be of maximum length
+	slen-1 (slen if you count the terminating null).  To input a
+	new string, ensure that s[0]=0 when you call ozeditline().  To
+	edit a specified text, put it in s.  ozeditline() returns the
+	length of string at end of editing if all is OK.  It returns
+	OZEDITLINE_CANCEL (-1) if the user pressed ESC instead of
+	ENTER/RETURN.  It returns OZEDITLINE_ERROR (-2) on error (e.g.,
+	if the initial string does not fit in the box or is longer than
+	slen).	ozeditline() handles POWER, MAIN, BACKLIGHT, etc., keys
+	in the right way.
+
+	NOTE: ozeditline() has not been tested much.
+
+	EXAMPLE:  To input a line of text at the first line of the
+	screen, with the line being up to 120 text characters long and
+	filling up the first screen line (screen width is 239, of
+	course), do:
+		char line[121];
+		ozeditline(0,0,line,121,239);
+
+int ozkeyhit(void);
+
+	Returns non-zero value if and only if there is a key waiting in
+	the Wizard's keyboard buffer.
+
+unsigned ozgetch(void);
+
+	Returns the next key in the Wizard's keyboard buffer.  This is a
+	low-level routine and hence does not know about such things as
+	capitals and the like.	It's up to the programmer to handle such
+	things, or one can use getch() instead.  ASCII keys return the
+	ASCII characters printed on them, with letters being lowercase
+	and the RETURN key returning a \r.   Here are return values for
+	some special keys:
+
+		KEY_BACKSPACE	0x0008
+		KEY_LEFT_SHIFT	0x0800
+		KEY_RIGHT_SHIFT 0x8036
+		KEY_2ND 	0x8037
+                KEY_LOWER_ESC   0x8058
+		KEY_UPPER_ESC	0x8067
+		KEY_NEWLINE	0x0D
+		KEY_MYPROGRAMS	0x7015
+		KEY_MAIN	0x7025
+		KEY_USER1	0x70E9
+		KEY_USER2	0x70EA
+		KEY_USER3	0x70EB
+		KEY_TELEPHONE	see KEY_USER1
+		KEY_CALENDAR	see KEY_USER2
+		KEY_MEMO	see KEY_USER3
+		KEY_LOWER_MENU	0x8032
+		KEY_NEW 	0x8033
+		KEY_CATEGORY	0x8035
+		KEY_LOWER_ENTER 0x8038
+		KEY_POWER	0x803A
+		KEY_BACKLIGHT	0x803B
+		KEY_DOWN	0x8041
+		KEY_UP		0x8040
+		KEY_LEFT	0x8042
+		KEY_RIGHT	0x8043
+		KEY_PAGEUP	0x8044
+		KEY_PAGEDOWN	0x8045
+		KEY_DEL 	0x8057
+		KEY_UPPER_ENTER 0x8066
+		KEY_UPPER_MENU	0x8068
+                KEY_POWER       0x803A
+
+	These identifiers are defined in oz.h.	When the shift key is
+	depressed, the value is or'ed with MASKSHIFT (0x0800), with MASK2ND
+	(0x0100) if the 2ND key is pressed down, MASKCTRL (0x0200) if
+	the NEW key is held down and MASKCATEGORY (0x0400) if the
+	CATEGORY key is held down.  Here's a little quirk with the 2ND,
+	NEW and CATEGORY keys. the 2ND key returns 0x8037 as in the
+	above table, even though evidently while the 2ND key is held
+	down, the 2ND key is held down so one might expect to get
+	0x8137;  the same is true for NEW and CATEGORY, but not for
+	SHIFT.	The reason for this quirk is to ensure maximum
+	compatibility with the Wizard's internal keyboard handler.
+
+        There are also some quirks with KEY_POWER.  The power key can
+        only be trapped when power key handling is disabled--otherwise
+        it, of course, turns the unit off.  Moreover, currently version
+        (this is not guaranteed to stay constant) MASKSHIFT, MASK2ND
+        and MASKCATEGORY are never or'ed with KEY_POWER.
+
+        While ozgetch() and getch() are running, there is a screen blanker
+        to conserve memory.  See below.
+
+void _ozgetch();
+
+        Just like ozgetch() except there is no screen blanker.
+
+void ozungetch(unsigned key);
+
+	Puts a key back into the keyboard buffer at the head of the
+	queue so that the next ozgetch() will get it.  This gives one a
+	trick for turning off the Wizard:
+		ozungetch(KEY_POWER);
+		exit(0);
+	Running
+		ozungetch(c=ozgetch());
+	will let you check what's waiting in the keyboard buffer without
+	removing it from the buffer.
+
+unsigned getch(void);
+
+	This is a smarter version of ozgetch().  Special keys are
+	returned as in ozgetch(), but it interprets shift keys, CTRL
+	keys, and special character keys as in Wizterm.  See
+        WIZTERM\README for information on how that works.  It also
+        returns more complicated keys like:
+                MASK2ND | MASKSHIFT | KEY_UP
+                MASKCTRL | KEY_DOWN
+        where CTRL is the NEW key.  NOTE: It returns the lower ESC key
+        as 27.
+
+        While ozgetch() and getch() are running, there is a screen blanker
+        to conserve memory.  See below under _ozautofftime.
+
+void ozenterisreturn(byte state);
+
+        Normally, getch() returns '\n' for both ENTER keys and for the
+        RETURN key.  This is when the ozenterisreturn status is 1.  If you
+        ozenterisreturn status is 0, then getch() return '\n' for the RETURN
+        key and KEY_LOWER_ENTER or KEY_UPPER_ENTER for the ENTER keys.
+
+int kbhit(void);
+
+	This is the version of ozkeyhit() that should be used in
+	conjunction with getch().  The difference is that kbhit()
+	returns zero if one of the shift-type keys (SHIFT, NEW and
+	CATEGORY) is held down.  In other words, kbhit() checks whether
+	getch() can get a key with no waiting.
+
+	It's best in any given program to decide if you need the higher
+	level keyboard handling provided by getch() or if the lower
+	level ozgetch() will be enough (ozgetch() is faster and uses
+	less memory).  If you choose to use getch(), use kbhit();  if
+	you choose to use ozgetch(), use ozkeyhit().  It's not
+	recommended that you use kbhit() with ozgetch() or ozkeyhit()
+	with getch().
+
+unsigned ozngetch(void);
+unsigned ngetch(void);
+
+	The "n" in these function names stands for "nice".  These are
+	nice versions of ozgetch() and getch() that check for exit keys
+	(e.g., pressing the TELEPHONE key when one of these funcitons is
+	called will exit and go to the telephone book, the power key
+	will turn off the Wizard) and allow backlight control.	These
+	versions are slower and take a bit more memory, but if this
+	doesn't matter, then please use them.
+
+	THESE FUNCTIONS ARE A LITTLE BUGGY.
+
+void ozkeyclear(void);
+
+	This clears the keyboard buffer.
+
+void ozkbdon(void);
+void ozkbdoff(void);
+
+	These turn on / turn off the keyboard interrupt.  It's best not
+	to use them unless you use the deprecated ozkeylower() and
+	ozkeyupper() functions.
+
+byte ozkeyupper(byte mask);
+byte ozkeylower(byte mask);
+
+	These send the mask to either the upper or the lower keyboard
+	port and give the return value.  See www.ozdev.com's description
+	of the keyboard ports for more information.  It's best to use
+	ozgetch()/ozkeyhit() instead.
+
+void ozclick(byte state);
+
+	This turns on/off the keyboard click.
+
+byte ozgetclick(void);
+
+        This gets the current ozclick() setting.
+
+byte ozgetrepeatdelay(void);
+byte ozgetrepeatspeed(void);
+void ozsetrepeatdelay(byte value);
+void ozsetrepeatspeed(byte value);
+
+	These functions control/monitor keyboard repeat speed.	The
+	repeat delay is the amount of time, in 1/64ths of a second,
+	before a key that is held down starts repeating.  The repeat
+	speed is the amount of time, in 1/64ths of a second, between key
+	repetitions.  These four functions get and set the keyboard
+	repeat delay/speed. The default values for delay and speed are
+	32 and 5, respectively.  (Note that the delay and speed range
+        from 1 to 254.  The results for values 0 and 255 are undefined.)
+
+void ozsavekeysettings(void);
+void ozrestorekeysettings(void);
+
+        These functions save/restore the keyboard settings (repeat delay,
+        repeat speed, and key click), screen blanking (screen off time,
+        backlight off time, power off time--all of which are active only
+        during ozgetch() or getch()), and the options in _ozprogoptions
+        in a special memory area that should survive everything except
+        slow battery changes.  These settings can also be manipulated by
+        the user using the KeyTune program in the KEY directory.  It is
+        recommended that programs start with ozrestorekeysettings() to
+        make them compatible with KeyTune and to allow the user to
+        adjust key repeat speeds and other options.
+
+void ozcopyfromcursettings(byte *p);
+void ozcopytocursettings(byte *p);
+
+        These functions copy the active key settings not to/from the special
+        memory area, but to/from a specified byte array of length
+        SETTINGS_LENGTH (14 right now, but subject to change, so please
+        use SETTINGS_LENGTH when defining this array).
+
+extern unsigned _ozautoofftime;
+extern unsigned _ozautoblanktime;
+extern unsigned _ozautolightofftime;
+
+        These variables (which can be saved/restored with oz*keysettings())
+        control the screen blanker running during ozgetch() and getch().
+        The blanker has three functions:
+
+        1. Wizard auto off (_ozautoofftime).  This turns off the Wizard
+        after the specified time.  Default value: 10800 (3 hrs)
+
+        2. Screen blanking (_ozautoblanktime).  This blanks the screen
+        and all but turns off the CPU after the specified time.  The way
+        this is done, the power consumption is basically the same as if
+        the Wizard was completely off.  Default: 240 (4 min)
+
+        3. Backlight off (_ozautolightofftime).  This turns off the
+        backlight.  Default: 120 (2 min)
+
+        Each variable has the off-time in seconds.  You can set a variable
+        to zero to disable that function.
+
+        The user can adjust these with KeyTune, assuming you call
+        ozrestorekeysettings().
+
+extern byte _ozprogoptions;
+
+        This variable holds some options.  The user can adjust these
+        with KeyTune, assuming you call ozrestorekeysettings().  Each
+        option is by default 0.  The options are bitmapped.  Currently
+        implemented options are:
+
+#define OZ_OPTION_SCROLL_FULL     1
+#define OZ_OPTION_NO_SOUND        2
+#define OZ_OPTION_KEY_AFTER_BLANK 4
+
+        The OZ_OPTION_KEY_AFTER_BLANK option controls how screen blanking
+        works.  If it is off, then when the screen is blanked and you
+        press a key, the key is passed to the application.  If it is on,
+        the first key you press when the screen is blanked turns on the
+        screen, and the next one is passed to the application.  E.g., to
+        turn on the first kind of behavior, you can do:
+                _ozprogoptions &= ~OZ_OPTION_KEY_AFTER_BLANK;
+
+        The OZ_OPTION_NO_SOUND and OZ_OPTION_SCROLL_FULL options are
+        ignored by the LIBOZ library.  They are meant to produce consistent
+        behavior in user programs.  The NO_SOUND option, when active, requests
+        that your program produce no sound.  How and whether you respect this
+        is up to you.  The SCROLL_FULL option, when active, requests that
+        your program, if applicable, scroll by full screens, rather than
+        putting the bottom line of the previous screen as the top line of
+        the next screen when paging forward through a file and doing the
+        opposite when paging the other way.
+
+        A well-behaved program will check the value of these options, if
+        they are applicable, and behave accordingly.  The advantage to the
+        programmer, then, is that there is no need to include any menu
+        options in the user program to set these--they can be controlled
+        by the user via KeyTune.
+
+struct ozmenuentry
+{
+    unsigned key;
+    char *label;
+};
+
+int ozmenu(int x,int y,char *title,unsigned default,unsigned num_entries,
+	   struct ozmenuentry *menu, byte options);
+
+	This draws a menu window on the screen (active page) at (x,y), of
+	a size appropriate to fit the menu, in the current font, returns
+	the user selection, and restores the original active page.  The
+	screen save/restore uses ozscreensave() and ozscreenrestore(),
+	so any screen you had saved with these functions will be
+	overwritten.
+
+	The menu can be arbitrarily long--it'll get scrolled if it's too
+	long to fit.  Here is how the arguments work:
+
+	(x,y): Upper left hand corner of menu.
+
+	title: Title of menu, or NULL if no title is desired.
+
+	default: Default entry number (the one on which the selection
+	       bar will be placed when the menu is first drawn).
+
+	num_entries: Number of items in menu.
+
+	menu: A pointer to an array of num_entries ozmenuentry_t
+	       structures.  Each entry has two items: the key is
+	       a short-cut key which if pressed activates that menu item
+	       (put 0xFFFF if you don't want any short-cut), and the
+	       label, which is a text label for the entry.
+
+	options: A bitmapped combination of various options.  Right now,
+	       options available include:
+	       OZMENU_NUMBERED (1):
+			Number the menu entries on each menu screen,
+			to allow quick numerical shortcuts, as in Wizard
+			menus.
+	       OZMENU_NOEXIT (2):
+			Stop the exit keys (CALENDAR, MEMO, MY PROGRAMS
+			and MAIN) from exiting the program.  This also
+			lets you use these keys as shortcuts for menu
+			entries.
+	       OZMENU_NOLIGHT (4):
+			Disable the backlight key.  This does NOT,
+			however, let you use the backlight key as a
+			shortcut for menu entries.
+	       For instance, to activate all options, have
+	       options=OZMENU_NUMBERED|OZMENU_NOEXIT|OZMENU_NOLIGHT.
+
+	The return value is -2 on error, -1 if the user presses ESC, and
+	otherwise it is entry number of the selected menu entry.  For an
+	example of how to use ozmenu(), see MENU\MENU.C.
+
+3. BACKLIGHT AND SCREEN CONTROL
+
+void ozsetlight(byte l);
+
+	This sets the backlight status to l.  Possible values are: 1
+	(ON) and 0 (OFF).
+
+int ozgetlight(void);
+
+	Returns 1 if backlight is on and 0 if backlight is off.
+
+void oztogglelight(void);
+
+	Toggles backlight status.
+
+void ozblankscreen(void);
+
+	Turns off the screen.  Presumably this will conserve power.
+	Screen refresh probably still happens.	To both turn off the
+	screen and screen refresh, use ozfast().  If a program
+	terminates with screen off, the screen is turned back on.
+
+void ozunblankscreen(void);
+
+	Turns screen back on.  (As a safety measure it also turns screen
+	refresh back on just in case it was turned off with ozfast(). We
+	wouldn't want a buggy program to turn off the screen refresh
+	with ozfast() and then turn the screen back on with
+	ozunblankscreen().  That could damage the LCD.	So, as a safety
+	measure, I've made ozunblankscreen() synonymous with
+	ozslow()--both turn on the screen and the screen refresh.  But
+	the programmer needn't worry about this.)
+
+byte ozgetcontrast(void);
+void ozsetcontrast(byte contrast);
+
+	Get or set the LCD contrast.  The possible values range from 0
+	to 63 (= MAX_CONTRAST, defined in oz.h).  The values set persist
+	after program termination.
+
+4. TIME
+
+unsigned ozsec(void);
+unsigned ozmin(void);
+unsigned ozhour(void);
+unsigned ozweekday(void);
+unsigned ozmonth(void);
+unsigned ozday(void);
+unsigned ozyear(void);
+
+	These return the current second, minute, hour, weekday, month,
+	day-of-month and year (four digit), respectively.
+
+	However, you should be careful about rollover, i.e., the clock
+	rolling over while you read different components of the time.
+	E.g., suppose you're reading the time, in hours, minutes and
+	seconds, at 11:59:59am. You first read the seconds with ozsec(),
+	and got 59. Then, you read the minutes with ozmin(), and you got
+	59, too. But what if between your reading of the minutes and the
+	hours the clock rolled over to 12:00:00noon?  Then, ozhour()
+	would return 12.  If you put together the times you read in,
+	you'd get: 12:59:59pm, which would be about an hour off!  So, to
+	avoid carry over, the manufacturer of the clock unit (Toshiba)
+	recommends you read all of the components of the time once
+	first, and then once again.  Then compare.  If they're the same,
+	all is well.  If they're different, you've had a roll-over at
+	some point in the process.  If so, then read it again.	The
+	Wizard is fast enough that you shouldn't get another roll-over,
+	because roll-over only happens once a second.
+
+	In fact, due to roll-over and due to the way the data is read
+	internally, each of the time functions such as ozday() or
+	ozhour() might be badly inaccurate--may even produce an
+	out-of-bounds date perhaps--if roll-over hits while the time
+	function is being read.  So even if you use only one component
+	of the time, you'll want to do the comparison trick if accuracy
+	matters.
+
+	If all this is too confusing, relax.  You've got another option:
+	oztime().
+
+unsigned long oztime(void);
+
+	Returns the number of seconds since January 1, 1970, in your
+	local time zone (not taking into account daylight savings).  You
+	need not worry about roll-over when using oztime().
+
+5. INTERRUPT HANDLING
+
+void _ozcustomisr(void);
+
+	This is the custom interrupt service routine.  Do not call it
+	directly.  It is needed if you want to use the serial buffer via
+	ozserialgetc().  This is loaded by default in the 32k/48k memory
+	models, though not in the deprecated and undocumented 16k model.
+
+	To install it in the now deprecated 16k memory model, do:
+		ozsetisr(ozcustomisr);
+	at the start of the program and:
+		ozisroff();
+	at the end.  A number of library functions depend on this, e.g.,
+	buffered serial input, greyscale, some quirks in keyboard code,
+	etc.
+
+typedef void (*ozisr)(void);
+
+	The interrupt service routine data type is that of a
+		void f(void)
+	function.  This function should save all registers.
+
+int ozsetisr(ozisr f);
+
+	This makes f() be the custom interrupt handler.  This handler will
+	be paged in when needed.
+
+int _ozsetisr(ozisr f);
+
+	This is like ozsetisr() except that f() must be a function that
+	is located in a memory location that is always paged in.  Avoid
+	using this unless you know what you are doing.
+
+void ozisroff(void);
+
+	This turns off the custom interrupt service routine and restores
+	the built-in Wizard one.  DO NOT DO THIS UNLESS YOU KNOW WHAT
+	YOU ARE DOING!!!  The program will crash badly if this is done
+	in the 32k/48k models.
+
+void ozdisableinterrupts(void);
+void ozenableinterrupts(void);
+
+	This executes a di or ei opcode, respectively.	If you don't
+	know what that's for, don't use it.
+
+void ozintwait(void);
+
+	This waits for the next interrupt, while putting the CPU in a
+	power-saving WAIT state.  Thus, if you execute ozintwait(), the
+        CPU waits until the next clock pulse (64hz or 1hz, depending on what
+        is enabled), or the next keystroke, or the next byte of incoming
+        serial data, or any other special event.  It is a good idea to
+        put ozintwait() calls in delay loops to save power, as well as
+        to use them when waiting for data.
+
+6. SERIAL PORT I/O
+
+	It is recommended that if you are going to be reading data from
+	the serial port you should use the custom interrupt handler.
+
+void ozdatabits(byte databits);
+
+	Sets the number of data bits.  The possible values are defined
+	in oz.h:
+
+		DATABITS5 0
+		DATABITS6 1
+		DATABITS7 2
+		DATABITS8 3
+
+void ozstopbits(char stopbits);
+
+	Sets the number of stopbits to one of the following values
+	defined in oz.h:
+
+		ONE_STOP_BIT		 0
+		TWO_STOP_BITS		 4
+		ONE_POINT_FIVE_STOP_BITS 4
+
+void ozparity(byte parity);
+
+	Sets the parity to one of the following values defined in oz.h:
+
+		NO_PARITY   0
+		ODD_PARITY  0x08
+		EVEN_PARITY 0x18
+		HIGH_PARITY 0x28
+		LOW_PARITY  0x38
+
+byte ozgetlcr(void);
+void ozsetlcr(byte lcr);
+
+	Get or set the value of the Line Control Register.  This
+	register controls the number data bits, stop bits and parity.
+	A nice program that changes the value of the LCR either directly
+	and/or via ozdatabits(), ozstopbits() and/or ozparity() will
+	first save the value via ozgetlcr() and restore it when it's
+	done.  A useful mask is BREAKSTATE (0x40) which can be used to
+	send a break:
+		byte lcr;
+		lcr=ozgetlcr();
+		ozsetlcr(lcr|BREAKSTATE);
+		... (delay specified amount of time) ...
+		ozsetlcr(lcr);
+
+void ozsetbaud(unsigned x);
+unsigned ozgetbaud(void);
+
+	Sets/gets the baud rate via the formula: baudrate=153600/x where
+	x is the argument of ozsetbaud() or the return value of
+	ozgetbaud(). Many values are pre-defined in oz.h:
+
+		BAUD76800 2
+		BAUD51200 3
+		BAUD38400 4
+		BAUD30720 5
+		BAUD25600 6
+		BAUD19200 8
+		BAUD9600 16
+		BAUD4800 32
+		BAUD2400 64
+		BAUD1200 128
+		BAUD600 256
+		BAUD300 512
+		BAUD150 1024
+
+void ozserinton(void);
+void ozserintoff(void);
+
+        Turns on or off the serial interrupt and sets up or disables a
+	handler for it.  ozserinton() must be called before calling
+	ozserialgetc().
+
+int ozserialgetc(void);
+
+	ozserialgetc() returns -1 if there is no serial data available
+	in the 256 byte serial buffer; otherwise, it returns the next
+	available character.  You must enable the serial interrupt
+	handler with ozserinton() before the first call.
+
+void ozsetrxhandshaking(byte state);
+byte ozgetrxhandshaking(void);
+
+	These set/get the serial receive software handshaking (xon/xoff)
+	on buffered serial input.  These functions work together with
+	ozserialgetc().  By default, the handshaking is disabled.  Note
+	that calling ozsetrxhandshaking(1) while in xoff state puts the
+	serial input buffer into xon state.
+
+void ozclearserialbuffer(void);
+
+	Clear the serial buffer used by ozserialgetc().  Puts system
+	into xon state, too.
+
+void ozserialout(char c);
+
+	Sends c to serial port.
+
+void _ozserinton(void);
+void _ozserintoff(void);
+
+	These turn the serial interrupt on/off at a low level.	If you
+	are going to be accessing the serial port under the standard
+	Wizard interrupt handler via ozserialin(), you'll want to turn
+	the serial interrupt off.  Use these functions with
+	ozserialin().
+
+int ozserialin(void);
+
+	Get value directly from serial port.  If you are using the
+	custom interrupt handler _ozcustomisr() you should use its
+	buffered serial input function ozserialgetc().
+
+	ozserialin() returns -1 if there is no serial data available;
+	otherwise, it returns the available character.
+
+void ozsnap(void);
+
+        Sends a screen image (of the active page) to the serial port.
+        The format is that each line is sent in ASCII hex, starting with
+        the line number, a colon, the data for that display line, and
+        then a newline (13).  This screen image will be captured on the
+        PC side by the SNAP.EXE program.  You can download SNAP.EXE from
+        www.ozdev.com under "dual-platform software".  You don't need
+        to install snap.wzd on the Wizard to use ozsnap() to send images
+        from your program to the PC.  Because data is lost in transmission,
+        you might want to call ozsnap() two or three times:
+                ozsnap(); ozsnap(); ozsnap();
+
+7. FILE I/O
+
+Pressing the power key while a file is being written can sometimes
+crash a program.
+
+7.1. File i/o for user data files
+
+The following routines store data in specially formatted schedule files.
+Files may be of arbitrary length.  Each file is marked with an owner
+ID between 1000 and 65535.  Apply to ap85@georgetown.edu for a permanent
+owner ID for a program of yours.  You may NOT release a program using
+these routines without applying for an owner number--to do so is to
+violate the license.  The purpose of the owner IDs is so that eventually
+it will be possible to write a program that deletes all orphan files,
+i.e., all files not owned by any of the currently loaded programs on the
+Wizard.  For testing purposes, programs linked by default with the
+current batch files get an owner ID of 65535.  Once you have obtained an
+owner ID, you need to link it permanently in (do NOT use ozsetowner()
+for this!) so that it will be easy to tell what the given program's
+owner ID is.  To do this, after linking run:
+	makewzd -OwnerID Filename Title Description IconFilename.
+
+Important Note: Data stored in these files is kept in hidden data fields
+of schedule entries dated January 1, 1901.  Go to January 1, 1901, to
+delete them.  Each entry has as its name the filename of the file. There
+can be several entries per file as files get split in parts that are
+less than about 1970 bytes long.  DO NOT CHANGE ANYTHING IN THE JANUARY
+1, 1901 SCHEDULE ENTRIES AND INSTRUCT USERS TO LEAVE THEM ALONE.  In
+particular, the appointment time and the alarm time encode important
+information about the file size and owner ID.  The encoding is a little
+complex.
+
+Known issues: If you sync your appointments with DTO while having data in
+the file system, you may have trouble.	You may not.  Who knows?
+
+The serial and keyboard buffers are turned off when writing to files.
+
+A nice program will have a menu option to delete all files its owns.
+This menu option will usually call ozunlinkallowned().  Indeed the
+licensing for the library requires such a function.
+
+int ozunlinkallowned(void);
+
+        Delete all files owned by the current program.  Return value
+        is meaningless.
+
+int unlink(char *name);
+
+        Deletes the file named name.  Return value is meaningless.
+
+int open(char *name, int mode);
+
+	Returns a handle to an opened file on success, -1 on error.
+	Filenames can be up to 23 bytes (MAX_FILENAMELEN) long, and can
+	contain any characters in ASCII range 32-126, except for \.  It
+	is recommended that data for a program named PROG be stored in
+	files named PROG/filename, to produce an ersatz directory
+	structure.  Filenames are case-sensitive.  A maximum of
+	MAX_FILES (4) can be open at the same time.  Possible values for
+	mode are O_RDONLY (read only) and O_WRONLY (write only).  If
+	using O_WRONLY, then the file is deleted if it already exists
+	and a new file created;  if no file exists, the file is just
+	created.  (NOTE: Opening a new file for reading requires 62 free
+	bytes of heap memory;  opening a new file for writing requires
+	1984 free bytes of heap memory.)
+
+int close(int handle);
+
+	Closes the file handle.  Returns 0 on success, -1 on failure.
+
+void closeall(void);
+
+	Closes all file handles.  Also, all file handles are closed on
+	normal program termination, though not on emergency termination
+	via _exit().
+
+int read(int handle, char *data, int length);
+
+	Reads length bytes from file handle and puts it in data.
+	Returns the number of bytes read or -1 on utter failure.  (If
+	return value is less than length, then end of file or an error
+	has occurred.)
+
+int write(int handle, char *data, int length);
+
+	Write length bytes to file handle from data.  Returns the number
+	of bytes written or -1 on utter failure.  (If return value is
+	less than length, then end of file or an error has occurred.)
+
+long lseek(int handle, long offset, int fromwhere);
+
+	Seeks file handle to location offset.  If fromwhere is SEEK_SET
+	(0), the offset is measured from the start of the file;  if it's
+	SEEK_CUR, then it's measured from the current point;  if it's
+	SEEK_END, then it's measured from the file end.  Returns actual
+	file position after seeking, or a negative value on err.  (May
+	not equal desired position if tried to seek beyond end.)  Note:
+	This only works for handles opened in O_RDONLY mode.  THIS
+	FUNCTION HAS YET TO BE TESTED FULL.
+
+int rewind(int handle);
+
+	Same as lseek(handle,0,SEEK_SET).
+
+int open1(char *name, int mode);
+int read1(char *data, int length);
+int write1(char *data, int length);
+long lseek1(long offset, int fromwhere);
+int rewind1(void);
+int close1(void);
+int open1ro(char *name, int mode);
+int read1ro(char *data, int length);
+int lseek1ro(long offset, int fromwhere);
+int rewind1ro(void);
+int close1ro(void);
+
+	These two functions use special low-memory requirement versions
+	of the file i/o functions that allow only one file open at a
+	time.  They do the same things as the usual versions, except
+	that:
+
+	(a) read1*(), write1*(), lseek1*(), rewind1*() and close1*() do
+	    not need a file handle argument, since only one file can be
+	    open at a time;
+	(b) the open1*() functions return 0 on success and -1 on
+	    failure;
+	(c) if you open a file with open1(), you should use the
+	    functions with names ending with "1";  if you open a file
+	    with open1ro(), you should use the functions with names
+	    ending with "1ro";
+	(d) the functions ending in "1ro" work only for a read-only
+	    file: use them if you program writes no data;  the mode
+            argument for open1ro() should be O_RDONLY;
+        (e) the lseek*() files work only for O_RDONLY files.
+
+	These functions have to be tested more thoroughly.
+
+long tell1(void);
+
+        Basically the same as lseek1(0,SEEK_CUR).
+
+long lseek1set(long offset);
+
+        Basically the same as lseek1(offset,SEEK_SET).  Use tell1() and
+        lseek1set() instead of lseek1() to save memory if you do not
+        use lseek1(x,SEEK_END) or lseek1(x,SEEK_CUR).
+
+int access(char *name);
+
+	Returns 0 if file exists, -1 otherwise.  DO NOT USE IN
+	CONJUNCTION WITH THE FUNCTIONS ENDING WITH "1" or "1ro".
+
+unsigned ozgetowner(void);
+void ozsetowner(unsigned i);
+
+	Get or set the owner ID of the presently running program.  ONLY
+	DO THIS IF YOU KNOW WHAT YOU ARE DOING.  PROGRAMS SHOULD NOT
+	CHANGE THEIR OWNER ID WITHOUT GOOD REASON.  OWNER IDS SHOULD
+	NORMALLY BE SET VIA MAKEWZD.
+
+char *ozgetnextfilename(byte mode);
+
+        This returns a pointer to a static area holding the next
+        filename in the C-based file system.  mode is a bitmap that
+        specifies whether one searches all files or only files owned by
+        this program (FIND_OWNED), and whether one is starting a new
+        search (FIND_RESET).  The filename will be overwritten with the
+        next ozgetnextfilename() call.  NULL is returned if no more
+        files are found.
+
+        To search for all files, just call ozgetnextfilename() repeatedly,
+        the first time with mode=FIND_RESET, and then with mode=0.  To
+        search for all owned files, get the first one with
+        mode=FIND_RESET|FIND_OWNED and then proceed with
+        mode=FIND_OWNED.
+
+
+7.2. File i/o for Wizard internal data types
+
+These file routines involve data in one of the seven Wizard data types
+(see list below).
+
+unsigned ozfindnext(char type, unsigned *start_page_ptr,
+	unsigned *start_offset_ptr, unsigned *recnumptr);
+
+	This finds the next file of the specified type.  It returns 0 if
+	not found;  otherwise it returns a location code whose high byte
+	is the PageNum and whose low byte is the LogicalClusterNum of
+	the file's start and places the RecNum of the file at *recnumptr
+	(see www.ozdev.com under "WizardOS" under "File  system" for an
+	explanation of the nomenclature).  *start_page:*start_offset
+	specify the location in the Central Directory where one looks.
+	The programmer doesn't need to know how all this works.  He just
+	sets two unsigned variables, page and offset, to zero to look
+	for the first file of the specified type, and then keeps on
+	calling ozfindnext(type,&page,&offset) until he's found what
+	he's looking for or has exhausted all the files of the specified
+	type.  Possible values for type are:
+
+		TYPE_MEMO	 'M'
+		TYPE_SCHEDULE	 'C'
+		TYPE_SYSTEM	 'Y'
+		TYPE_TELEPHONE	 'E'
+		TYPE_EXPENSES	 'P'
+		TYPE_BASIC	 'I'
+		TYPE_ANNIVERSARY 'N'
+		TYPE_TODO	 'D'
+
+	These are the third character of the internal Wizard header for
+	the given file type (e.g., the header for TYPE_SCHEDULE is
+	"_SCH", whose third character is 'C').  Why third, not first?
+	Because the first ones are not unique, but by a useful
+	coincidence the third ones are unique.
+
+unsigned ozfindmemo(char *title, unsigned *start_page_ptr,
+	unsigned *start_offset_ptr, unsigned *recnumptr);
+
+	This is like ozfindnext() except that it searches only MEMO
+	files, and looks for memos with the specified title.
+
+unsigned ozfindfileid(unsigned file_id, unsigned *start_page_ptr,
+	unsigned *start_offset_ptr, unsigned *recnumptr);
+
+	This is like ozfindnext() except that it searches only C file
+	system files (created via open()) and looks for one which is a
+	part (not necessarily the first) of a file with the specified
+	file_id.
+
+unsigned ozfindfilename(char *filename, unsigned *start_page_ptr,
+	unsigned *start_offset_ptr, unsigned *recnumptr);
+
+	This is like ozfindnext() except that it searches only C file
+	system files (created via open()) and looks for one which
+	contains the first part of the file with the specified filename.
+
+unsigned ozfindrecnum(unsigned recnum);
+
+	Finds the location of the file with the specified recnum, and
+	has return value like that of ozfindnext().  Returns zero if
+	unsuccessful.
+
+char *ozloadcluster(unsigned loc);
+
+	This loads in a cluster (64 bytes) of data with location
+	identifier loc (which is the return value of ozfindxxxx()), and
+	returns a pointer to a temporary holding area where the cluster
+	data is being held.  You'll want to copy this data to a safe
+	area as it'll be overwritten next time you call ozloadcluster().
+
+	The first two bytes of the cluster are either 0xFF 0xFF in which
+	case the cluster is the last cluster of the file it's in, or
+	something else, in which case the file continues beyond this
+	cluster.
+
+	It might be useful for some purposes to know that things are set
+	up so that the buffer that ozloadcluster() returns a pointer to
+	has a zero after it, so that if s=ozloadcluster(loc), then s[64]
+	is guaranteed to be zero.
+
+unsigned ozinclocation(unsigned loc);
+
+	This returns the location identifier of the next cluster after
+	the cluster identified by loc.
+
+unsigned ozunlink(byte typenum, unsigned recnum);
+
+	This deletes a file whose type _number_ is typenum with the
+	indicated RecNum (see www.ozdev.com for information on what a
+	recnum is).  The type numbers do NOT correspond to the
+	type identifiers in the ozfindxxxx() routines.	Instead, they
+	are:
+
+		TYPENUM_SYSTEM	  0
+		TYPENUM_TELEPHONE 1
+		TYPENUM_MEMO	  2
+		TYPENUM_SCHEDULE  3
+		TYPENUM_ANNIVERSARY 4
+		TYPENUM_TODO	  5
+		TYPENUM_EXPENSES  6
+		TYPENUM_BASIC	  7
+
+	It returns 0 if successful, non-zero on error.	NOTE: You will
+	badly mess up your file system if you get the typenum wrong.
+
+int ozwritefile(void *data, unsigned len, byte typenum);
+
+	This writes the file stored at data, of length len and of type
+	typenum (see ozunlink() for possible values of typenum). On
+	success, it seems to return 0.	Otherwise, it returns 255 if the
+	file is longer than the maximum length of 2048 bytes (some file
+	types may have more strict restrictions)--no write attempt is
+	made then--or 254 if the OS version is unsupported or whatever
+	return value the OS returns on other errors (the interpretation
+	of this is not yet known).
+
+	WARNING: The file writing routines might not work on European
+	multilingual ZQ-7xxM models.  This includes the open(), write()
+	and ozwritefile() routines.  End-users should be warned.
+
+unsigned ozgetlastrecnum(void);
+
+	Immediately after a successful ozwritefile() call (with no other
+	file writing of any sort intervening), this returns the RecNum
+	of the file written.  Undefined after an unsuccessful
+	ozwritefile() call.
+
+int ozopenfile(unsigned loc);
+
+	Open an internal Wizard file starting at location code loc.  The
+	location code is the same as that returned by the ozfind*()
+	functions. Returns 0 on success, -1 on failure.  (Currently
+	there is no error checking, and so it always succeeds.)  The
+	file can subsequently be read with ozreadfilebyte().  Only one
+	internal Wizard file can be open at a time, though one can
+	intersperse use of the ozopenfile(), ozreadfilebyte(), etc.,
+	commands with use of open*(), read*(), write*(), etc.
+
+	If there already was an internal Wizard file opened, that file
+	counts as automatically closed.
+
+        You should not commit any files to the Wizard's file system (e.g., with
+        open(..., O_WRONLY) or ozwritefile()) while a file is being
+        read via ozreadfile*().
+
+	NOTE: The file system accessed with ozopenfile() is for internal
+	Wizard database files.	For data files created by C programs,
+	you will want to use the open*()-style routines.
+
+int ozopenmemo(char *title);
+
+	Same as ozopenfile() except that to find the location it
+	searches for the first MEMO (in the internal Wizard directory
+	order) with the indicated title.  If there is no memo with this
+	title, then returns -1.  Otherwise returns 0.  The file is
+	read in the same way as one opened with ozopenfile().  In fact,
+	ozopenmemo() is essentially a slightly faster version of:
+	   ozopenmemo(char *title)
+	   {
+	     unsigned page=0,offset=0,recnum,loc;
+	     if(-1==(loc=ozfindmemo(title,&page,&offset,&recnum)))
+		return -1;
+	     else return ozopenfile(loc);
+	   }
+
+int ozreadfilebyte(void);
+
+	Reads the next byte from a file opened with ozopenmemo() or
+	ozopenfile().  Returns -1 at end of file or if no file is
+	currently open.
+
+int ozclosefile(void);
+
+	Closes a file opened with ozopenmemo() or ozopenfile().  There
+	is no need ever to do this really, since no memory is freed by
+	this, and since only one file can be open at a time anyway.  But
+	it makes code more readable if you use ozclosefile().
+
+void ozinitfs(void);
+
+	Refresh the internal file system cache.  This is automatically
+	called after ozwritefile() and after ozunlink().
+
+struct appindexlist
+{
+    unsigned unknown;
+    unsigned indexes[3];
+};
+
+void ozgetappindexlist(byte typenum, struct appindexlist *ilist);
+
+	This gets the list of RecNums of indexes for application typenum
+	(see ozunlink() for list arguments).  Will not work on 770 for
+	typenum=TYPENUM_SYSTEM.  The number of indexes (from 1 to 3) is
+	given by _ozindexbycounts[typenum] (see oz?etindexby(), below).
+	For the format of the indexes, see www.ozdev.com in the
+	knowledge base under "WizardOS".
+
+        This needs #include <ozindex.h>
+
+7.3. File i/o for data memo
+
+Some Wizard programmers like to store data inside a special memo,
+generally dated December 31, 2099, and with a title like
+"zz:wiztris.data".  This is really easy to do with the data memo
+functions.  All of these functions require
+        #include <ozmemo.h>
+
+Note that you cannot intersperse the data memo reading functions with
+the ozopenfile() and ozreadfilebyte() commands, though of course you can
+use both within a single program--but you cannot both have a data memo
+open for reading and an ozopenfile()-opened file.  In fact,
+ozopendatamemoread() and ozreaddatamemo() use these commands internally.
+You also can't have more than one memo opened for reading at a time, nor
+more than one memo opened for writing at a time, though you CAN have a memo
+opened for reading and a memo opened for writing at the same time (even with
+the same title), though strange results may happen if you commit to
+flash the memo opened for writing in the midst of reading a memo--a memo is
+only committed to flash, however, when ozclosedatamemowrite() is called.
+
+The memos created by these functions store binary data encoded as text.
+This means the memos should be safe to sync, but will get screwed up if
+the user tries to edit them.
+
+int ozopendatamemoread(char *title);
+
+        This opens a data memo for reading with the given title for
+        reading and returns the version character.  If it cannot find
+        the memo, it returns -1.  The version character can be used by
+        your program if you change the format of your data memo between
+        program versions, and is the version character you put in your
+        ozopendatamemowrite() call.
+
+int ozreaddatamemo(void *s,unsigned length);
+
+        This reads length bytes into address s from the last opened data
+        memo.  It returns the number of bytes read (less than length means
+        that the memo ended prematurely) and -1 if the memo is over.
+
+void ozclosedatamemoread(void);
+
+        This closes a memo opened with ozopendatamemoread().  This is not
+        absolutely necessary (another call to ozopendatamemoread() would
+        automatically close the memo) but makes for neater code.
+
+unsigned ozgetdatamemorecnum(void);
+
+        Returns the recnum for the currently open data memo, and zero if
+        the data memo is closed or has been read past its end of file.
+
+void ozopendatamemowrite(char *title,char version);
+
+        This opens a data memo with the given title (deleting a previous
+        data memo with the same title), and writes into it the specified
+        version character.  The version character should be an ASCII
+        printable character in the 32-126 range.  Otherwise, things could
+        get screwed up.
+
+        The title can be up to 20 characters long.  Any trailing spaces
+        in the title get ignored.  The data memo is guaranteed to hold at
+        least 978 bytes of data, and under some circumstances can hold
+        as much as 1956 bytes.  (It can hold more data if the data has
+        numerically smaller values.  The way the data is encoded, bytes
+        with value between 0 and 77 take only one byte to encode, while
+        bytes holding larger values take two bytes to encode.)
+
+int ozwritedatamemo(void *s,unsigned length);
+
+        This writes data of the specified length from address s.  It returns
+        the number of bytes written or -1 on error.  If the routine runs out
+        of space in the memo, then the return value may be less than length.
+
+int ozclosedatamemowrite(void);
+
+        This closes the data memo.
+
+
+Here is a simple example of how to use the data memo.  Suppose you want to
+store the following data variables in your data memo:
+        long highscore;
+        float gamespeed;
+        char highscore_name[12];
+        int default_level;
+        byte mode;
+        int level_data[19];
+
+You can store the data via:
+        ozopendatamemowrite("zz:xyzgame.data",'1');
+        ozwritedatamemo(&highscore,sizeof(highscore));
+        ozwritedatamemo(&gamespeed,sizeof(gamespeed));
+        ozwritedatamemo(highscore_name,sizeof(highscore_name));
+        ozwritedatamemo(&default_level,sizeof(default_level));
+        ozwritedatamemo(&mode,sizeof(mode));
+        ozwritedatamemo(level_data,sizeof(level_data));
+        ozclosedatamemowrite();
+
+Note the & in front of the scalar variables, since ozwritedatamemo()
+needs the address of the variable (no need for & in front of array
+variables), and note the use of sizeof() to figure out the size of the
+variable.  (Using sizeof() makes the code more portable than using the
+fact that on Hi-Tech's Z80 C compiler, sizeof(long)=4, sizeof(float)=4,
+sizeof(char)=1, sizeof(byte)=1, sizeof(int)=2.  If you were to have
+ozwritedatamemo(&default_level,2), this would work on the Z80 CPU, but
+would fail if you tried to port it to a 32-bit compiler.  You might not
+want to worry about this, of course.)
+
+You can then restore the data via something like:
+        int retval;
+        retval=ozopendatamemoread("zz:xyzgame.data");
+        if(retval<0)
+        {
+           ozputs(0,0,"Cannot open zz:xyzgame.data!");
+           ozgetch();
+           return;
+        }
+        else if(retval!='1')
+        {
+           ozputs(0,0,"zz:xyzgame.data version mismatch.");
+           ozputs(0,10,"Do you want to delete mismatched version? [N]");
+           if(ozgetch()!='y') return;
+           ozunlink(TYPENUM_MEMO,ozgetdatamemorecnum());
+           return;
+        }
+        ozreaddatamemo(&highscore,sizeof(highscore));
+        ozreaddatamemo(&gamespeed,sizeof(gamespeed));
+        ozreaddatamemo(highscore_name,sizeof(highscore_name));
+        ozreaddatamemo(&default_level,sizeof(default_level));
+        ozreaddatamemo(&mode,sizeof(mode));
+        if(ozreaddatamemo(level_data,sizeof(level_data))<sizeof(level_data))
+        {
+           ozputs(0,0,"zz:xyzgame.data memo too short");
+           set_all_vars_to_defaults();
+           return;
+        }
+
+For another example, see io.c in the SAME directory.
+
+
+8. AUXILIARY MEMORY	  [48K model only]
+
+If you link your program with ozlink48, you have available an auxiliary
+memory pool.  By default it is right now 13984 bytes long, but if you
+call ozsinglepage() at the beginning of your program to disable the two
+graphics pages feature, it grows to 16384. These numbers are subject to
+change.  Instead of relying on them, use ozgetauxsize() for the current
+size.  You can use the auxiliary memory pool for whatever purposes you
+wish.  It is even preserved between program calls and Wizard turn-ons
+(but probably not resets) so you can use it for interprogram
+communication (as long as both programs have the same single/double
+graphics page setting) if you wish, but remembering that other programs
+than yours may overwrite it if they wish.
+
+The auxiliary memory pool is addressed by an unsigned integer ranging
+from 0 to ozgetauxsize()-1.
+
+Don't forget to link with ozlink48 if you intend to use the auxiliary
+memory pool!  Otherwise, either the linkage will fail or the program
+will likely crash.
+
+unsigned ozgetauxsize(void);
+
+	Returns the size in bytes of the auxiliary memory area.
+
+void ozwriteauxword(unsigned address,unsigned value);
+unsigned ozreadauxword(unsigned address);
+
+	Write or read a word-length value to or from the auxiliary
+	memory area at the specified address.  The address should be
+	no greater than ozgetauxsize()-2.
+
+void ozwriteauxbyte(unsigned address,byte value);
+byte ozreadauxbyte(unsigned address);
+
+	Write or read a byte-length value to or from the auxiliary
+	memory area at the specified address.
+
+void ozwriteauxmem(unsigned address,void *data,unsigned length);
+void ozreadauxmem(unsigned address,void *data,unsigned length);
+
+	Write/read data at address in the auxiliary memory area.  Of
+	course the address should be no greater than
+	ozgetauxsize()-1-length.
+
+unsigned ozcrc16auxmem(unsigned address,unsigned length);
+
+        Returns the crc16 of the data of the specified length at the
+        given address.  If the specified data chunk does not fit in
+        the auxiliary memory, the result is undefined, though
+        ozcrc16auxmem() probably should not crash.
+
+9. MISCELLANEOUS
+
+void ozinitsound(void);
+
+	Puts the speaker in tone mode for ozsound() use.  NOTE: You
+	probably should turn off any key-click when using the sound
+	functions.  (Use ozclick(0).)
+
+void ozsound(unsigned value);
+
+	Assuming ozinitsound() was called, plays a tone of frequency
+	16384/(value+2) Hz.
+
+void ozquiet(void);
+
+	Turns off the speaker.
+
+void ozkeyclick(void);
+
+	Make one standard Wizard key click sound.
+
+void ozfast(void);
+
+	This turns off screen refresh and the screen, thereby speeding
+	up the Wizard slightly (8% or so) and conserving power.  To get
+	every last ounce of speed out of the Wizard, turn interrupts off
+	with ozdisableinterrupts() as well.
+
+void ozslow(void);
+
+	This turns the screen refresh and screen back on.
+
+void ozdelay(unsigned d);
+
+        A delay loop.  You should calibrate it yourself.  Use is
+        discouraged--ozdelay64hz() is much better.
+
+void ozdelay64hz(unsigned time);
+
+	Wait for approximately time/64 seconds (more precisely: waits
+	somewhere between (time-1)/64 seconds and time/64 seconds).
+	Thus, ozdelay64hz(16) waits for 16/64=1/4 of a second, and
+        ozdelay64hz(6400) waits for 100 seconds.  Note that the Wizard
+        is in a power-saving mode while the delay is going on, so this
+        is preferable to using ozdelay().
+
+unsigned ozkeydelay64hz(unsigned time);
+
+	Wait for approximately time/64 seconds (more precisely: waits
+        somewhere between (time-1)/64 seconds and time/64 seconds),
+        but abort waiting if key is pressed and return the key (as in
+        ozgetch()).  If no key is pressed, returns 0.  Note that the
+        Wizard is in a power-saving mode while the delay is going on, so
+        this is preferable to using a loop, unless you put ozintwait()
+        in the loop.
+
+void oz64hztimeron(void);
+void oz64hztimeroff(void);
+byte ozget64hztimerstate(void);
+
+        The first two of these functions turn on/off the 64hz timer.
+        The last function returns a 1 if the timer is on, and 0
+        otherwise.  Note that the timer turns on automatically for
+        a short while (in fact, for the greater of the key repeat
+        initial delay and key repeat delay between keys) whenever a
+        key is pressed, even if it is officially in an off state.
+
+        By default, the 64hz timer is OFF.
+
+        The timer can then be accessed via two variables, defined
+        in oz.h.
+
+extern unsigned _oz64hz_word;
+extern unsigned long _oz64hz_dword;
+
+        These variables contain, respectively, a 16-bit and a 32-bit
+        counter, incremented once every 1/64 of a second if we are in
+        oz64hztimeron() state.  To use the counters, do oz64hztimeron().
+
+        Technical note: The values of the counters will be incremented
+        from time to time in oz64hztimeroff() state, namely after a
+        keystroke for a short while.  So you cannot count on the timer
+        values remaining fixed in oz64hztimeroff() state.  There is one
+        guarantee, however: Under no circumstances are the counters
+        incremented more than 64 times a second.
+
+        You can reset the timer by just setting the timer value to zero.
+        The variables are somewhat in violation of the C standard, in that
+        _oz64hz_word is synonymous with the lower 16-bits of _oz64hz_dword.
+        Thus, putting
+                _oz64hz_dword=0;
+        also resets _oz64hz_word.
+
+        The timers start at zero.
+
+extern unsigned _oz1hz;
+
+        This is a 1hz counter.  It is incremented every second, starting at 0.
+        You can reset the timer at any time by setting it to zero.
+
+byte ozportin(byte port);
+void ozportout(byte port, byte value);
+
+	This directly reads/writes from/to the Wizard hardware ports.
+
+byte ozgetmembyte(unsigned page, unsigned offset);
+
+	This returns the byte at the given offset (valid values are
+	between 0 and 0x1FFF, inclusive) on the indicated page.
+
+void ozexitto(unsigned key);
+
+	This exits to the application indicated by the key, e.g.,
+	KEY_TELEPHONE, KEY_SCHEDULE, KEY_MEMO, KEY_MAIN or KEY_POWER.
+
+void ozrunslot(byte slot);
+
+        This terminates the current program and runs the program in the
+        indicated "physical slot".  Physical slots range from 0-9 and
+        due to deletions need not correspond with the slots as displayed
+        in the MY PROGRAMS menu.  Fortunately, to help deal with them
+        we have the next two functions.
+
+        This does not work on 7xxM units right now.  On them, it just
+        returns to the MY PROGRAMS menu.
+
+char *ozgetprogramname(byte slot);
+
+        This returns a pointer to a static location filled in with the
+        name of the program in the indicated physical slot (between 0 and
+        9).  It returns NULL if the slot is empty.
+
+        This does not work on 7xxM units right now.  It always returns NULL
+        on them.
+
+int ozgetslotnumber(char *name);
+
+        This returns the physical slot number corresponding to the program
+        name.  If no program by that name is found, it returns -1.
+
+        This does not work on 7xxM units right now.  It always returns -1
+        on them.
+
+byte ozdetectmodel(void);
+
+	Detects the model of the Wizard it's running on and returns one
+	of the following values:
+
+		MODEL700PC    0
+		MODEL750PC    1
+		MODEL770PC    3
+		MODEL700M     4
+		MODEL750M     5
+
+	If a ZQ-770M is produced, and this function is ported to it, it
+	will return MODEL770M (7), but that is not supported yet.
+
+	Note that the return values are combinations of three bit
+	fields:
+
+	Bit 0:	 0 if 2Mb flash, 1 if 3Mb flash
+	Bit 1:	 0 if old style directory structure, 1 if new (770)
+		 style directory structure
+	Bit 2:	 0 if English-only model, 1 if multilingual.
+
+typedef void (*ozexitfunction_t)(void);
+int atexit(ozexitfunction_t f);
+
+	Ensures that f will be called upon program termination.  Note:
+	There is a minimum of eight functions that can be added via
+	atexit() and they'll be called at exit in reverse order of being
+	added.	atexit() returns 0 on success; otherwise a non-zero
+	value.
+
+void exit(int e);
+
+	Terminates a program.  The exit code e is ignored.
+
+void _exit(int e);
+
+	Same as exit(), except the functions registered via atexit() are
+	not called nor are any file system closing functions called.
+
+byte ozgetpowerkeyhandling(void);
+void ozsetpowerkeyhandling(byte state);
+
+	You will notice that pressing the POWER key turns off the Wizard,
+	though it calls the functions put in by atexit() first. You can
+	use ozsetpowerkeyhandling(0) to disable trapping of the POWER
+	key.  Use ozsetpowerkeyhandling(1) to turn power key trapping
+	back on. You can use ozgetpowerkeyhandling() to get the current
+	state (0 or 1) of the power key handler.
+
+	Power-key handling is automatically disabled after the power key
+	is pressed once.  This is for your convenience in atexit()
+	functions.  For instance, an atexit() function could have an
+	emergency save routine, and you wouldn't want that routine
+	interrupted by a press of the power key.
+
+	An ordinary program exit does not disable power key
+	handling.  The features described here have not been tested
+	very thoroughly.  Moreover, the power key handling, even if
+	disabled with ozsetpowerkeyhandling(0), may come back on in
+	file-writing routines as control in them is passed to the Wizard
+	OS.  This is inconvenient and may cause your program's emergency
+	save functions (activated on power-key press, say) to fail if
+	the user presses the power key again. It may be a good idea to
+	warn the user that an emergency save is in progress and the
+	Wizard will turn off shortly.
+
+	The above-described power-key functionalities have not been
+	tested very much at all.  Sorry.
+
+void ozfarmemcpy(unsigned dest_page,unsigned dest_offset,
+	unsigned src_page,unsigned src_offset,unsigned n);
+
+	Copies n bytes from scr_page:src_offset to
+	dest_page:dest_offset.	Must have
+	0<=src_offset<=src_offset+size<=8192 and
+	0<=dest_offset<=dest_offset+size<=8192.  This is a dangerous
+	routine.  Don't use unless you know what you're doing with it.
+
+byte ozgetindexby(byte typenum);
+void ozsetindexby(byte typenum,byte value);
+
+	This gets or sets the the Index-By property for the Wizard
+	filetype typenum.  See ozunlink(), above, for a list of possible
+	typenums.  The property ranges from 1 to the total indexes for
+	that filetype.	The number of indexes for a given typenum is
+	stored in the array:
+
+		extern byte _ozindexbycounts[8];
+
+	For instance, _ozindexbycounts[TYPENUM_TELEPHONE] is 3, which
+	means there are 3 different indexes for telephone data.  This
+	may be surprising, because the Wizard's telephone "Index by"
+	menu only gives two options: By last name and by first name.
+	But there is a hidden third option, by company name, exploited
+	by the indexby program included with this SDK.
+
+        These need #include <ozindex.h>
+
+
+
+#include <alloca.h>
+void *alloca(unsigned n);
+
+        Allocates n bytes (returning a pointer to the area where they are
+        to be stored;  the space will be on the stack) that will be
+        automatically deallocated when the current function returns.  It
+        is supposed to return NULL on error, but currently there is no
+        error checking for stack overflow and NULL is never returned--make
+        sure there is space for the data.
+
+        alloca() is useful for dynamic length arrays and other local
+        variables that need to be allocated in a function.  It has a lot
+        less overhead than malloc() and is a lot faster.
+
+        The way this function is implemented is through a macro together
+        with a hack in the compiler code generation.  This means that
+        you cannot take the address of the alloca function or call it
+        indirectly--doing so will result in an error message either when
+        compiling or when linking.  Moreover, a program using alloca() must
+        be compiled using zcc with the -a flag.
+
+        NOT YET FULLY TESTED.
+
+void ozinstallmemorywiper(void);
+
+        This ensures that both program memory and auxiliary memory are both
+        wiped after program termination.  (Technically, page 405 is not
+        wiped.  But the next time any program is run, it will presumably
+        be overwritten.)  Use this for security purposes as needed.

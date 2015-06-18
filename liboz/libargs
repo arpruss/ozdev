@@ -1,0 +1,5 @@
+r liboz.lib ozcontr.obj ozlcd.obj ozline.obj _ozline.obj ozcopy.obj \
+ozindby.obj ozpoint.obj wrelop.obj ozgetsl2.obj ozgetsl.obj _ozpoint.obj \
+ozvline.obj ozhline.obj ozhscrol.obj ozapage.obj ozindnum.obj ozdiei.obj \
+restpage.obj setpage1.obj alloca.obj ozauxsiz.obj ozsnap.obj ozsetfp.obj \
+ozclrf.obj oz64hz.obj oz64hz2.obj settings.obj ozwipe.obj

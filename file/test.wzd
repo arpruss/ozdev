@@ -1,0 +1,21 @@
+<SHARP WZD DATA>
+<DATA TYPE>
+MEMO
+</DATA TYPE>
+<TITLE>
+Upload to dir/
+</TITLE>
+<CATEGORY>
+NO CATEGORY
+</CATEGORY>
+<DESCRIPTION>
+Upload to LIBOZ file system
+</DESCRIPTION>
+<DATA>
+Sharp Download Data V1.0
+"C","M"," "
+"I","ATTR","TTL1","MEM1","DATE","IMG3","CLAS","CGR1","QMEM"
+"T","Attribute","Title","text","Create data","bitmap","File name","Category kind","Quick Memo"
+"D"," ","~~z01003,48079,00000","**LIBOZ_UPLOAD*Ldir/delall.c~#include <oz.h>~0d0a~#include ~22~file.h~220d0a0d0a~extern unsigned _ozcdirpages[];~0d0a0d0a~main()~0d0a7b0d0a~    int pos=0;~0d0a~    char *firstcluster;~0d0a~    register ozfile_firstpart_header_t *header;~0d0a~    unsigned page,offset,recnum,loc;~0d0a~    page=offset=0;~0d0a~    while(loc=ozfindnext('c',&page,&offset,&recnum) && !ozkeyhit())~0d0a~        ozunlink(TYPENUM_SCHEDULE,recnum);~0d0a7d0d0a0d0a**27866","20200101",,,"",
+"D"," ","~~z01003,48080,00000","**LIBOZ_UPLOAD*Ldir/dir.c~#include <stdlib.h>~0d0a~#include <oz.h>~0d0a0d0a~main()~0d0a7b0d0a~    static int pos=0;~0d0a~    static byte mode=FIND_RESET;~0d0a~    register char *name;~0d0a~    ozcls();~0d0a~    while(NULL!=(name=ozgetnextfilename(mode)))~0d0a~    {~0d0a~        if(pos>=72)~0d0a~        {~0d0a~            ozputs(0,pos,~22~Press any key to continue~22~);~0d0a~            ozgetch();~0d0a~            ozcls();~0d0a~            pos=0;~0d0a~        }~0d0a~        mode=0;~0d0a~        ozputs(0,pos,name);~0d0a~        pos+=8;~0d0a~    }~0d0a~    ozputs(0,pos,~22~Done: press any key to continue~22~);~0d0a~    ozgetch();~0d0a7d0d0a0d0a**34382","20200101",,,"",
+</DATA>

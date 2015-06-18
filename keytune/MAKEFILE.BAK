@@ -1,0 +1,5 @@
+all: keytune.wzd
+
+.c.wzd:
+        zcc -z -zikeytune.inf -ox $*.c
+        ozpack $*.wzd

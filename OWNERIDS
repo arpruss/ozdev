@@ -1,0 +1,46 @@
+The official list of owner IDs for the C-based file system is kept by
+Alexander Pruss.  To request an ID, or a bunch of them (specify how
+many, maximum of 10 per request), email: ap85@georgetown.edu
+
+Here are the current owner IDs (in decimal):
+
+0-997: Reserved for future system use.
+998:   KeyTune configuration file(s).
+999:   Font file
+1000:  Alexander Pruss's Greek New Testament program
+1001:  Alexander Pruss's Loader program
+1002:  Alexander Pruss's Pix program
+1003:  Alexander Pruss's SecureEdit program
+1004:  Alexander Pruss's Edit program
+1005:  Alexander Pruss's WizBook program
+1010:  Andrew Shakinovsky's <ashak@ipass.net> Dungeon II
+1011:  Reserved for Andrew Shakinovsky <ashak@ipass.net>
+1012:  Kevin Knappmiller's <kevink@kevtec.com> ozGut
+1013:  Shawn Roberts' <sroberts1519@email.msn.com> ZMachine emulator
+1014:  Reserved for Kevin Snelling <kevin@ksnelling.freeserve.co.uk>
+1015:  Mark Hamilton Jr.'s <mshjr@bellatlantic.net> Driver's Paradise
+1016:  John Coombs' <jcoombs@computeraide.com> SwimAssist
+1017:  Steve Joynt's BrainStorm
+1018:  Chris Daniel's OZ Clay Pigeons 2
+1019:  Chris Daniel's OZ Monopoly
+1020:  Chris Daniel's Starship
+1021:  Chris Daniel's FallDown
+1022:  Reserved for Chris Daniel
+1023:  Reserved for Chris Daniel
+1024:  Reserved for Chris Daniel
+1025:  David Pollard's Spell Checker
+1026:  Mark Hamilton Jr.'s TMA Collection
+1027:  David Festing's WizMail
+1028:  Staffan Vilcans' RunQuill
+1029:  Chris Walker's Paint
+2001:  Loader - second category, reserved
+2002:  Loader - third category, reserved
+2003:  Loader - fourth category, reserved
+3000:  Reserved - Demitrios Vassaras
+3001:  Reserved - Demitrios Vassaras
+3002:  Reserved - Demitrios Vassaras
+3003:  Reserved - Demitrios Vassaras
+
+65535: Temporary user ID for in-house testing.  Not legal for use in
+       publically released programs.  (See license in readme.txt.)
+

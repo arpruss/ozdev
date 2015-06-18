@@ -1,0 +1,105 @@
+makewzd [-ownerid] filename [Title [("Description" | @descfile) [iconfile]]]
+or: makewzd [-ownerid] filename @info
+
+        This command creates a filename.wzd file given a filename.bin
+        file, allowing one to specify a title that shows up in the
+        Wizard's My Programs menu, a description that shows up in the
+        downloader, an icon and an ownerid (needed if you use the
+        C-based file system).
+
+        If the title is not specified, the input filename is used.  If
+        the description is not specified, the title is copied into it.
+        If the icon is not specified, a default "C" icon is supplied.
+        If the ownerid is not specified, 65535 is supplied.
+
+        If the title contains spaces, it should be surrounded by
+        quotation marks ("...").
+
+        The description can either be given on the command line between
+        quotation marks, or one can specify @descfile which will load
+        the description from descfile.  The descfile should be broken up
+        into paragraphs by inserting an additional completely empty line
+        (with no spaces on the blank line) between paragraphs.
+
+        The iconfile is a binary icon file produced by zifnab.  (See
+        www.ozdev.com.)
+
+        Alternately, all the arguments other than the ownerid and
+        filename may be taken from the file info.  The file info is a
+        text file formatted precisely as follows:
+Line 1: Title
+Line 2: One character specifying what character indicates white in lines 3-13
+Lines 3-13: The first 12 characters of each line give the icon in text format
+Lines 14 on: Description
+
+        Lines 2-13 may contain additional junk (e.g., line numbers,
+        comments, etc.) after the icon information, which will be
+        ignored, but the lines cannot be more than 80 characters or else
+        makewzd may fail.  The icon is in lines 3-13 is 12x12 and
+        specified by a bitmap represented as text, with zero (white)
+        being represented by the character given in line 2, and any
+        other character representing black.
+
+        For instance, here is a valid info file:
+Sample Title
+.             0
+.xxxxxxxxxx.  1
+x..........x  2
+x.xxxxxxxx.x  3
+x..........x  4
+x.xxxxxxx..x  5
+x..........x  6
+x..........x  7
+.xxxxxxxxxx.  8
+x.x.x.x.x.xx  9
+xx.x.x.x.x.x 10
+x.x.x.x.x.xx 11
+.xxxxxxxxxx. 12
+Description goes here.
+
+        The numbers at the ends of lines 2-13 are ignored but are
+        helpful for laying things out.  Any character other than '.'
+        could be used in the icon to indicate black pixels--the icon
+        could just as well have been given as:
+Sample Title
+.             0
+.abcdefghij.  1
+l..........m  2
+n.        .o  3
+x..........x  4
+#.$^*&@&@..x  5
+x..........x  6
+x..........x  7
+.xffa  fffx.  8
+x.x.x.x.x.xx  9
+xx.x.x.x.x.x 10
+x.x.x.x.x.xx 11
+.xxxxxxxxxx. 12
+Description goes here.
+
+        Note that in this example, space counts as black, because it is
+        different from '.'.  If one wanted space to be white instead of
+        '.', one would put a single space in the second line of the
+        file.  One has to be careful because some text editors may not
+        save spaces at the end of a line, and so one may have to insert
+        something after the space to keep the text editor from
+        swallowing it up--makewzd will ignore it.  So, we could also do:
+Sample Title
+              0
+ xxxxxxxxxx   1
+x          x  2
+x xxxxxxxx x  3
+x          x  4
+x.xxxxxxx  x  5
+x          x  6
+x          x  7
+ xxxxxxxxxx   8
+x x x x x xx  9
+xx x x x x x 10
+x x x x x xx 11
+ xxxxxxxxxx  12
+Description goes here.
+
+
+        The icon is easiest designed in a text editor with a fixed-width
+        font (e.g., Courier) in overtype mode.

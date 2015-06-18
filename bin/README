@@ -1,0 +1,20 @@
+MAKEWZD creates a Wizard file from a .bin file created by Hi-Tech's
+linker.  Run MAKEWZD with no arguments for instructions.  You can use
+icon "data files" (not bitmaps) saved from the latest release of zifnab.
+(http://www.emerald.co.nz/software/mswin32/zifnab/index.htm)
+
+OZLINK filename1 [filename2 [filename3 [...]]]
+         Links filename1.obj and all other specified files to create
+         filename1.bin and filename1.wzd.  Filename1 must NOT have
+         any extension, but the other filenames MUST.  To link the
+         floating point library, include libf.lib.  LIBOZ and LIBC
+         and startup code are included by default.  WARNING: if the
+         program is longer than 16k (see filename1.map: do not rely
+         on file length as the BSS segment is not added to the file
+         length) or if filename1.map indicates that the lowpage segment
+         extends beyond 9FFF, the program won't work.
+
+MINIOPT is a miniature peephole optimizer for zxc -s output.  Use when
+         zxc runs out of memory.
+
+CHECKSYM checks some assertions about symbol locations.

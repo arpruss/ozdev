@@ -1,0 +1,200 @@
+/*
+  This contains most of the routines that would be pulled from your
+  C compiler's standard library.  I've included them mainly for completness
+  and to allow easier compilation for the real tiny machines
+  If you use these, readln & printf may need to be modified.
+*/
+
+#define HEADER
+#include "arvar.c"
+
+#if 0
+#define RUB   8   /* the backspace character key code */
+#define WIPE 24   /* the backspace full line key code */
+#endif
+
+int abs(int i)
+/* Good routine for a #define abs(i) ((i)<0)?-(i):(i)      */
+{
+    if (i < 0) return -i;
+    else return i;
+}
+
+void memcpy(char *dest,char *src,int len)
+/* Good routine for assembly */
+{ while (--len>=0) *dest++=*src++;}
+
+int atoi(char *s) /* decode an integer */
+{
+    int     sflag = 1, value = 0;
+    while (*s == ' ' || *s == '\t' || *s == '\n') ++s;
+    if (*s == '+' || *s == '-')
+        if (*s++ == '-') sflag = -1;
+    while (*s >= '0' && *s <= '9') value = 10 * value + (*s++ - '0');
+    return value * sflag;
+}
+
+void itoa(int n,char *s)
+{ int sign;char *ptr;
+if (n==-32768) {strcpy(s,"-32768");return;}
+
+ptr=s;
+if ((sign=n)<0) n=-n;
+
+do { *ptr++= n % 10 + '0';
+   } while ((n=n/10)>0);
+if (sign<0) *ptr++='-';
+*ptr='\0';
+revstr(s);
+}
+
+int isdigit(int c)
+{
+    if (c >= '0' && c <= '9') return 1;
+    else return 0;
+}
+
+int isprint(int c)
+{
+    if ((c > 31) && (c < 127)) return 1;
+    else return 0;
+}
+
+int toupper(int c)
+{
+    if (c >= 'a' && c <= 'z') c -= 32;
+    return c;
+}
+
+int tolower(int c)
+{
+    if (c >= 'A' && c <= 'Z') c += 32;
+    return c;
+}
+
+void revstr(char *s)
+{ char *j;int c;
+j=s+strlen(s)-1;
+while (s<j)
+   {c=*s;*s++=*j;*j--=c;}
+}
+
+char *strcpy(char *dest, char *source)
+{char *temp;
+temp=dest;
+while (*dest++ = *source++) ;
+return (temp);
+}
+
+int strcmp(char *first, char *second)
+{
+while (*first == *second)
+  {if (*first) {first++;second++;}
+   else return 0;
+  }
+return *first - *second;
+}
+
+char *strcat(char *first, char *second)
+{char *temp;
+temp=first;first--;while (*++first) ;
+while (*first++ = *second++) ;
+return(first);
+}
+
+int strlen(char *str)
+{ char *tmp;
+tmp=str-1;
+while (*++tmp) ;
+return (tmp-str);
+}
+
+int readln(char *str,int size)
+{
+int backup;char *next;
+
+next=str;
+while (--size) {
+   *next=getchar();
+   if (isprint(*next)) {putchar(*next);next++;}
+   else switch(*next) {
+     case  EOF:
+     case '\n': *next=NULL;putchar('\n');return(next-str);
+
+     case  RUB: size++;
+                if (next>str)
+                  {putchar('\b');putchar(' ');putchar('\b');next--;}
+                break;
+
+     case WIPE: backup=next-str;++size;
+                while (backup--) {
+                    putchar('\b');putchar(' ');putchar('\b');
+                    size++;next--;
+                    }
+      }
+   }
+*next=NULL;
+return(next-str);
+}
+
+void printf(char *fmt) /* char *ftm,...); */
+/* a simple printf.  Integer only (no longs, floats, or doubles)
+   If you need a fprintf(stderr,...) you can change the 'port' number
+   (see top of arvar.c) so that putchar redirects it elsewhere (if your
+   OS allows it).  EX: if port 2 is stderr you could do:
+             port=2;
+             printf("This goes to stderr\n");
+             port=1;
+*/
+{ int arg,left,pad,len,maxchr,width;
+  int *nxtarg;
+  char *sptr,str[20];
+
+nxtarg=&fmt;nxtarg++;
+while (*fmt)
+  {if (*fmt!='%') {putchar(*fmt++);continue;}
+   fmt++;left=0;pad=' ';width=0;maxchr=0;
+   if (*fmt=='%') {putchar(*fmt++);continue;}
+   if (*fmt=='-') {left=1;++fmt;}
+   if (*fmt=='0') pad='0';
+   if (isdigit(*fmt))
+     {width=atoi(fmt++);while (isdigit(*fmt)) ++fmt;}
+   if (*fmt=='.')
+     {maxchr=atoi(++fmt);while (isdigit(*fmt)) ++fmt;}
+   arg=*nxtarg++;
+   sptr=str;
+   switch (tolower(*fmt++))
+     {case 'c': str[0]=arg;str[1]=0;break;
+      case 's': sptr=arg;           break;
+      case 'd': itoa(arg,str);      break;
+      case 'b': itoab(arg,str,2);   break;
+      case 'o': itoab(arg,str,8);   break;
+      case 'u': itoab(arg,str,10);  break;
+      case 'x': itoab(arg,str,16);  break;
+      default: return;
+     }
+   len=strlen(sptr);
+   if (maxchr && maxchr<len) len=maxchr;
+   if (width>len) width=width-len; else width=0;
+   if (!left) while (width--) putchar(pad);
+   while (len--) putchar(*sptr++);
+   if (left) while (width--) putchar(pad);
+  }
+}
+
+static itoab(n,s,b) int n;char *s;int b;
+/* convert an integer into base B.  Used only by printf */
+{ char *ptr;int lowbit;
+
+ptr=s;b>>=1;
+do {
+  lowbit=n & 1;
+  n=(n>>1) & 32767;
+  *ptr=((n % b) << 1) + lowbit;
+  if (*ptr<10) *ptr+='0'; else *ptr+=55;
+  ++ptr;
+ } while (n/=b);
+*ptr=0;
+revstr(s);
+}
+

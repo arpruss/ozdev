@@ -1,0 +1,178 @@
+Comparing files OZMENU.aso and aso\OZMENU.aso
+****** OZMENU.aso
+pop bc
+ex de,hl
+ld hl,5
+add hl,de
+****** aso\OZMENU.aso
+pop bc
+ld de,5
+add hl,de
+******
+
+
+Comparing files OZGREY.aso and aso\OZGREY.aso
+FC: no differences encountered
+
+Comparing files OZGETL.aso and aso\OZGETL.aso
+FC: no differences encountered
+
+Comparing files OZBOX.aso and aso\OZBOX.aso
+FC: no differences encountered
+
+Comparing files _OZBOX.aso and aso\_OZBOX.aso
+FC: no differences encountered
+
+Comparing files GETCH.aso and aso\GETCH.aso
+FC: no differences encountered
+
+Comparing files UNLINK.aso and aso\UNLINK.aso
+FC: no differences encountered
+
+Comparing files OZDEL64.aso and aso\OZDEL64.aso
+FC: no differences encountered
+
+Comparing files OZCIRCSM.aso and aso\OZCIRCSM.aso
+FC: no differences encountered
+
+Comparing files SPNUM.aso and aso\SPNUM.aso
+FC: no differences encountered
+
+Comparing files OZLINE.aso and aso\OZLINE.aso
+FC: no differences encountered
+
+Comparing files _OZLINE.aso and aso\_OZLINE.aso
+FC: no differences encountered
+
+Comparing files SPRINTF.aso and aso\SPRINTF.aso
+****** SPRINTF.aso
+add hl,hl
+ex de,hl
+ld hl,(F33)
+add hl,de
+****** aso\SPRINTF.aso
+add hl,hl
+ld de,(F33)
+add hl,de
+******
+
+
+Comparing files SSCANF.aso and aso\SSCANF.aso
+****** SSCANF.aso
+jp z,l37
+ex de,hl
+ld hl,__ctype_+1
+add hl,de
+****** aso\SSCANF.aso
+jp z,l37
+ld de,__ctype_+1
+add hl,de
+******
+
+
+Comparing files FILE1.aso and aso\FILE1.aso
+FC: no differences encountered
+
+Comparing files NICEGETC.aso and aso\NICEGETC.aso
+FC: no differences encountered
+
+Comparing files FILE.aso and aso\FILE.aso
+FC: no differences encountered
+
+Comparing files HASH.aso and aso\HASH.aso
+FC: no differences encountered
+
+Comparing files LSEEK.aso and aso\LSEEK.aso
+FC: no differences encountered
+
+Comparing files OWNER.aso and aso\OWNER.aso
+FC: no differences encountered
+
+Comparing files GETFILE.aso and aso\GETFILE.aso
+FC: no differences encountered
+
+Comparing files PART.aso and aso\PART.aso
+FC: no differences encountered
+
+Comparing files FILE1RO.aso and aso\FILE1RO.aso
+FC: no differences encountered
+
+Comparing files GETSLOT.aso and aso\GETSLOT.aso
+FC: no differences encountered
+
+Comparing files OZDEL64K.aso and aso\OZDEL64K.aso
+FC: no differences encountered
+
+Comparing files OZNGETCH.aso and aso\OZNGETCH.aso
+FC: no differences encountered
+
+Comparing files NGETCH.aso and aso\NGETCH.aso
+FC: no differences encountered
+
+Comparing files LSEEK1.aso and aso\LSEEK1.aso
+FC: no differences encountered
+
+Comparing files LSEEK1RO.aso and aso\LSEEK1RO.aso
+FC: no differences encountered
+
+Comparing files SCNVIEW.aso and aso\SCNVIEW.aso
+FC: no differences encountered
+
+Comparing files OZT.aso and aso\OZT.aso
+FC: no differences encountered
+
+Comparing files OZBOXF.aso and aso\OZBOXF.aso
+FC: no differences encountered
+
+Comparing files PUTCHAR.aso and aso\PUTCHAR.aso
+FC: no differences encountered
+
+Comparing files OZGEDLIN.aso and aso\OZGEDLIN.aso
+FC: no differences encountered
+
+Comparing files OZGPOINT.aso and aso\OZGPOINT.aso
+FC: no differences encountered
+
+Comparing files OZGLINE.aso and aso\OZGLINE.aso
+FC: no differences encountered
+
+Comparing files OZGCIRC.aso and aso\OZGCIRC.aso
+FC: no differences encountered
+
+Comparing files OZGPUTS.aso and aso\OZGPUTS.aso
+FC: no differences encountered
+
+Comparing files OZGETFH.aso and aso\OZGETFH.aso
+FC: no differences encountered
+
+Comparing files OZGFBOX.aso and aso\OZGFBOX.aso
+FC: no differences encountered
+
+Comparing files OZGGPT.aso and aso\OZGGPT.aso
+FC: no differences encountered
+
+Comparing files OZPOWER.aso and aso\OZPOWER.aso
+FC: no differences encountered
+
+Comparing files OZPOWER2.aso and aso\OZPOWER2.aso
+FC: no differences encountered
+
+Comparing files PRINTF.aso and aso\PRINTF.aso
+****** PRINTF.aso
+add hl,hl
+ex de,hl
+ld hl,(F74)
+add hl,de
+****** aso\PRINTF.aso
+add hl,hl
+ld de,(F74)
+add hl,de
+******
+
+
+Comparing files SPNUM_P.aso and aso\SPNUM_P.aso
+FC: no differences encountered
+
+Comparing files DMEMO.aso and aso\DMEMO.aso
+FC: no differences encountered
+

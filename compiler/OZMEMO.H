@@ -1,0 +1,11 @@
+void ozsetmemolastrecnum(unsigned rn);
+unsigned ozgetmemolastrecnum(void);
+void ozsetmemoeditmode(unsigned char m);
+unsigned char ozgetmemoeditmode(void);
+int ozreaddatamemo(void *s,unsigned length);
+int ozopendatamemoread(char *title);
+void ozclosedatamemoread(void);
+int ozwritedatamemo(void *s,unsigned length);
+void ozopendatamemowrite(char *title,char version);
+int ozclosedatamemowrite(void);
+unsigned ozgetdatamemorecnum(void);

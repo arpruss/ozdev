@@ -1,0 +1,85 @@
+Machine type is Z80
+
+p:16k.obj       lowpage      8000      101	data         8C79        2
+p:maketabl.obj  data         8C7B       4A	bss          8D5E       42
+		text         844B      10F
+
+p:libc0.lib
+wrelop.obj      text         855A        F
+csv.obj         text         8569       28
+
+p:liboz.lib
+p:ozfont.obj    text         8591        9
+p:ozser.obj     text         859A       2C
+p:ozserctl.obj  text         85C6       5D
+p:ozputsns.obj  lowpage      8101      2A5	bss          8DA0        1
+p:sprintf.obj   data         8CC5        7	bss          8DA1       10
+		text         8623      335
+p:spnum.obj     data         8CCC       11	bss          8DB1       21
+		text         8958      168
+p:ozdetect.obj  lowpage      83A6       83
+p:ozexitf.obj   bss          8DD2       14	text         8AC0       1A
+p:ozblank0.obj  lowpage      8429        1	text         8ADA       1D
+p:ozlcd.obj     lowpage      842A       1F
+p:ozapage.obj   lowpage      8449        2
+
+p:libc0.lib
+atoi.obj        text         8AF7       40
+ctype_.obj      data         8CDD       81
+brelop.obj      text         8B37       14
+ldiv.obj        text         8B4B      120
+strlen.obj      text         8C6B        E
+
+p:liboz.lib
+
+TOTAL		Name         Link     Load   Length
+		(abs)           0        0        0
+		lowpage      8000     8000      44B
+		data         8C79     8C79       E5
+		bss          8D5E     8D5E       88
+		midpage      844B     844B        0
+		text         844B     844B      82E
+
+                                  Symbol Table
+
+$32kintoff            lowpage 80F3  $32kinton             lowpage 80F3
+$blanked              lowpage 8429  $filetypetable        lowpage 8427
+$ozlcdstatus          (abs)   C024  $ozsetlcdstate        lowpage 842A
+$sp$                  lowpage 80FE  $swapupperpages       lowpage 80F3
+AlarmSet              lowpage 8100  EnableKeyboard        (abs)   C00F
+HeapTop               (abs)   BFFF  KeyBufGetPos          (abs)   C031
+KeyBufPutPos          (abs)   C032  KeyboardBuffer        (abs)   C033
+Model32k              (abs)   0000  ScrCharSet            (abs)   C066
+__Hbss                bss     8DE6  __Hdata               data    8D5E
+__Hlowpage            lowpage 844B  __Hmidpage            midpage 844B
+__Htext               text    8C79  __Lbss                bss     8D5E
+__Ldata               data    8C79  __Llowpage            lowpage 8000
+__Lmidpage            midpage 844B  __Ltext               text    844B
+__ctype_              data    8CDD  __exit                lowpage 80AC
+__ozactivepage        lowpage 8449  __ozbacklight         (abs)   C068
+__ozbacklight_save    (abs)   C003  __ozcallexitfunctions text    8AC0
+__ozcontrast          (abs)   C026  __ozexitfunctions     bss     8DD2
+__ozfilename          lowpage 8014  __ozfileowner         lowpage 8020
+__ozinitialsp         lowpage 80FC  __ozmodel             lowpage 8426
+__spnum               text    8958  _atoi                 text    8AFE
+_bdos                 lowpage 80F3  _dump_table           text    8471
+_exit                 lowpage 80A1  _main                 text    850F
+_ozdatabits           text    85C6  _ozdetectmodel        lowpage 83A6
+_ozexitrestoreint     lowpage 80F4  _ozfont               text    8591
+_ozgetbaud            text    8610  _ozgetlcr             text    85F2
+_ozparity             text    85DA  _ozputch              lowpage 8395
+_ozputs               lowpage 8151  _ozputsgetend         lowpage 8101
+_ozserialin           text    85A8  _ozserialout          text    85B8
+_ozserintoff          text    859A  _ozserinton           text    85A1
+_ozsetbaud            text    85F8  _ozsetlcr             text    85D2
+_ozslow               text    8ADA  _ozstopbits           text    85E6
+_ozunblankscreen      text    8ADA  _serputs              text    844B
+_sprintf              text    864F  _strlen               text    8C6B
+aldiv                 text    8B97  almod                 text    8BBE
+asaldiv               text    8B82  asalmod               text    8BD0
+aslldiv               text    8BB6  asllmod               text    8BE3
+brelop                text    8B37  cret                  text    8575
+csv                   text    8569  indir                 text    857C
+lldiv                 text    8BAA  llmod                 text    8BD8
+ncsv                  text    857D  wrelop                text    855A
+

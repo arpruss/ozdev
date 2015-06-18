@@ -1,0 +1,113 @@
+AR-Chess 1.1b6
+.            0
+.........xxx 1
+.....x...xxx 2
+..xxxx...xxx 3
+.xxxxxx..xxx 4
+....xxx..xxx 5
+..xxxx...xxx 6
+.xxxxxx..xxx 7
+.........xxx 8
+.........xxx 9
+xxxxxxxxx... 10
+xxxxxxxxx... 11
+xxxxxxxxx... 12
+(The instructions are below the license here: read both.)
+
+BY DOWNLOADING YOU SIGNIFY YOU HAVE READ AND AGREED TO ALL OF THE
+CONDITIONS LISTED HERE.  This is a C/assembly program.  It is possible
+for a C/assembly program to damage data and even to make your organizer
+inoperable.  USE AT YOUR OWN RISK.  NO GUARANTEES ARE MADE. By
+downloading this program to your organizer you agree not to hold the
+author(s) responsible for any damage to data, hardware or anything else.
+
+IF ANY OF THESE CONDITIONS ARE NOT PERMITTED BY APPLICABLE LAW, YOU ARE
+NOT LEGALLY PERMITTED TO DOWNLOAD OR USE THE PROGRAM. This program may
+be freely distributed but only provided that this description is
+unmodified.
+
+
+The chess engine in this program is copyright (c) 1992
+Mr. Carey Bloodworth.  The Sharp 7xx port is copyright (c) 2002 Alexander
+R. Pruss.  The default chess pieces are designed by Vince Negri.  The
+alternate chess set is by Dan Piehl of Piehl Systems (www.piehlsystems.com),
+who kindly allowed its use.
+
+
+This program may not have been sufficiently tested.  Please report
+bugs to: ap85@georgetown.edu.
+
+
+
+It is strongly recommended you back up your Wizard before running
+C/assembler programs like AR-Chess.
+
+
+
+NOTE: If a C/assembly program hangs due to a bug, you may need to flip
+the battery switch on the bottom of the Wizard back and forth.  If the
+Wizard does not respond to this, taking the batteries out for half a
+minute should help.  If this doesn't help, you've read the WARNING
+above.  None of this should be necessary, but no guarantees are made.
+
+
+NOTE: Any alarms going off while program is running will be missed.  The
+auto power-off and backlight auto-off won't work either.
+
+
+This is a chess program.  Enter the moves with the arrow keys and ENTER, or
+else type them in in the format "d2d4" or "h7h8q" (to promote white pawn
+at h7 to queen). Type HELP (followed by ENTER) for a full list of
+commands. Type NEW (and as for every other command, press ENTER) for a
+new game.  QUIT to quit. SAVE/LOAD to save to or load from memory (the
+saved game may easily be lost if you run some other program like LOADER
+or MEMOEDIT in the meanwhile, but will keep if you just turn off the
+unit and turn it back on to run AR-CHESS--as long as you don't run
+AR-CHESS out of LOADER).    SWAP to swap sides and play black instead.
+FONT and BOARD to change the chess pieces or board size.  You can
+control playing quality via LEVEL or TIME.  LEVEL to set the search
+depth.  TIME to set the usual amount of thinking time (in seconds) for
+the computer player--sometimes it'll have to take longer, though.
+Use BLANK to turn off the screen while the computer is thinking.  This
+frees up the CPU and either makes the computer player 7% better (TIME
+mode) or 7% faster (LEVEL mode) and may save battery usage.  The SNAP
+command sends a screen image to the serial port compatible with Benjamin
+Green's SNAP.EXE program.  If you have SNAP.EXE running on the PC, the
+screen image will appear in it.  You do NOT need SNAP.WZD on your Wizard
+to do this.  SNAP.EXE is included in Benjamin Green's SNAP package in
+the "dual platform software" section of www.ozdev.com.
+
+There are other commands that are explained in the HELP screen.
+Commands other than LOAD, NEW and QUIT can be abbreviated to the
+smallest number of characters needed to distinguish them from other
+commands (as in VMS).  Thus, "H" gives "HELP", and "SA" gives "SAVE"
+(need two characters to distinguish from "SKIP" and "SWAP").
+
+
+You can enter setup mode by typing SETUP.  In SETUP mode, you can place a
+piece p of color c at coordinates xy by typing xycp<enter> or erase the
+piece at coordinates xy by typing xye<enter>.  For instance, a4wq<enter>
+places a white queen at A4, and b7e<enter> erases B7.  You can select the
+coordinates also by moving around with the arrow keys and then pressing
+ENTER.  Type DONE to exit setup mode.
+
+
+It is recommended that you use TIME mode instead of LEVEL mode.  LEVEL mode
+can take too long to think, even at level 2.
+
+
+You can interrupt the computer's thinking by pressing the ESC key.  This
+may take up to a second or so to take effect--don't worry about the delay,
+and don't bother pressing ESC more than once.
+
+
+If the keyboard is inactive for 72 seconds while waiting for input, the
+screen turns off to conserve power.  Press any key to restore the
+screen.  If AR-Chess waits three hours for a command input from you, it
+will turn off.
+
+
+TECHNICAL INFORMATION: This program is written in Hi-Tech C, with some
+assembly bits for i/o.  Source code will be available in the next
+Hi-Tech C distribution after version 0.080 on www.ozdev.com under "win32
+downloads".

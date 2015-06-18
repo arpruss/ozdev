@@ -1,0 +1,82 @@
+>empty
+........ .xxxxxxx
+........ .xxxxxxx
+........ .xxxxxxx
+....x... .xxxxxxx
+........ .xxxxxxx
+........ .xxxxxxx
+........ .xxxxxxx
+........ ........
+>box1
+..xxxxx. .xxxxxxx
+.x.....x .xxxxxxx
+.x.....x .xxxxxxx
+.x.....x .xxxxxxx
+.x.....x .xxxxxxx
+.x.....x .xxxxxxx
+..xxxxx. .xxxxxxx
+........ ........
+>box2
+..xxxxx. .xxxxxxx
+.x.x.x.x .xxxxxxx
+.xx.x.xx .xxxxxxx
+.x.x.x.x .xxxxxxx
+.xx.x.xx .xxxxxxx
+.x.x.x.x .xxxxxxx
+..xxxxx. .xxxxxxx
+........ ........
+>box5
+..xxxxx. .xxxxxxx
+.x.....x .xxxxxxx
+.x.....x .xxxxxxx
+.xxxxxxx .xxxxxxx
+.x.....x .xxxxxxx
+.x.....x .xxxxxxx
+..xxxxx. .xxxxxxx
+........ ........
+>box3
+..xxxxx. .xxxxxxx
+.xxx...x .xxxxxxx
+.xxxx..x .xxxxxxx
+.x.xxx.x .xxxxxxx
+.x..xxxx .xxxxxxx
+.x...xxx .xxxxxxx
+..xxxxx. .xxxxxxx
+........ ........
+>box4
+..xxxxx. .xxxxxxx
+.x.....x .xxxxxxx
+.x.x.x.x .xxxxxxx
+.x.....x .xxxxxxx
+.x.x.x.x .xxxxxxx
+.x.....x .xxxxxxx
+..xxxxx. .xxxxxxx
+........ ........
+>cursor
+.xxxxxxx .xxxxxxx
+.xxxxxxx .xxxxxxx
+.xxxxxxx .xxxxxxx
+.xxxxxxx .xxxxxxx
+.xxxxxxx .xxxxxxx
+.xxxxxxx .xxxxxxx
+.xxxxxxx .xxxxxxx
+........ ........
+>selector
+xx.....x xx.....x
+x....... x.......
+x....... x.......
+x....... x.......
+x....... x.......
+x....... x.......
+xx.....x xx.....x
+xxxxxxxx xxxxxxxx
+>left_line
+x....... x.......
+x....... x.......
+x....... x.......
+x....... x.......
+x....... x.......
+x....... x.......
+x....... x.......
+x....... x.......
+

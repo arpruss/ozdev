@@ -1,0 +1,7 @@
+Given a black and white bmp, say file.bmp, run:
+        conv file
+(no extension) to generate file.wzd.  Upload file.wzd to the Wizard, run
+frommemo on the Wizard, and the run pix on the Wizard.
+
+While viewing a picture, the lower menu key will give a short help
+screen.

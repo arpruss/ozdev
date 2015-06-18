@@ -1,0 +1,84 @@
+There are two memory models available for programs: 16K and 32K.  The
+essential difference between the two is whether you link with the init
+code in 16k.obj or in 32k.obj.  The 32K memory model does not allow
+system calls without careful work via call $swapupperpages, and uses a
+custom interrupt handler.  It is recommended you use the 32K model when
+you can--it is now the only officially supported model.  You can select
+between them by linking via:
+        ozlink16
+for the 16K model and:
+        ozlink32
+for the 32K model.
+
+An important feature of programming in the Hi-Tech C environment in
+assembly language is psects.  A psect is a program/data section that is
+declared in an assembly program via:
+        psect name
+All data in a psect of the same name is grouped together.  This is
+rather nice.  You can do:
+        psect text
+        ld      hl,message
+        psect data
+message: defm 'This is a message'
+         defb 0
+        psect text
+        push    hl
+        ld      hl,0
+        push    hl
+        push    hl
+        call    _ozputs
+        pop     af
+        pop     af
+        pop     af
+and the linker/assembler will ensure that the message will be in a
+separate section and the code will be put together contiguously in psect
+text.
+
+The default psects in a C program are:
+        psect text
+for the code,
+        psect data
+for the initialized data, and
+        psect bss
+for uninitialized data.  All of psect bss is set to zero by the
+initialization code.
+
+An important reason why psects matter is that they are needed for
+ensuring that different things end up in the right place in memory
+vis-a-vis the Wizard's paging scheme.  For instance, many of the library
+routines page things like screen memory into the A000-BFFF page.  If
+they do that, the routines had better ensure that they don't themselves
+sit in A000-BFFF.  The way they do that is that is that those routines
+that need to do the paging are declared as:
+        psect lowpage
+If you link with ozlink or ozlink32, psect lowpage will be loaded as low
+as possible in memory, so that everything in psect lowpage should fit in
+8000-9FFF.  If it doesn't then ozlink/ozlink32 will give an error
+message.  Only after psect lowpage is text, data and bss loaded.
+
+In the 32k memory model, there are two other useful psects.
+        psect midpage
+is for data/code that is supposed to go in 8000-BFFF.  Of course, any
+data/code declared via
+        psect lowpage
+will go in 8000-9FFF, but space there is limited so that psect midpage
+is less restrictive.  What is special about the 8000-BFFF area is that
+the system variables and stack swapping done by call $swapupperpages
+leaves it alone, and call $swapupperpages needs to be done to call
+system functions in the 32K memory model.
+
+        psect highpage
+is for data that will go in C000-F800.  Do not use psect highpage unless
+your program already extends into that area.  What is nice about this
+area is that it is always paged in.
+
+The default order of the psects is:
+        lowpage
+        midpage
+        text
+        data
+        bss
+        highpage
+
+If you program in C, you don't need to know about any of this.
+

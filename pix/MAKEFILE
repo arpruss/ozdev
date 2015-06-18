@@ -1,0 +1,20 @@
+all: pix.wzd bmpconv.exe
+
+OBJS2 = column.obj myaux.obj
+
+CCOPTS = -o
+
+
+.as.obj:
+        zxas $*.as
+
+.c.obj:
+        zcc -o3 -m -c $*.c
+
+bmpconv.exe: bmpconv.c
+        cl $*.c
+
+pix.wzd: pix.obj $(OBJS2)
+        ozlink48 pix $(OBJS2)
+        makewzd -1002 Pix "Pix 1.0" "Pix: Picture viewer"
+

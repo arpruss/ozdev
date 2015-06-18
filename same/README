@@ -1,0 +1,7 @@
+Same!: A Wizard port of the Unix/Macintosh freeware game SameGame.
+Sort of like Sega(tm) Swirl.
+
+See SAME.INF for more information.
+
+The b2c program is handy for generating bitmaps for use with the sprite
+routines.  See the makefile to figure out how to use it.

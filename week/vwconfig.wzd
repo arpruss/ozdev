@@ -1,0 +1,20 @@
+<SHARP WZD DATA>
+<DATA TYPE>
+MEMO
+</DATA TYPE>
+<TITLE>
+zz:viewweek.config
+</TITLE>
+<CATEGORY>
+NO CATEGORY
+</CATEGORY>
+<DESCRIPTION>
+Configuration file for Alexander Pruss's viewweek program.  This will create a memo entitled "zz:viewweek.config".  Edit this memo to set default viewweek options.  Delete the configuration memo from any previous ViewWeek version.
+</DESCRIPTION>
+<DATA>
+Sharp Download Data V1.0
+"C","M"," "
+"I","ATTR","TTL1","MEM1","DATE","IMG3","CLAS","CGR1","QMEM"
+"T","Attribute","Title","text","Create data","bitmap","File name","Category kind","Quick Memo"
+"D"," ","zz:viewweek.config","# Configuration file for ViewWeek program.# Use 1 to turn on an option and 0 to turn off## use bigger fontbigfont 0#use 24 hour time24hour 1# number of seconds to show# help message (0=off)helpmessage 5# start in repeat editor moderepeateditor 0# display day headersdayheaders 0# display week headerweekheader 1# view empty days?emptydays 1# view TO DO entries duetodos 1# view anniversaries/birthdaysanniversaries 1# view schedule entriesschedule 1# sound effectsbeeps 1# view week starting specified# day (-1=today, 0=last Sunday# (or today if today is Sunday),# 1=last Monday (or today if# today is Monday), 2=last# Tuesday...)alignat -1","20000831",,,"",
+</DATA>

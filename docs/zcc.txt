@@ -1,0 +1,445 @@
+Notes for ZCC 1.05  15-OCT-2002
+
+
+Index
+
+1. Introduction
+2. Feature list
+3. Instructions
+4. Enviromental Settings
+4. Example usage
+6. Known Problems
+7. History
+
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+1. Introduction
+
+ZCC is intended as a replacement for ZXC for the Ozlib enviroment. As such, its
+funtionality is aimed specifically at the compilation and linking of Wizard 
+files. ZXC should continue to be used for compiling CPM files. 
+
+Please note that this is beta release software. Although tested with no 
+problems found so far, by using this software you agree not to hold the
+author(s) responsible for any damage to data, hardware or anything else.
+
+Should you find any problems, or have any suggestions for improvement or
+enhancements, please email lawrence.chitty@ntlworld.com.
+
+This software has been tested on Win95 , Win98 and NT4. There are a couple of 
+minor annoyances on NT4, but it still works fine (see known problems)
+
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2. Features
+
+Increased space over using zxc in the virtual CPM/Z80 machine for compiling, 
+so less 'out of memory' errors.
+
+Unused prototype removal is performed after preprocessor stage. This
+further reduces memory requirements on compiler and results in even less
+'out of memory' errors. The -p flag disables this facility.
+
+Selectable linking to 16K , 32K or 48K.
+
+Automatic selection of link model to 32K or 48K if -z or -l only used.
+
+Automatic double inclusion of LIB files (no longer necessary to include them
+twice on command line)
+
+Automatic detection and usage of hlink.exe from the Pacific compiler release
+(hlink.exe must be placed in bin directory with zcc.exe).
+
+Various optimization levels including miniopts.
+
+-w switch fully functional to supress error reports.
+
+-n switch to only compile files that are newer than the .obj file.
+
+Wizard icon file , description files , info files and id can be specified from
+ZCC command line.
+ 
+-h switch to remind you of all the options (zcc -h).
+
+Inclusion of libf.lib by using -lf switch (double inclusion actually :).
+
+Wildcard expansion of command line arguements.
+
+If the command line gets too long, just put your commands in a file and type
+either 'zcc <cmdfile' or 'zcc @cmdfile'.
+
+Automatic starting of the Wizard downloader following compilation using -zs 
+switch. Note that this relies on .wzd files being associated with the 
+dowloader and 'start filename.wzd' working from a DOS prompt.
+
+Compilation time printed at end of compilation.
+
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+3. Instructions 
+
+Usage :  zcc [flags...] *.c... *.as[m]... *.obj...  *.lib...
+          or
+         zcc <argsfile
+          or
+         zcc @argsfile
+          or
+         zcc -h to display help page.
+
+
+Args may be put in a file and either called with <argfilename or @argfilename
+
+Flags and filenames may also be mixed with @argsfile, e.g.
+
+        zcc -n -v @flags mycust.as @files mylib.lib
+
+Within  @files, the \ character can be used for line continuation, e.g
+
+-zs hel\
+lo.c
+
+*.bin and *.wzd files are named after first .c or .as file on arg list or
+by -oFILENAME
+
+ 
+
+Flag            Action 
+----            ------
+-a              Support alloca().
+-c              Compile file to *.obj only.
+-dDEFINES       Define DEFINES.
+-f              Continue compiling files after error (Linking will be aborted).
+-iDIRPATH       Add path to additional include files directory.
+-j              Convert JP to JR operands on assembly files. (Leave this alone
+                if you don't understand this).
+-k              Disable removal of unused prototypes during compilation.
+-l[f][16|32|48] Link files. Use 'f' to link in floating point lib. Model size
+                is auto-selected to 32k or 48k unless specified by 16|32|48.
+-n              Only compile files newer than the *.obj if a *.obj exists. 
+-o[0|1|2|3|x]   Optimize [1-compiler (default) , 2-miniopt , 3-both , x-full]
+-p              Support profiling. Also adds #define OZPROFILER
+-oFILENAME      Use FILENAME for *.bin and *.wzd files.
+-p              Disable removal of unused prototypes during compilation.
+-q              Quiet mode (only copyright and errors displayed)
+-s              Keep assembly output in *.aso files.
+-uDEFINES       Undefine DEFINES.
+-v              Verbose mode.
+-w[0...9]       Compiler warning level (0 - all to 10 - none).
+-z[f][16|32|48] Link as for -l and make .wzd file.
+-zoXXXXXX       Owner ID for wizard file wher XXXXXX = number
+-ziFILENAME     Info file name (description file as per makewzd.txt document).
+-zdFILENAME     Description file name (see makewzd.txt).
+-zzFILENAME     Zifnab icon file name (see makewzd.doc).
+-zs             Start the downloader after making Wizard file.
+
+Note, all args beginning with -z will cause zcc to compile/link/make .wzd file 
+
+When compiling, the following defines are passed by default:-
+
+-DCPM -DHI_TECH_C -Dz80 -DOZ7XX
+
+When compiling with -p,  the following defines are passed by default:-
+
+-DCPM -DHI_TECH_C -Dz80 -DOZ7XX -DOZPROFILER
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+4. Enviromental Settings
+
+
+ZCC supports a number of envromental settings to modify certain behaviours of 
+ZCC. These can be set from a DOS prompt or BAT file, e.g  'set ZCCOPTS=-n -o3'
+
+The enviromental variables currently allowed are:
+
+ZCCOPTS   Any switches set in ZCCOPTS will be appended to the beginnig of the
+          command line. Command line switches may still be used to override the
+          switches in ZCCOPTS. For example 
+
+          SET ZCCOPTS=-z -o3 -oOUT
+          zcc filename.c
+
+          will compile with full optimization and generate OUT.wzd. However, if
+          the command used is:-
+
+          zcc -o0 -omyname
+
+          the compiler will use no optimization, and will generate myname.wzd.
+
+ZCCLIBS   Setting ZCCLIBS  disables the inclusion of the .lib files normally
+          included in the linker args (including libf.lib) and will instead
+          use the files listed in the ZCCLIBS enviromental variable.
+
+ZCC16KOBJ \ ZCC32KOBJ \ ZCC48KOBJ
+          Setting ZCC??OBJ disables the inclusion of the 16k.as/32k.as file
+          normally included in the linker args for the 16K|32K|48K model and
+          will instead use the file(s) listed in the ZCC??OBJ enviromental
+          variable.
+
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+5. Example Usage
+ 
+
+To compile, link and make .wzd file for hello.c:-
+
+zcc -z -o3 hello.c
+
+To compile, link and make .wzd file and start downloader for greytest.c from 
+the htc\gfx dir:-
+
+zcc -zs -o3 greytest.c
+
+To compile, link and make .wzd file for othello in the htc\othello dir:-
+
+zcc -z -o3 -zdothello.dsc -zzothello.wic  othello.c worth1.c worth2.c printf.c 
+putch8x8.c scr8x8.as
+
+To compile all files in a directory, without stopping if an error is found
+
+zcc -c -o3 *.c *.as
+
+To link all .obj files in a directory
+
+zcc -l *.obj 
+
+To compile, link, make .wzd file and start downloader for 'baconw'.
+
+zcc -zs -o3 baconw.c ezconio.c ozread.c sprintf.c 
+32kbas.as ozscrol8.as
+
+If you want to keep your source dir clean, make a subdir and zcc from there.
+All .obj, .map etc files will remain in build
+
+e.g if your source is in src/
+make a dir src/build
+cd to build
+zcc -o3 -z -I../ ../file1.c ../file2.c ....
+(-I is needed to find the .h files in the src dir)
+
+
+If your program uses the function alloca(), you must include the -a flag.
+Note: The alloca() function cannot be called indirectly.
+
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+6. Known problems.
+
+Platform    Problem
+NT4         Command shell window may constantly change height during compilation.
+            To prevent this, ensure that the window size = screen buffer size on
+            the command shell's properties, and that window heightand width are
+            standard dos window sizes, e.g 25x80 or 50x80.
+
+NT4         If ctrl-c is used to abort whilst a zxcc componemt is running, an
+            exception error will occur.
+
+ALL         dcpp will only accept command lines up to 120ish characters (that
+            all I can pass it anyway). The dcpp args can get quite long once
+            -DDEFINES and -IINCLUDEDIRS have been added in. If this causes a
+            problem, email me and I will look at alternatives.
+
+            The linker in the HTC distribution displays 'link>' 4 times even 
+            in quiet mode (-q). It is advised that hlink.exe from Pacific C
+            is used instead.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+6. History
+
+ZCC 1.05  15-OCT-2002
+
+Modified to call hlin1.exe (which in turn spawns hlink.exe) only if hlin1.exe
+and hlink.exe are present in the bin directory. Hlin1.exe was introduced to 
+patch some privacy problems encountered in hlink.exe. In the event that either
+of the 2 files are not present, will default to calling zxlink 
+
+zcc1.04
+
+Minor fix to -z flag.
+
+zcc1.03
+
+Made all -z args generate a .wzd file
+
+zcc1.02
+
+Changed -p option to -k (no prototype removal)
+
+Added -p option to support profile. This will:-
+Add 'p' arg to miniopt2
+Link in compiler\profiler.obj
+#define OZPROFILER
+
+Full path and file name for any .obj files in args list are now passed
+to the linker
+
+Default .bin and .wzd name is now only taken from first .c or .as file 
+in args list. 
+
+
+zcc 1.01
+
+Added line continuations in @files.
+
+Added mixing of @files and args on command line.
+
+Added patches from 0.99b for XP and NT compatibility, these were:-
+More thorough removal of files before asking spawned modules to write to them
+Split the 32K model checksym into 2 parts as NT4 wasn't able to see the whole
+spawned command line.
+
+Fixed problem when using -zi -zo -zd & -zz with env ZCCOPTS.
+
+change -DOZ7xx to -DOZ7XX.
+
+Added new examples of command line usage to this document.
+
+
+
+zcc 1.00
+
+Added ZCC16KOBJ , ZCC32KOBJ and ZCC32KOBJ enviromental variables
+
+Added  minioptf support (A.Pruss)
+
+Improved -o flag parsing - Override for earlier optimization level (from
+ZCCOPTS) now correct. File names beginning with 1|2|3|x|X now correct e.g
+-o3d will now create a filename called 3d . Previously this was taking the
+3 as an optimazation level.
+
+Moved enviromental variables into own section in this doc.
+
+Renamed this doc from readme.txt to zcc.txt. Updated references from the 
+-h switch in ZCC to zcc.txt.
+
+
+
+zcc beta 0.99
+
+fixed togglestderr(). Was causing loss of output from miniopts.
+
+added missing \n to a couple of messages
+
+zcc beta 0.98.
+
+Fixed -a switch, was causing linking etc.
+
+Re-ordered lib file args passed to linker (put libf to front, after users libs).
+
+Added reading from env ZCCLIBS.
+
+Fixed doFileArgs() - it wasn't removing .obj and .lib files from compile list 
+since restructuring in 0.96.
+
+Re-ordered output from -h , now in alpabetical order again.
+
+Added -w9 to args passed to hlink in -q and normal report modes to stop warning about 
+missing psect. This was generated when 48K model code was attempted to be linked in 
+32K model during autolink. 
+
+Changed warning "Incorrect link model selected", to be displayed in all modes of 
+verbosity.
+
+
+zcc beta 0.97
+
+Added alloca() support
+
+zcc beta 0.96
+
+Added reading of args from env ZCCOPTS
+
+Added 0 and X to -O switch. 0 to turn of optimization (override ZCCOPTS flag). 
+X sets optimization to full, currenty synonomous to 3
+
+Added -q flag for quiet reporting (copyright and errors only)
+
+Made irrel invoked by default. Removed -m flag and added -p flag to diable irrel
+
+Update output from -h.
+
+Corrected some spelling mistakes. 
+
+Decided not to use UPX on .exe as I have heard reports of this upsetting virus 
+checkers.
+
+Updated this document.
+
+
+zcc beta 0.95
+
+Added -m flag to invoke unsused prototype removal (irrel.exe)
+
+Modified help output from -h to include -m flag
+
+Updated this document and added example of compiling 'baconw'
+
+
+zcc beta 0.94
+30/01/02
+
+Fixed -j flag (wasn't in swith !!)
+
+Modified exzas to use 'zxcc zas' instead of zxas.exe
+
+Fixed problem introduced in 0.93 where assmebly output
+was being kept even if nor requested
+
+
+
+zcc beta 0.93
+21/01/02
+
+Corrected problem with user defined lib files not being added with .lib 
+extension
+
+Deleted .aso files before renaming temp files to .aso (rename was failing).
+
+zcc.exe run through UPX to descrease file .exe size.
+
+zcc beta 0.92
+08/01/02
+
+Tried again to get -zs to work on NT. Checks OS for OS=Windows_NT
+and system() correct line (hopefully). Tested on win95/98 and NT4SP5
+
+ZCC not catching linker failure - missing return on end of linker()
+
+#include <zcc.h> corrected
+
+
+zcc beta 0.91
+03/01/02
+
+Modified the code to start downloader from a spawnl to a system call (didn't 
+work on NT as start is inbuilt into command shell)
+
+Added auto model selection for 32K/48K models. 
+
+Modified so that .map file is not deleted if link or checksym fail.
+
+Made several corrections and additions to this doc and zcc usage().
+
+Re-arranged this doc and added index and known problems. 
+
+     -------------------------------------------------------------------
+
+zcc beta 0.90
+01/01/02
+
+Initial release.  
+
+
+

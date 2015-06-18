@@ -1,0 +1,102 @@
+Comparing files list1 and list2
+****** list1
+                U indir         U ncsv          
+sprintf.obj     U __doprnt      D _sprintf      U cret          U csv         
+                U indir         U ncsv          
+scanf.obj       U __doscan      U __iob         D _scanf        U cret        
+****** list2
+                U indir         U ncsv          
+scanf.obj       U __doscan      U __iob         D _scanf        U cret        
+******
+
+****** list1
+                U indir         U ncsv          
+sscanf.obj      U __doscan      D _sscanf       U _strlen       U cret        
+                U indir         U ncsv          
+doprnt.obj      U __ctype_      D __doprnt      U __fnum        U __pnum      
+****** list2
+                U indir         U ncsv          
+doprnt.obj      U __ctype_      D __doprnt      U __fnum        U __pnum      
+******
+
+****** list1
+doscan.obj      U __ctype_      D __doscan      U _atof         U _atoi       
+                U _fgetc        U _tolower      U _ungetc       U cret        
+                U csv           U indir         U lladd         U llmul       
+                U ncsv          U wrelop        
+atof.obj        U __ctype_      D _atof         U aitof         U amul        
+                U cret          U fladd         U fldiv         U flmul       
+                U indir         U lmul$d0       U ncsv          U wrelop      
+fnum.obj        U __fbcd        D __fnum        U _abs          U _strlen     
+****** list2
+doscan.obj      U __ctype_      D __doscan      U _atof         U _atoi       
+                U _fgetc        U _ungetc       U cret          U csv         
+                U indir         U lladd         U llmul         U ncsv        
+                U wrelop        
+fnum.obj        U __fbcd        D __fnum        U _abs          U _strlen     
+******
+
+****** list1
+                U cret          U frelop        U indir         U ncsv        
+                U wrelop        U wrelop_ex     
+fbcd.obj        D __fbcd        U cret          U flmul         U lldiv       
+                U llmod         U negmant       U rcsv          
+tan.obj         U _cos          U _sin          D _tan          U cret        
+****** list2
+                U cret          U frelop        U indir         U ncsv        
+                U wrelop        
+tan.obj         U _cos          U _sin          D _tan          U cret        
+******
+
+****** list1
+                U ncsv          
+exp.obj         U ___fperr      U _eval_poly    D _exp          U _floor      
+                U _ldexp        U _log          D _pow          U aitof       
+                U asflmul       U asflsub       U cret          U csv         
+                U fldiv         U flmul         U frelop        U ftol        
+                U indir         U ncsv          
+log.obj         U _eval_poly    U _frexp        D _log          D _log10      
+****** list2
+                U ncsv          
+exp.obj         U _eval_poly    D _exp          U _floor        U _ldexp      
+                U _log          D _pow          U aitof         U asflmul     
+                U asflsub       U cret          U csv           U fldiv       
+                U flmul         U frelop        U ftol          U indir       
+                U ncsv          
+log.obj         U _eval_poly    U _frexp        D _log          D _log10      
+******
+
+****** list1
+                U indir         U ncsv          
+sqrt.obj        U ___fperr      U _frexp        U _ldexp        D _sqrt       
+                U adiv          U cret          U fladd         U fldiv       
+                U frelop        U indir         U ncsv          U wrelop      
+frexp.obj       D _frexp        D _ldexp        
+****** list2
+                U indir         U ncsv          
+sqrt.obj        U _frexp        U _ldexp        D _sqrt         U adiv        
+                U cret          U fladd         U fldiv         U frelop      
+                U indir         U ncsv          U wrelop        
+frexp.obj       D _frexp        D _ldexp        
+******
+
+****** list1
+****** list2
+flsprint.obj    U __ctype_      U __sfnum       U __spnum       U _atoi       
+                D _sprintf      U _strlen       U brelop        U cret        
+                U csv           U indir         U ncsv          U wrelop      
+sfnum.obj       U __fbcd        D __sfnum       U _abs          U _strlen     
+                U adiv          U amod          U asamod        U brelop      
+                U cret          U frelop        U indir         U ncsv        
+                U wrelop        
+flsscanf.obj    U __ctype_      U _atof         U _atoi         D _sscanf     
+                U cret          U csv           U indir         U lladd       
+                U llmul         U ncsv          U wrelop        
+atof.obj        U __ctype_      D _atof         U aitof         U amul        
+                U cret          U fladd         U fldiv         U flmul       
+                U indir         U ncsv          U wrelop        
+fbcd.obj        D __fbcd        U cret          U flmul         U lldiv       
+                U llmod         U negmant       U rcsv          
+******
+
+

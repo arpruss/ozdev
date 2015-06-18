@@ -1,0 +1,20 @@
+<SHARP WZD DATA>
+<DATA TYPE>
+MEMO
+</DATA TYPE>
+<TITLE>
+zz:wizterm.config
+</TITLE>
+<CATEGORY>
+NO CATEGORY
+</CATEGORY>
+<DESCRIPTION>
+Wizterm 1.0.15 Configuration File.  Delete all older zz:wizterm.config memos before installing.  This memo is, of course, useless without the Wizterm program.
+</DESCRIPTION>
+<DATA>
+Sharp Download Data V1.0
+"C","M"," "
+"I","ATTR","TTL1","MEM1","DATE","IMG3","CLAS","CGR1","QMEM"
+"T","Attribute","Title","text","Create data","bitmap","File name","Category kind","Quick Memo"
+"D"," ","zz:wizterm.config","# display lines: 13 or 16lines 13# display columns: 59 or 60columns 60# baud options: 300,1200,2400,4800,9600,19200,38400baud 19200# XON/XOFF handshaking on receive (0 or 1)handshaking 0# parity options: none, even, odd, high, lowparity none# databits options: 5,6,7,8databits 8# stopbits options: 1, 1.5, 2stopbits 1# auto line feedautolf 0# smooth scrollingsmoothscroll 0# visual beep (flash light)visualbeep 0# key clickkeyclick 1# soft keyskey category-s TERM=vt100;export TERM;stty rows 13 cols 60\r# you'll want to change MyNumber, MyUserName and MyPassword!key category-d atd[MyNumber]\rkey category-u [MyUserName]\rkey category-i [MyPassword]\r","20010306",,,"",
+</DATA>

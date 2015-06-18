@@ -1,0 +1,15 @@
+VIEWWEEK Program
+
+My gratitude is due to Giancarlo Gastaldello for translating into Italian.
+To compile for Italian, change #define ENGLISH to #define ITALIAN in
+viewweek.h, and change viewweek.dsc to italian.dsc in Makefile.
+
+
+NOTE: If you compile the version here, the forceautorun option won't
+work.  That option requires a separate module, ozsetaut.obj, that for
+security reasons is not included with the Hi-Tech C distribution, and is
+replaced by a safe non-working version.  If you make changes to viewweek
+and want forceautorun functionality, email pruss@imap.pitt.edu for a
+recompiled version with your changes.
+
+

@@ -1,0 +1,79 @@
+all: smain.wzd
+
+OBJS_SECURE = show-s.obj font.obj wrap.obj ozputsf.obj \
+misc-m.obj randhbit.obj getR.obj stricmp.obj put.obj \
+scroll.obj warn.obj \
+clip-s.obj misc2.obj edit-s.obj ozgetl.obj menu.obj \
+smallstr.obj scr_nc.obj serial.obj xlat.obj flash.obj getch.obj \
+secvars.obj
+
+.bmp.xbm:
+        c:\progra~1\imagemagick\convert -monochrome $*.bmp $*.xbm
+
+helpdata.exe: helpdata.c help.xbm smain.xbm mailedit.xbm
+        bcc32 helpdata.c
+
+mailedit.inc: helpdata.exe
+        helpdata mail
+
+misc-m.obj: misc-s.as mailedit.inc
+        copy misc-s.as misc-m.as
+        ren smain.inc smain0.inc
+        ren mailedit.inc smain.inc
+        zxas misc-m.as
+        ren smain.inc mailedit.inc
+        ren smain0.inc smain.inc
+
+edit-s.obj: edit.c edit.h
+        copy edit.c edit-s.c
+        zcc  -ox -c -DSECURE edit-s.c
+        del edit-s.c
+
+clip-s.obj: clip.c edit.h
+        copy clip.c clip-s.c
+        zcc  -ox -c  -DSECURE clip-s.c
+        del clip-s.c
+
+show-s.obj: show.c edit.h
+        copy show.c show-s.c
+        zcc  -ox -c -DSECURE show-s.c
+        del show-s.c
+
+show.obj: show.c edit.h
+
+font.obj: font.c edit.h
+
+put.obj: put.c edit.h
+
+warn.obj: warn.c edit.h
+
+misc2.obj: misc2.c edit.h
+
+search.obj: search.c edit.h
+
+scroll.obj: scroll.c edit.h
+
+edit.obj: edit.c edit.h
+
+mailedit.c: smain.c
+        copy smain.c mailedit.c
+
+mailedit.obj: mailedit.c
+        zcc -c -ox -DMAIL mailedit.c
+
+readidx.obj: readidx.c edit.h
+
+secure.lib: $(OBJS_SECURE)
+        zxecho libr.arg r secure.lib $(OBJS_SECURE)
+        xlibr libr.arg
+
+.as.obj:
+        zxas $*.as
+
+.c.obj:
+        zcc  -ox -c $*.c
+
+smain.wzd: mailedit.obj secure.lib smain.inf
+        ozlink48 mailedit secure.lib secure.lib
+        makewzd -1027 mailedit @mailedit.inf
+

@@ -1,0 +1,5 @@
+r zlibf.lib flsprint.obj flsscanf.obj atof.obj sfnum.obj doscan.obj \
+ltof.obj ftol.obj asfloat.obj finc.obj fbcd.obj frndint.obj tan.obj \
+acos.obj asin.obj atan2.obj atan.obj cos.obj sin.obj sinh.obj cosh.obj \
+tanh.obj exp.obj log.obj evalpoly.obj sqrt.obj frexp.obj fabs.obj ceil.obj \
+floor.obj float.obj

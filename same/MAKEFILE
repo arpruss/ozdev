@@ -1,0 +1,35 @@
+all: same.wzd
+
+OBJS2 = put.obj vars.obj shade.obj putblock.obj menu.obj io.obj help.obj
+
+.as.obj:
+        zxas -x $*.as
+
+.c.obj:
+        zcc -ox -c  $*.c
+
+b2c.exe: b2c.c
+        bcc32 b2c.c
+
+bitmaps.h: bitmaps b2c.exe
+        b2c.exe < bitmaps > bitmaps.h
+
+put.obj: put.c same.h
+
+vars.obj: vars.c same.h bitmaps.h
+
+same.obj: same.c same.h
+
+shade.obj: shade.c same.h
+
+io.obj: io.c same.h
+
+menu.obj: menu.c same.h
+
+same.bin: same.obj $(OBJS2)
+        ozlink same $(OBJS2)
+
+same.wzd: same.bin same.inf
+        makewzd same @same.inf
+        ozpack same.wzd
+

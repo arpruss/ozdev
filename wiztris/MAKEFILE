@@ -1,0 +1,16 @@
+all: wiztris.wzd
+
+.as.obj:
+        zxas $*.as
+
+.c.obj:
+        del $*.obj
+        zxc -c -o $*.c
+
+rotfont.obj: rotfont.c
+        ccopt rotfont
+
+wiztris.wzd: wiztris.obj andblock.obj rotfont.obj wiztris.wic
+        ozlink wiztris andblock.obj rotfont.obj
+        makewzd wiztris "Wiztris 1.97" @wiztris.dsc wiztris.wic
+        ozpack wiztris.wzd

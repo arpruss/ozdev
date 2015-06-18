@@ -1,0 +1,1 @@
+tomemo -e smithz 999 fn SmithzBold9.wzf SmithzCaps9.wzf SmithzCapsBold9.wzf SmithzClassic9.wzf SmithzClassicPlus.wzf SmithzMenuBlack12.wzf SmithzMenuCaps12.wzf SmithzMenuCond12.wzf SmithzMenuLite12.wzf SmithzMini9.wzf SmithzMiniUltra9.wzf SmithzQuad59.wzf SmithzQuad79.wzf SmithzQuad99.wzf SmithzUltra9.wzf SmithzUltraCaps9.wzf

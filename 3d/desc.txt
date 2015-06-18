@@ -1,0 +1,15 @@
+3D Test
+              0
+ xxx x x xxx  1
+ xx  xx  xx   2
+ xxx x   xxx  3
+              4
+ xxxxxxxxx    5
+ x       xx   6
+ x       x x  7
+ x       x x  8
+ x       x x  9
+ xxxxxxxxx x  10
+  x       xx  11
+   xxxxxxxxx  12
+3D Demo Program. Made in C so use at your own risk. Thanks to Alexander Pruss for making super-fast trigonometry routines. Copyright 2002, Mark H. (mshjr@bellatlantic.net). Visit us on the web @ http://evesw.techmods.com

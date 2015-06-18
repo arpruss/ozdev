@@ -1,0 +1,303 @@
+Cool Fonts v1.5 (01-APR-2001) (Freeware)
+By: Ealoha Designs - Home of the Palm Cool Toys:
+
+Palm Freeware by Palm Users
+http://www.ealoha.com/palm
+
+Cool Fonts v1.5 (01-APR-2001) 25 great fonts for your Palm/Visor PDA:
+
+************
+* CONTENTS *
+************
+
+There are (4) files in the coolfnts.zip archive:
+
+* coolfonts15.txt - (This text file)
+
+* coolfnts.gif - A small sample screen shot of the Cool Fonts v1.5
+
+* coolfonts15.zip - .zip archive with the 25 Cool Fonts v1.5
+
+* fontools.zip - .zip archive with some assorted useful Palm Font tools. 
+
+- - -
+
+SECTIONS DESCRIBED BELOW:
+
+1) About the Cool Fonts v1.5
+
+2) Installing the Cool Fonts v1.5
+
+3) Version and Contact info
+
+***************************************
+1) About the Cool Fonts v1.5 Package: *
+***************************************
+
+(If you are in a hurry to install the Cool Fonts v1.5,
+just scroll down to the "Installing" section below). 
+Cool Fonts require HackMaster or Xmaster -and-
+FontHack 123 v2.2 (included in the "fontools.zip" file.)
+in order to work on your Palm/Visor unit.
+
+All Cool Fonts come in two versions: for Palm OS v3.3+ 
+(EU = Euro symbol instead of num space)  
+Regular version (Non-EU) for Palm OS v2-3.11. 
+
+(The "EU" versions have the Euro Symbol in char #128,
+ the Non-EU version has a num space in char #128).
+
+-All Cool fonts are complete, full extended character font sets.
+---
+
+----------------------------------
+coolfnts15.zip
+
+The 25 Palm/Visor Cool Fonts v1.5:
+(See the coolfnts.gif images)
+----------------------------------
+
+Non-System fonts (less than 11 points)
+have the point size included in the name.
+Some programs may be sensitive to non-system
+size fonts under 11 points, and crash on the
+Palm. While generally harmless, be prepared
+for some resets whenever you experiment with fonts.
+
+
+(E-Text Fonts)
+
+*6Pt1.5 (New)
+*6PtEU1.5 (New)
+*6PtMono1.5 (New)
+*6PtMonoEU1.5 (New)
+*7Pt1.5 (New)
+*7PtEU1.5 (New)
+*9Pt1.5
+*9PtEU1.5
+*9PtBold1.5
+*9PtBoldEU1.5
+*10Pt1.5
+*10PtEU1.5
+-> (11Pt try ArchitectSmall or PDA below)
+...
+
+(Normal size fonts)
+
+*Casual1.5
+*CasualEU1.5
+*CasualBold1.5 (New)
+*CasualBoldEU1.5 (New)
+*NiceFont1.5
+*NiceFontEU1.5
+*NiceFontBold1.5 (New)
+*NiceFontBoldEU1.5 (New)
+*PDA-1.5 (New)
+*PDA-EU1.5 (New)
+*PDABold1.5 (New)
+*PDABoldEU1.5 (New)
+...
+
+(Normal Large fonts)
+
+*ArchitectSm-1.5 (New)
+*ArchitectSm-EU1.5 (New)
+*ArchitectLg-1.5
+*ArchitectLg-EU1.5
+*Metrix1.5
+*MetrixEU1.5
+...
+
+(Narrow fonts)
+
+*Thin9pt1.5 (New)
+*Thin9ptEU1.5 (New)
+*Thin11pt1.5
+*Thin11ptEU1.5
+...
+
+(Bold Fonts)
+
+*BigFoot1.5
+*BigFootEU1.5
+*MacFont1.5
+*MacFontEU1.5
+*MacTall1.5
+*MacTallEU1.5
+*Squat08Pt1.5
+*Squat08PtEU1.5
+*Squat11Pt1.5 (New)
+*Squat11PtEU1.5 (New)
+*SquatCaps8Pt1.5 (New)
+*SquatCaps8PtEU1.5 (New)
+...
+
+(Novelty fonts)
+
+*Script1.5
+*ScriptEU1.5
+- An interesting script style font only.
+*BlankFont1.5 (New)
+- Use this to eliminate any program font
+  such as Large advertising text, etc.
+
+PalmNormal, PalmBold & TallFontsNew are
+also included for reference.
+
+--------------------------------------------
+Credits: Cool Fonts were created on a Palm V
+& IIIc with the Handy Pilot Font Editor:
+
+Alexander Ovcharenko
+--------------------
+-Home of the Handy Pilot Font Editor
+http://www.symbioforge.com/fe/ifdesc.html
+
+*************************************
+2) Installing the Cool Fonts v1.5 : *
+*************************************
+
+You must have Hackmaster OR X-Master -and- FontHack123 installed.
+from the included fontools.zip archive for these fonts to work.
+
+*Note1:
+
+   All Cool Fonts names start with an asterisk (*) designed to be
+   used with Zarf Catalog and AAA Fontviewer, both freeware and
+   included in the fontools.zip archive in the Cool Fonts package.
+   It is highly recommended you install both these programs.
+
+   *Important* On Color IIIc Palms, use X-Master instead of
+   Hackmaster, as the '+' configuration box may not show in Hackmaster 
+   depending on your color configuration. Color IIIc users can also
+   install the Kroma color-control freeware program, excellent.
+   X-Master and Kroma can be found in the fonttools.zip archive (included).
+
+   *Note that there is an inherent bug in HackMaster with some Palm OS's,
+   that is a stack error (chunk-overlock) will occur every 15 accesses or so,
+   and require a soft reset (generally harmless). Try the new XMaster in tools.
+   There may be some other issues with the newer Palm OS v3.5+ and Fonthack123,
+   If you are having trouble check the FontHack 2.2 reviews:
+   http://palmgear.com/software/showsoftware.cfm?sid=45914120001024200900&prodID=2136
+ 
+   Also see Palm Support for new Patches & OS Upgrades
+   http://www.palm.com/support/
+   There is also a new free OS 3.5.2 upgrade for 3.5.xx users there.
+
+   *Quoted from the author of FontHack123: "If you replace standard fonts 
+   with other ones, different in size, brace yourself for some crashes -
+   most programs assume they operate with standard font sizes and calculate 
+   screen coordinates accordingly..." ( -Sergy Menshikov ).
+   
+   *Read the docs in Fonthack & HackMaster or X-Master carefully.
+   Use FontHack and HackMaster/Xmaster at your own risk.
+
+*Note2: (Optional) If you have previous versions of 
+Cool Fonts you may want to delete them before installing 
+these versions of Cool Fonts. -Enter FontHack123, click
+"reset all" and click "save & back" -> All of your
+font selections for applications will be returned to 
+normal built-in Palm system fonts.
+
+You can now safely delete any fonts you were using.
+-Use the included Zarf Catalog program in the included
+"fonttools.zip" archive to delete any fonts you wish,
+(In Z'cat check options/prefs "allow dangerous actions").
+Then hot-sync the new fonts. You can also use Z'Catalog
+to beam fonts, hacks & change names. Read the Z'Cat Doc.
+
+1) Read the text documentation files carefully for
+   FontHack123-22 v2.2 & HackMaster v0.9 (included 
+   in the "fontools.zip" archive). You must have
+   these hack files installed to run Coolfonts.
+
+2) You may also want to install the MiddleCapsHack 
+   (allows you to designate a small area of graffiti pad 
+   for capitals) and ClearHack (clears lines in memo fields)
+   at this time. Both of these hacks are excellent.
+
+3) HotSync the fonts you wish. Tap the HackMaster Icon &
+   activate fontHack by checking the box on the left.
+   Tick the '+' on the right side of FontHack123 and you
+   can select the applications you wish to change fonts.
+
+4) Generally, problems occur in FontHack123 when a font
+   is deleted that is active (called up in an app.)
+   FontHack123 v2.2 stores its data in a file called
+   "appfontdata2" when you hit "Save & Back". Enclosed
+   in the fonttools archive also is the freeware file
+   called "Zarf Catalog" (ZCatalog). You can beam, delete,
+   rename files with it, very useful for beaming hacks
+   and fonts. *Be careful deleting any file with Z'Catalog.
+
+Also note that when loading fonts into your Palm, in
+OS 3.3 and later fonts will show will show up in fonthack
+last-installed first. If you are particular load name Z-A.
+Earlier versions of Palm OS will show font names as loaded.
+
+Note3: HackMaster & ClearHack in the fonttools.zip
+archive are shareware, please support the authors if 
+you keep using them. Read the info in documentation files.
+
+
+*****************************
+4) Cool Fonts Version info: *
+*****************************
+
+-
+Version 1.5 (01-Apr-01)
+All fonts cleaned up. 25 Fonts total:
+Catagorized in 6 sections: E-text, Normal,
+Normal large, Narrow, Bold, Novelty.
+
+-
+Version 1.4 (09-Dec-00)
+All fonts cleaned up. 15 Fonts total:
+Added Script, 9Point, Lowered, AllCaps & Thinfont.
+All Cool Fonts Names now start with an Asterisk (*) so
+they will show at the top of the list in Zarf Catalog
+for updating/deleting/beaming/name changing etc.
+
+-
+Version 1.3 (29-Sep-00)
+All fonts cleaned up. Version numbers added.
+Nine fonts total: Architect, BigFoot, Casual,
+MacFont, MacTall, Metrix, NiceFont, Squat, Strong & Stout.
+Also added extra fonts Gotham & Zepplin,
+Narrowed, Tallfonts, PalmNorm/Bold in the morefnts.zip
+
+-
+Version 1.2 (23-Aug-00)
+Cleaned up Architect, Macfont & Stout, added the 
+Casual font. Added a few more tools.
+
+-
+Version 1.1 (13-Aug-00)
+Initial release of Architect, Macfont & Stout font.
+
+-
+Version 1.0 (01-Aug-00)
+First release. (Limited compatibility check).
+
+---------------
+
+Cool Fonts v1.5 - March 1, 2001
+
+(c) 2000, 2001 Cool Fonts by Ron Buelow. If you wish to use 
+any of these fonts in commercial or shareware software, 
+please contact me at the email address below. 
+
+Cool Fonts are always free for personal use. 
+See palmgear.com for the latest version of Cool Fonts,
+http://palmgear.com/software/showsoftware.cfm?sid=45914120001024200900&prodID=8540
+or visit the Palm Cooltoys site http://www.ealoha.com/palm
+
+Palm(tm) is a registered trademark of Palm Computing Inc., 
+3Com Corporation or its subsidiaries. 
+
+Please send any questions or comments to:
+Ron Buelow - Email: ron@ealoha.com
+
+For more great Palm files visit
+Free Palm Cooltoys:
+http://www.ealoha.com/palm 

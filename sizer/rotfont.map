@@ -1,0 +1,62 @@
+Machine type is Z80
+
+p:16k.obj       lowpage      8000      101	data         83F6        2
+p:rotfont.obj   data         83F8      49B	bss          8893        4
+		text         8143      147
+
+p:libc0.lib
+brelop.obj      text         828A       14
+csv.obj         text         829E       28
+
+p:liboz.lib
+p:ozputbyt.obj  lowpage      8101       21
+p:ozkey.obj     text         82C6       86
+p:newmul.obj    text         834C       71
+p:ozexitf.obj   bss          8897       14	text         83BD       1A
+p:ozblank0.obj  lowpage      8122        1	text         83D7       1F
+p:ozlcd.obj     lowpage      8123       1E
+p:ozapage.obj   lowpage      8141        2
+
+p:libc0.lib
+
+p:liboz.lib
+
+TOTAL		Name         Link     Load   Length
+		(abs)           0        0        0
+		lowpage      8000     8000      143
+		data         83F6     83F6      49D
+		bss          8893     8893       18
+		midpage      8143     8143        0
+		text         8143     8143      2B3
+
+                                  Symbol Table
+
+$32kintoff            lowpage 80F3  $32kinton             lowpage 80F3
+$blanked              lowpage 8122  $ozlcdstatus          (abs)   C024
+$ozsetlcdstate        lowpage 8123  $sp$                  lowpage 80FE
+$swapupperpages       lowpage 80F3  AlarmSet              lowpage 8100
+EnableKeyboard        (abs)   C00F  HeapTop               (abs)   BFFF
+KeyBufGetPos          (abs)   C031  KeyBufPutPos          (abs)   C032
+KeyboardBuffer        (abs)   C033  Model32k              (abs)   0000
+ScrCharSet            (abs)   C066  __Hbss                bss     88AB
+__Hdata               data    8893  __Hlowpage            lowpage 8143
+__Hmidpage            midpage 8143  __Htext               text    83F6
+__Lbss                bss     8893  __Ldata               data    83F6
+__Llowpage            lowpage 8000  __Lmidpage            midpage 8143
+__Ltext               text    8143  __exit                lowpage 80AC
+__ozactivepage        lowpage 8141  __ozbacklight         (abs)   C068
+__ozbacklight_save    (abs)   C003  __ozcallexitfunctions text    83BD
+__ozcontrast          (abs)   C026  __ozexitfunctions     bss     8897
+__ozfilename          lowpage 8014  __ozfileowner         lowpage 8020
+__ozinitialsp         lowpage 80FC  _bdos                 lowpage 80F3
+_exit                 lowpage 80A1  _main                 text    8238
+_ozdisplayputbyte     lowpage 8101  _ozexitrestoreint     lowpage 80F4
+_ozgetch              text    82E7  _ozkeyclear           text    82E0
+_ozkeyhit             text    82C6  _ozslow               text    83D7
+_ozunblankscreen      text    83D7  _ozungetch            text    8311
+_putrotated           text    8143  _rotated_font         data    83F8
+amul                  text    8352  brelop                text    828A
+cret                  text    82AA  csv                   text    829E
+indir                 text    82B1  lmul                  text    8352
+ncsv                  text    82B2  
+

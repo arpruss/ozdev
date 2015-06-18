@@ -1,0 +1,9 @@
+LIBC.LIB is the original Hi-Tech C library, slightly modified for
+bug-removal purposes.
+LIBC0.LIB contains changes for OZ7xx systems.
+
+orig_h contains the original Hi-Tech .h files whenever I've had to
+modify these.
+
+DO NOT RUN ANY .COM FILES FROM THIS DIRECTORY DIRECTLY.  THEY ARE FOR
+CPM.

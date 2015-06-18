@@ -1,0 +1,17 @@
+.c.obj:
+        zxc -c -o $*.c
+
+.as.obj:
+        zxas $*.as
+
+ozread.obj: ozread.c ozread.h
+
+find.wzd: find.obj ozread.obj ozfind.obj
+        ozlink find ozread.obj ozfind.obj
+
+testflsh.wzd: testflsh.obj ozflash.obj scr8x8.obj putch8x8.obj
+        ozlink testflsh ozflash.obj scr8x8.obj putch8x8.obj
+
+sothello.wzd: sothello.obj readline.obj scr.obj putch.obj
+        ozlink sothello readline.obj scr.obj putch.obj
+

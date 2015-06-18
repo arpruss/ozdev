@@ -1,0 +1,86 @@
+Machine type is Z80
+
+p:16k.obj       lowpage      8000       F0	data         994B        2
+p:dumperas.obj  data         994D      110	bss          9AF4        3
+		text         8B35      457
+p:ozfileer.obj  lowpage      80F0      21A
+p:ozread.obj    data         9A5D        1	bss          9AF7       48
+		text         8F8C      3C3
+
+p:libc0.lib
+asll.obj        text         934F        F
+ctype_.obj      data         9A5E       81
+wrelop.obj      text         935E        F
+shll.obj        text         936D        D
+csv.obj         text         937A       28
+
+p:liboz.lib
+p:getch.obj     data         9ADF       15	bss          9B3F        A
+		text         93A2      415
+p:ozkey.obj     text         97B7       86
+p:ozser.obj     text         983D       2C
+p:ozserctl.obj  text         9869       5D
+p:ozfile.obj    lowpage      830A      57A
+p:ozputsns.obj  lowpage      8884      262
+p:newmul.obj    text         98C6       71
+p:memcpy.obj    text         9937       14
+p:ozdetect.obj  lowpage      8AE6       4F
+
+p:libc0.lib
+
+p:liboz.lib
+
+TOTAL		Name         Link     Load   Length
+		(abs)           0        0        0
+		lowpage      8000     8000      B35
+		data         994B     994B      1A9
+		bss          9AF4     9AF4       55
+		midpage      8B35     8B35        0
+		text         8B35     8B35      E16
+
+                                  Symbol Table
+
+$32kintoff         lowpage 80E4  $32kinton          lowpage 80E4
+$cdir_pages        lowpage 8509  $filetypetable     lowpage 8B33
+$is770             lowpage 8B32  $pages             lowpage 830B
+$sp$               lowpage 80ED  $swapupperpages    lowpage 80E4
+EnableKeyboard     (abs)   C00F  HeapTop            (abs)   BFFF
+KeyBufGetPos       (abs)   C031  KeyBufPutPos       (abs)   C032
+KeyboardBuffer     (abs)   C033  Model32k           (abs)   0000
+ScrCharSet         (abs)   C066  __Hbss             bss     9B49
+__Hdata            data    9AF4  __Hlowpage         lowpage 8B35
+__Hmidpage         midpage 8B35  __Htext            text    994B
+__Lbss             bss     9AF4  __Ldata            data    994B
+__Llowpage         lowpage 8000  __Lmidpage         midpage 8B35
+__Ltext            text    8B35  __ctype_           data    9A5E
+__ozbacklight      (abs)   C068  __ozbacklight_save (abs)   C003
+__ozfilename       lowpage 8014  _bdos              lowpage 80E4
+_blkcpy            text    9937  _btoh              text    8C74
+_close             lowpage 80E4  _exit              lowpage 809E
+_getch             text    97A1  _hexnibble         text    8C51
+_htou              text    8BAB  _kbhit             text    9767
+_main              text    8CB0  _memcpy            text    9937
+_ozclose           text    928F  _ozdatabits        text    9869
+_ozexitrestoreint  lowpage 80E5  _ozfindmemo        lowpage 85DD
+_ozfindmemoerased  lowpage 8107  _ozfindnext        lowpage 861D
+_ozfindnexterased  lowpage 8146  _ozgetbaud         text    98B3
+_ozgetc            text    92AD  _ozgetch           text    97D8
+_ozgetlcr          text    9895  _ozinclocation     lowpage 87F0
+_ozinitfs          lowpage 851B  _ozis770           lowpage 8AE6
+_ozkeyclear        text    97D1  _ozkeyhit          text    97B7
+_ozkeymapcrtolf    text    93A2  _ozloadcluster     lowpage 8802
+_ozopenread        text    8F8C  _ozopenreadloc     text    9119
+_ozparity          text    987D  _ozputch           lowpage 8AD5
+_ozputs            lowpage 88AF  _ozputsgetend      lowpage 8884
+_ozserialin        text    984B  _ozserialout       text    985B
+_ozserintoff       text    983D  _ozserinton        text    9844
+_ozsetbaud         text    989B  _ozsetlcr          text    9875
+_ozstopbits        text    9889  _ozungetch         text    9802
+_read_line         text    8B5B  _serputs           text    8B35
+amul               text    98CC  asal               text    934F
+asll               text    934F  cret               text    9386
+csv                text    937A  fs_init            lowpage 830A
+indir              text    938D  lmul               text    98CC
+ncsv               text    938E  shal               text    936D
+shll               text    936D  wrelop             text    935E
+

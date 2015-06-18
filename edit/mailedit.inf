@@ -1,0 +1,179 @@
+MailEdit 0.2
+.             0
+............ 10
+............ 11
+............ 12
+xxxxxxxxxxxx 1
+xx........xx 2
+x.x......x.x 3
+x..xxxxxx..x 4
+x..........x 5
+xxxxxxxxxxxx 6
+............ 7
+............ 8
+............ 9
+THIS PROGRAM MAY NOT BE DISTRIBUTED OUTSIDE THE UNITED STATES AND CANADA.
+
+BY DOWNLOADING YOU SIGNIFY YOU HAVE READ AND AGREED TO ALL OF THE
+CONDITIONS LISTED HERE. IF YOU DISAGREE WITH THE LICENSE, YOU CAN RETURN
+THE PROGRAM FOR A REFUND. This is a C/assembly program.  It is possible
+for a C/assembly program to damage data and even to make your organizer
+inoperable.  USE AT YOUR OWN RISK.  NO GUARANTEES ARE MADE. By
+downloading this program to your organizer you agree not to hold the
+author(s) responsible for any damage to data, hardware or anything else.
+IF ANY OF THESE CONDITIONS ARE NOT PERMITTED BY APPLICABLE LAW, YOU ARE
+NOT LEGALLY PERMITTED TO DOWNLOAD OR USE THE PROGRAM. This program may
+be freely distributed but only provided that this description is
+unmodified.  This program is copyright (c) 2001-2002 Alexander R Pruss.
+
+It is strongly recommended you back up your Wizard before running
+C/assembler programs.
+
+NOTE: If a C/assembly program hangs due to a bug, you may need to flip
+the battery switch on the bottom of the Wizard back and forth.  If the
+Wizard does not respond to this, taking the batteries out for half a
+minute should help.  If this doesn't help, you've read the WARNING
+above.  None of this should be necessary, but no guarantees are made.
+
+This program may not have been sufficiently tested.  Report bugs and
+suggestions to: ap85@georgetown.edu.
+
+
+This is a text editor for 16K-long text files.  Usage is pretty
+self-explanatory, though please read at least the next section.
+
+
+Differences from built-in memo editor:
+
+1. Files can be up to 16K long.  The files are stored in special schedule
+entries for January 1, 1901.  These entries may cause some trouble with
+DayTimer sync'ing.  Moreover, these entries will NOT be transferred to the
+PC when sync'ing--only the filenames will get transferred over.  Thus, if
+you want to back up the encrypted data, you cannot use synchronization, but
+a full backup.  Filenames should generally start with "secure/".  You can
+delete the special schedule entries manually if necessary, and you can also
+delete them from the main menu.
+
+2. Search / search-again by pressing 2nd+s or 2nd+g, respectively.
+
+3. In edit mode, the NEW key functions like a PC's CTRL key in many
+ways, and some special keys follow the standard of WordStar-compatible
+PC text editors.  Thus, NEW-T deletes a word to the right, NEW-Y deletes
+a line, NEW-G deletes a character to the right.
+
+NEW-leftarrow and NEW-rightarrow move by a word.  NEW-backspace deletes
+the word to the left.  I bet some of you have been missing these
+features in the built-in memo editor.
+
+4. Special ASCII characters like {} or [] are available via the key
+combinations used in WizTerm.  They're accessible via the CATEGORY key.
+Specifically, pressing one of opqrw190,. together with the CATEGORY key
+yields []~\`|{}<> respectively.  Thus, CATEGORY-9 is {.
+
+(CATEGORY is the key to the left of the space bar.)
+
+5. CATEGORY in browse mode toggles sort order between TITLE and DATE.
+
+6. Cannot copy memo to clipboard from browse mode (the mode where you
+see the list of memo titles), but only from within edit mode.
+
+7. MailEdit is MUCH faster for almost all operations than the Wizard's
+memo editor.
+
+8. Font changing works in edit mode.  Just press 2nd-f to cycle through
+the two fonts available.  You can load in additional fonts from the Font
+Package on www.ozdev.com.
+
+9. In the editor, you can press 2nd+u to upload data from the current
+memo to the PC via the serial port: the whole memo is uploaded unless you
+have an area selected in which case the selected area is uploaded.  You
+can press 2nd+d to download serial data from the PC.  The parameters for
+both transfers are: 9600 baud, no parity, eight bits, handshaking either
+off (for upload to PC) or else either off or software (for download from
+PC).  To transfer data to or from a PC, you can use the HyperTerminal
+program, which is included with Windows (though you may need to install
+it from your Windows CD).  You should be able to access it via something
+like START | ACCESSORIES | COMMUNICATIONS | HYPERTERMINAL (or maybe
+INTERNET instead of COMMUNICATIONS), which should let you run HYPERTRM.
+You'll be asked to enter a name for the connection.  Put in something like
+"Organizer".  Under "Connect using", select Direct to comx, where comx is
+the com port you use for uploading things to your organizer.  Under
+"Bits per second", choose 9600.  Under "Data bits", put 8.  Under "Parity",
+select "None".  Under "Stop bits", choose 1.  And under "Flow control",
+select "None".  Then, go to FILE | PROPERTIES | SETTINGS | ASCII SETUP
+and make sure that "Send line ends with line feeds" is checked.  To see
+what data is sent to the Wizard while it's being sent, you may also want
+to make sure "Echo typed characters locally" is checked.
+
+To send a text file from the PC to the Wizard, press 2nd+d on the Wizard
+when editing a memo.  Then, in Hyperterminal do TRANSFER | SEND TEXT
+FILE and select the file to send.  The file will then be sent, and a
+progress bar will show up on the Organizer screen.  When the bar stops
+growing, you're done, and you can press any key on the Organizer. To
+send a text file from the Wizard to the PC, choose TRANSFER | CAPTURE
+TEXT, and select a filename.  Then, when editing the memo in MemoEdit,
+press 2nd+u (with region highlighted if desired) to send to the PC.
+Then, choose TRANSFER | CAPTURE TEXT | STOP on the PC, and you'll be
+done.  When you exit Hyperterminal, save your new connection so you
+won't have to enter in parameters each time.
+
+10. In the editor, press NEW-MINUS to toggle key-click, and in browse
+mode, press the MINUS key to toggle key-click.  Note: MailEdit is fully
+KeyTune compatible, and the key-click setting will be restored next time
+MailEdit is run.
+
+11. The clipboard is cleared at exit from MailEdit.  A future version
+may fix this.
+
+
+
+Official limitations (not bugs, and no plan to fix in near future)
+include:
+
+1. Absolute 1957 byte limit on clipboard data.  (I may extend it to 4357
+bytes if I feel like putting in the effort later and if people ask for
+it.)
+
+2. If you copy data to clipboard from a long memo, and then save the
+memo, to have the clipboard available to another memo, the file length
+plus clipboard length cannot exceed 16384 bytes.  (This included memo
+title.)
+
+3. No support for most characters not in ASCII 32-127 plus newline
+range.  The present version does support the following special characters:
+acute(')-accented e, o, u and a;  grave(`)-accented e, o, u and a;
+circumflex(^)-accented e, o, u, a, E and O;  umlaut-accented e, o, u, a, E,
+O, U, A;  tilde(~)-marked n and N;  cedilla-marked c;  German ss;
+Euro;  pound;  degree-symbol;  bullet;  Greek mu.  All but the pound,
+degree-symbol, bullet and mu are accessed in the same way that these are
+accessed on the Wizard keyboard and marked (at least they're marked on
+non-U.S. models).  Acute-e is 2nd-k e, grave-o is 2nd-j o, circumflex-E
+is 2nd-n shift-e, umlaut-A is 2nd-b shift-A, tilde-N is 2nd-l shift-N,
+cedilla-c is 2nd-m, ss is 2nd-comma, euro is 2nd-period.  The additional
+characters are accessed as follows: pound is 2nd-3, degree is 2nd-0
+(zero), bullet is 2nd-minus, and mu is 2nd-y.  All other special
+characters if present in a memo will be changed to a * character. In the
+fixed-width font version, these special characters will look like trash.
+These special characters do not transfer over the serial line.
+
+4. The clipboard data will be preserved even if you exit MailEdit,
+provided you don't reset the Wizard (turning off with power button is
+OK), and providing you don't run another program that uses the area of
+auxiliary memory where the clipboard data is stored (e.g., Loader is
+quite likely to destroy the clipboard data).
+
+(MailEdit should know its clipboard has been overwritten through a
+number of sanity checks.)
+
+
+Unofficial limitations and known bugs (may be removed in later
+revisions):
+
+1. The pageup and pagedown keys don't work as neatly as I would wish,
+though they don't seem to be buggy.
+
+
+
+TECHNICAL INFORMATION: This program is written in Hi-Tech C, with some
+assembly bits for i/o.
+

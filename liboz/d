@@ -1,0 +1,107 @@
+Comparing files ozfi1.as and flexpos\ozfi1.as
+****** ozfi1.as
+global __ozcdirpages,fs_init
+global __ozclusterbuffer,__ozmodel,_ozdetectmodel,restore_a000
+
+****** flexpos\ozfi1.as
+global __ozcdirpages,fs_init
+global __ozclusterbuffer,__ozmodel,_ozdetectmodel
+
+******
+
+****** ozfi1.as
+
+        ld      bc,88h
+****** flexpos\ozfi1.as
+
+        in      a,(3)
+        ld      c,a
+        in      a,(4)
+        ld      b,a
+        push    bc
+
+        ld      bc,88h
+******
+
+****** ozfi1.as
+        jr      c,ScanHeads
+        ld      (fs_init),a
+        jp      restore_a000
+
+****** flexpos\ozfi1.as
+        jr      c,ScanHeads
+Cleanup0:
+        pop     bc
+        ld      a,c
+        out     (3),a
+        ld      a,b
+        out     (4),a
+        ld      a,1
+        ld      (fs_init),a
+        ret
+
+******
+
+****** ozfi1.as
+_ozinclocation:
+        ld      hl,4
+****** flexpos\ozfi1.as
+_ozinclocation:
+        in      a,(3)
+        ld      c,a
+        in      a,(4)
+        ld      b,a
+        push    bc
+
+        ld      hl,4
+******
+
+****** ozfi1.as
+        ld      h,c
+        jp      restore_a000
+NotStandardIncrease:
+****** flexpos\ozfi1.as
+        ld      h,c
+        jp      Cleanup0
+NotStandardIncrease:
+******
+
+****** ozfi1.as
+        inc     a
+        jp      nz,restore_a000 ;; if the start of the cluster is FFFF, have EOF
+        ld      hl,-1
+        jp      restore_a000
+
+****** flexpos\ozfi1.as
+        inc     a
+        jp      nz,Cleanup0  ;; if the start of the cluster is FFFF, have EOF
+        ld      hl,-1
+        jp      Cleanup0
+
+******
+
+****** ozfi1.as
+_ozloadcluster:
+        ld      hl,4
+****** flexpos\ozfi1.as
+_ozloadcluster:
+        in      a,(3)
+        ld      c,a
+        in      a,(4)
+        ld      b,a
+        push    bc
+
+        ld      hl,4
+******
+
+****** ozfi1.as
+
+        jp      restore_a000
+
+****** flexpos\ozfi1.as
+
+        jp      Cleanup0
+
+******
+
+

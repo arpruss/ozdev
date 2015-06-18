@@ -1,0 +1,99 @@
+printf.obj      U __doprnt      U __iob         D _printf       U cret        
+		U csv           U indir         U ncsv          
+fprintf.obj     U __doprnt      D _fprintf      U cret          U csv         
+		U indir         U ncsv          
+sprintf.obj     U __doprnt      D _sprintf      U cret          U csv         
+		U indir         U ncsv          
+scanf.obj       U __doscan      U __iob         D _scanf        U cret        
+		U csv           U indir         U ncsv          
+fscanf.obj      U __doscan      D _fscanf       U cret          U csv         
+		U indir         U ncsv          
+sscanf.obj      U __doscan      D _sscanf       U _strlen       U cret        
+		U indir         U ncsv          
+doprnt.obj      U __ctype_      D __doprnt      U __fnum        U __pnum      
+		U _atoi         U _fputc        U _strlen       U brelop      
+		U cret          U csv           U indir         U ncsv        
+		U wrelop        
+doscan.obj      U __ctype_      D __doscan      U _atof         U _atoi       
+		U _fgetc        U _tolower      U _ungetc       U cret        
+		U csv           U indir         U lladd         U llmul       
+		U ncsv          U wrelop        
+atof.obj        U __ctype_      D _atof         U aitof         U amul        
+		U cret          U fladd         U fldiv         U flmul       
+		U indir         U lmul$d0       U ncsv          U wrelop      
+fnum.obj        U __fbcd        D __fnum        U _abs          U _strlen     
+		U adiv          U amod          U asamod        U brelop      
+		U cret          U frelop        U indir         U ncsv        
+		U wrelop        U wrelop_ex     
+fbcd.obj        D __fbcd        U cret          U flmul         U lldiv       
+		U llmod         U negmant       U rcsv          
+tan.obj         U _cos          U _sin          D _tan          U cret        
+		U csv           U fldiv         U indir         U ncsv        
+acos.obj        D _acos         U _atan         U _sqrt         U cret        
+		U csv           U fldiv         U flmul         U flsub       
+		U indir         U ncsv          
+asin.obj        D _asin         U _atan         U _sqrt         U cret        
+		U csv           U fldiv         U flmul         U flsub       
+		U indir         U ncsv          
+atan2.obj       U _atan         D _atan2        U _fabs         U asfladd     
+		U asflsub       U cret          U csv           U fldiv       
+		U frelop        U indir         U ncsv          
+atan.obj        D _atan         U _eval_poly    U _fabs         U asflmul     
+		U cret          U fldiv         U flmul         U flsub       
+		U frelop        U indir         U ncsv          
+cos.obj         D _cos          U _sin          U cret          U csv         
+		U fladd         U indir         U ncsv          
+sin.obj         U _eval_poly    U _floor        D _sin          U aitof       
+		U asflmul       U asflsub       U cret          U fldiv       
+		U flmul         U flsub         U frelop        U ftol        
+		U indir         U ncsv          
+sinh.obj        U _exp          D _sinh         U cret          U csv         
+		U fldiv         U flmul         U flsub         U indir       
+		U ncsv          
+cosh.obj        D _cosh         U _exp          U cret          U csv         
+		U fladd         U fldiv         U flmul         U indir       
+		U ncsv          
+tanh.obj        U _exp          D _tanh         U cret          U csv         
+		U fladd         U fldiv         U flsub         U indir       
+		U ncsv          
+exp.obj         U ___fperr      U _eval_poly    D _exp          U _floor      
+		U _ldexp        U _log          D _pow          U aitof       
+		U asflmul       U asflsub       U cret          U csv         
+		U fldiv         U flmul         U frelop        U ftol        
+		U indir         U ncsv          
+log.obj         U _eval_poly    U _frexp        D _log          D _log10      
+		U aitof         U cret          U csv           U fladd       
+		U flmul         U flsub         U frelop        U indir       
+		U ncsv          
+evalpoly.obj    D _eval_poly    U cret          U fladd         U flmul       
+		U indir         U ncsv          
+sqrt.obj        U ___fperr      U _frexp        U _ldexp        D _sqrt       
+		U adiv          U cret          U fladd         U fldiv       
+		U frelop        U indir         U ncsv          U wrelop      
+frexp.obj       D _frexp        D _ldexp        
+fabs.obj        D _fabs         U cret          U csv           U frelop      
+		U indir         U ncsv          
+ceil.obj        U __frndint     D _ceil         U cret          U csv         
+		U fladd         U frelop        U indir         U ncsv        
+floor.obj       U __frndint     D _floor        U cret          U csv         
+		U flsub         U frelop        U indir         U ncsv        
+finc.obj        U asfladd       D lfdec         D lfinc         
+asfloat.obj     D asfladd       D asfldiv       D asflmul       D asflsub     
+		U fladd         U fldiv         U flmul         U flsub       
+		U iregset       U iregstore     
+frndint.obj     D __frndint     U altof         U ftol          
+ftol.obj        U allsh         U alrsh         D ftol          U negmant     
+ltof.obj        D abtof         D aitof         D altof         U fpnorm      
+		D lbtof         D litof         D lltof         
+float.obj       D fladd         D fldiv         D flmul         D flsub       
+		D fpnorm        D negmant       
+sfnum.obj       U __fbcd        D __sfnum       U _abs          U _strlen     
+		U adiv          U amod          U asamod        U brelop      
+		U cret          U frelop        U indir         U ncsv        
+		U wrelop        
+flsscanf.obj    U __ctype_      U _atof         U _atoi         D _sscanf     
+		U cret          U csv           U indir         U lladd       
+		U llmul         U ncsv          U wrelop        
+flsprint.obj    U __ctype_      U __sfnum       U __spnum       U _atoi       
+		D _sprintf      U _strlen       U brelop        U cret        
+		U csv           U indir         U ncsv          U wrelop      

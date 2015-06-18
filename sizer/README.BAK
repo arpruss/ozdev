@@ -1,0 +1,34 @@
+Herea are two PC-based tool to size text in each of the Wizard's fonts.
+(The program maketabl.c was run on the Wizard to send table.c to the
+serial port which should be captured.)
+
+1. SIZER
+
+To use, run:
+        sizer [width]
+Then type in the text line by line.  You'll be told for each of the four
+Wizard fonts what the text width is, and what x-coordinate to print the
+text at to get it centered or right aligned.  When done, press ctrl-z.
+
+Use this instead of ozputs(0,-1,s) for constant length strings for
+efficiency.
+
+Specify the width to get centering relative to a smaller width, e.g.,
+for two centered columns.
+
+2. WRAPPER
+
+To use, run:
+        wrapper [font [width]]
+where the optional font parameter can be pcnormal (default), oznormal,
+pclarge or ozlarge.  The width is the desired screen width; default is
+239.  If you specify width, you must specify font.  Then input text (or
+use < to feed it from a file).
+
+The output will be the text wrapped to fit on the Wizard's display.
+Press ctrl-z when done.
+
+3. Rotfont, etc.
+
+This is miscellaneous stuff used to grab fonts from the Wizard and
+generate a table of rotated fonts.

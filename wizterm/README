@@ -1,0 +1,79 @@
+The project here is an interrupt-driven terminal emulator by Alexander
+Pruss, incorporating parts of Benjamin Green's interrupt handler and
+display code.
+
+The main file is wizterm.c.  To produce wizterm.wzd, run:
+        make
+
+INSTRUCTIONS
+
+Upload wtconfig.wzd to have a memo entitled zz:wizterm.config where the
+configuration can be stored.  Comments start with "#". The format of the
+memo should be fairly self-explanatory except for softkeys.  Softkeys
+are defined as:
+  key category-x definition
+  key 2nd-x definition
+Here, x can be any lowercase alphanumeric key, except those which
+already have a special meaning when in conjunction with the CATEGORY or
+2ND keys (see below for special keys).  The definition is a string of
+characters.  If you want to send a space at the beginning or end of the
+string, enclose the string in double quotes (").  You can use the
+following special characters:
+        \xAB  ASCII code AB in hexadecimal (and two digit hex number works)
+        \123  ASCII code 123 in decimal (any one, two or three digit
+              number works)
+        \r    carriage return
+        \n    new line
+        \t    tab
+        \\    backlash
+        \"    double quote
+For instance,
+  key category-i MyPassword\r
+send MyPassword followed by a carriage return whenever you press
+category-i.  Note: To type a \ in the memo editor you need to use the
+SMBL key.
+
+Press the MyPrograms key to exit.
+Use CATEGORY with the following keys to get the following special
+characters:
+                o: [
+                p: ]
+                9: {
+                0: }
+                r: \
+                w: `
+                q: ~
+                1: |
+                ,: <
+                .: >
+                b: send short break (not really a character)
+                l: send long break (not really a character)
+Use NEW as CTRL.  Use the lower-ESC key to send an ESC to the host.
+
+Use 2ND to send the purple characters printed on the keyboard.  Use
+2ND+V to paste from the clipboard.  Currently it is impossible to copy
+or cut to the clipboard.
+
+Use upper-MENU for configuring baud rate and handshaking.  Use
+lower-MENU for help.
+
+The ANSI support is fairly complete except for the following unsupported
+features:
+ - alternate character sets
+ - bold print (simulated as underline)
+ - XON/XOFF handshaking (currently supported only unidirectionally: the
+   terminal emulator may send XOFFs to the host, but will not understand XOFFs
+   sent back);  the XON/XOFF stuff is spotty and off by default
+
+If connecting to Unix, you will want to configure your display as:
+     TERM=vt100;export TERM
+     stty rows 13 cols 59
+You can press CATEGORY-s to send this whole string with the default
+configuration file.
+
+The VT100 support is rather less complete than the ANSI support.  The
+only VT100 extensions of the ANSI standard that are supported are:
+ - smooth scrolling (set with "ESC [ 4 h")
+ - cursor save/restore (ESC 7/8)
+ - no VT52 stuff
+

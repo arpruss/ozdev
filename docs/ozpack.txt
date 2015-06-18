@@ -1,0 +1,160 @@
+Ozpack 1.0
+==========
+
+-Description-------------------------------------------------------------
+
+Ozpack is a runtime unpacker. It takes a .wzd file, followed by a number
+of other files / location arguements. Ozpack will create a 'packed' .wzd 
+file which will decompress it contents at runtime. For example, a .wzd
+file may be packed along with a raw binary screen dump, with the screen
+dump being unpacked to the screen at runtime.
+
+Any number of files may be added in the command line. The limit for
+the final .wzd file is currently 32720. The unpacker and associated code
+occupies about 400 bytes, with each file needing an addition overhead
+of 8-20 bytes to control relocation, paging and unpacking addresses.
+
+
+-Instructions:----------------------------------------------------------
+
+
+First, programs must be compiled with the modified version of 32k.obj
+enclosed. Put this in your htc\compiler folder. This version is compatable
+with the normal version of 32k.obj, and programs will still run as normal
+if not packed.
+
+Command line:
+-------------
+
+ozpack *.wzd file1 (:alias:[Dnnn])|(page:offset:[Dnnn]) file2 (:alias:[Dnnn])|(page:offset:[Dnnn]) ........]
+
+Where nnn after the D is a delay time in 10ths seconds between 1 and 255
+
+Description of Command Line
+---------------------------
+
+The first arg on the command line is the .wzd file to run. This can be followed by any number of 
+filename-location arguement pairs. The location arguements may be in the form of aliases for common memory
+areas, or the page/address can be specified. Additionally, each location arguement may have :Dnnn appended
+to it, where nnn is a number between 1 and 255. This will cause a delay of nnn/10ths second before continueing
+onto the next file. This allows splash screens to be displayed prior to running the program.
+
+Using Aliases on Command Line.
+------------------------------
+
+Aliases are provided for all common memory areas. When using an alias, the file size will also be checked.
+
+examples:-
+
+ozpack hello.wzd
+  just compresses the Wizard file
+
+ozpack myprog.wzd screen.bin :screen0 
+  will load screen.bin into :screen0 and then run myprog.wzd 
+
+ozpack myprog.wzd myfont.fon :font0 screen1.bin :screen0:D20 screen2.bin :screen0:D20
+  will load myfont into font slot 0, display screen1.bin for 2 seconds, then display 
+  screen2.bin for 2 seconds, then run myprog.wzd
+
+Recognized Aliases.
+------------------
+
+:screen0     -  normal (startup) display screen - max len 2400
+:screen1     -  second display screen - max len 2400
+:screensys   -  o/s display area - may be copied to active screen by prog to display - max len 2400
+:aux1        -  auxmem in dual-page mode. Addresses 0x0000 to 0x169F - max len 5792
+:aux2        -  auxmem in dual-page mode. Addresses 0x16A0 to 0x369F - max len 8192
+:aux1sp      -  auxmem in single-page mode. Addresses 0x0000 to 0x1FFF - max len 8192
+:aux2sp      -  auxmem in single-page mode. Addresses 0x2000 to 0x3FFF - max len 8192
+:font0       -  font slot 0. Correct page for model automatically selected - max len 6912
+:font1       -  font slot 1. Correct page for model automatically selected - max len 3456
+
+note:- font0 extends into font1 memory area.        
+
+
+
+Using Memory Locations on Command Line
+--------------------------------------
+
+Specifying page/memory locations on the command line allow greater control over where a file
+will be unpacked to. For example, you may wish to unpack a 40 line bitmap file to the bottom
+half of the screen. Aliases and actual memory location args may be mixed on a command line.
+
+Warning - great care should be taken if using this form of arg. It is possible to crash the 
+wizard and even to cause the password lock to come on if the wrong locations are used.
+
+
+
+ozpack hello.wzd pic.bin 0x400:0 
+  uncompresses the pic.bin file to screen, then runs the .wzd file
+
+ozpack hello.wzd pic1.bin 0x400:0:D20 pic2.bin 0x400:0   -  uncompresses
+pic1 to the screen, waits 2 seconds, then decompresses pic2 to the screen
+and runs the .wzd file
+
+will unpack the pic.raw file to the screen and then unpack and run
+hello.wzd.
+
+
+Reading Command Args from a File
+--------------------------------
+
+The maximum length a command line may be is around 120 characters. To enable longer command
+lines to be used, the args may be put into a text file (e.g args.txt) and then use the command 
+ozpack @args.txt . The @ tells ozpack to get its arguements from the filename that follows.
+
+Any number of files may be added in the command line. The limit for
+the final .wzd file is currently 32720. The unpacker and associated code
+occupies about 400 bytes, with each file needing an addition overhead
+of 8-20 bytes to control relocation, paging and unpacking addresses.
+
+
+-Ozpack Licence------------------------------------------------------------
+
+Ozpack is provided 'as is'. Use is at your own risk. The authour accepts
+no responsibility for damage or other losses to either the Wizard or the PC 
+that may result in the use of Ozpack or Ozpacked programs. 
+
+This program is freeware and may be freely distributed. This program
+may not be sold, although Ozpacked programs remain free of any of the 
+Ozpack licensing restrictions (although other licensing restrictions
+for the original .wzd program still apply).
+
+
+-aPLib Licence--------------------------------------------------------------
+
+Ozpack uses aPLib, the licence for which is copied below:-
+
+
+ So far aPLib is GREET-WARE for non-profitable use (if nobody charges money
+ for programs that use it) which means that if you use it, then you must
+ credit me (well, ain't that cheap!).
+
+ If you (or anybody else) plans to sell a program that uses aPLib, then you
+ will have to register (look at the end of this file).
+
+ The definition of a program that _uses_ aPLib is a program that contains
+ any part of aPLib EXCEPT the depackers. So you can sell a program that
+ uses data packed with aPLib without registering, but NOT a program that
+ contains any part of the compression code.
+
+ You may not distribute aPLib without all of the files.
+
+ You may not edit or reverse engineer any of the files (except the header
+ files and the depackers, which you may edit as long as you do NOT remove
+ my copyright notice).
+
+ You may not sell aPLib, or any part of it, for money (except for charging
+ for the media).
+
+
+-Credits-------------------------------------------------------------------
+
+aPLib 0.36 - a compression library for PC's - 
+             [http://home19.inet.tele.dk/jibz/apack/index.html]
+
+MZ80  -"Multi-Z80 CPU emulator by Neil Bradley (neil@synthcom.com)"
+
+
+Compiled using DJGPP - visit http://www.delorie.com/djgpp/ for latest version.
+

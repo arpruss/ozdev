@@ -1,0 +1,88 @@
+Fonts
+.             0
+............ 11
+..XXX....... 1
+.XX......... 2
+.XX......... 3
+.XXXX....... 4
+.XX......... 5
+.XX......... 6
+.XX...XXXX.. 7
+.X....XX XX. 8
+......XX.XX. 9
+......XX.XX. 10
+............ 12
+(The instructions are below the license here: read both.)
+
+BY DOWNLOADING YOU SIGNIFY YOU HAVE READ AND AGREED TO ALL OF THE
+CONDITIONS LISTED HERE.  This is a C/assembly program.  It is possible
+for a C/assembly program to damage data and even to make your organizer
+inoperable.  USE AT YOUR OWN RISK.  NO GUARANTEES ARE MADE. By
+downloading this program to your organizer you agree not to hold the
+author(s) responsible for any damage to data, hardware or anything else.
+
+IF ANY OF THESE CONDITIONS ARE NOT PERMITTED BY APPLICABLE LAW, YOU ARE
+NOT LEGALLY PERMITTED TO DOWNLOAD OR USE THE PROGRAM. This program may
+be freely distributed but only provided that this description is
+unmodified.  This program is copyright (c) 2001-2002 Alexander R Pruss.
+
+
+
+It is strongly recommended you back up your Wizard before running
+C/assembler programs.
+
+
+
+NOTE: If a C/assembly program hangs due to a bug, you may need to flip
+the battery switch on the bottom of the Wizard back and forth.  If the
+Wizard does not respond to this, taking the batteries out for half a
+minute should help.  If this doesn't help, you've read the WARNING
+above.  None of this should be necessary, but no guarantees are made.
+
+This program may not have been sufficiently tested.  Report bugs and
+suggestions to: ap85@georgetown.edu.
+
+NOTE: Any alarms going off while program is running will be missed.
+
+
+
+This is a font previewer/selector for Wizard fonts.  Wizard fonts can be
+stored permanently on flash (in special schedule entries for January 1,
+1901) or loaded semi-permanently into memory where font-enabled programs
+like MemoEdit can use them.  There are two memory slots for fonts, slot 0
+and slot 1.  Programs you run may overwrite the font you choose for slot
+0, but the font in slot 1 will generally be left alone (there might be
+exceptions to this rule later, and extra large fonts--not available
+now--may need both slots).
+
+
+The S key from the browse list lets you view what is in the two slots.
+The DEL key deletes a font from flash (though if it's loaded into a slot,
+it'll stay there).  The A key deletes all fonts from flash (but not from
+the slots).
+
+
+You can preview a font with the ENTER key, and then select which slot to
+load it into if you like it.
+
+
+To get fonts into the Wizard file system, you can upload them to the Wizard
+in FromMemo format where they are converted to special memos, which the
+Fonts program converts to font files the first time it is run.
+
+
+
+
+Pressing Z when viewing the slots or list of fonts or previewing a font
+sends a screen image to the serial port compatible with Benjamin Green's
+SNAP.EXE program.  If you have SNAP.EXE running on the PC, the screen
+image will appear in it.  You do NOT need SNAP.WZD on your Wizard to do
+this.  SNAP.EXE is included in Benjamin Green's SNAP package in the
+"dual platform software" section of www.ozdev.com.
+
+
+
+TECHNICAL INFORMATION: This program is written in Hi-Tech C, with some
+assembly bits for i/o. Source code will eventually be available (and may
+already be) in the latest Wizard Hi-Tech C distribution on www.ozdev.com
+under "win32 downloads".

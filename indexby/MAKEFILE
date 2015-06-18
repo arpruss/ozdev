@@ -1,0 +1,14 @@
+all: indexby.wzd resetind.wzd
+
+.as.obj:
+        zxas $*.as
+
+.c.obj:
+        ccopt $*
+
+indexby.wzd: indexby.obj
+        ozlink indexby
+        makewzd indexby "IndexBy" @indexby.dsc
+
+resetind.wzd: resetind.c
+        zcc -z $*.c

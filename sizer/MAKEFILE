@@ -1,0 +1,14 @@
+all: maketabl.wzd sizer.exe wrapper.exe
+
+maketabl.obj: maketabl.c
+        zxc -c -o $*.c
+
+sizer.exe: sizer.c table.c
+        cl $*.c
+
+wrapper.exe: wrapper.c table.c
+        cl $*.c
+
+maketabl.wzd: maketabl.obj
+        ozlink maketabl
+

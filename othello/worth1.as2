@@ -1,0 +1,1566 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+psect text
+global _worth_1
+_worth_1:
+global ncsv, cret, indir
+call ncsv
+defw f5
+
+
+
+
+psect data
+F21:
+defb 30
+defb 0
+defb 0
+
+F22:
+defb 4
+defb 0
+defb 0
+
+F23:
+defb 5
+defb 0
+defb 0
+
+F24:
+
+
+defb 0
+defb 3
+defb 6
+defb 9
+defb 3
+defb 15
+defb 12
+defb 18
+defb 6
+defb 0
+defb 45
+defb 6
+defb 0
+defb 3
+defb 27
+defb 12
+defb 60
+defb 15
+defb 9
+defb 18
+defb 36
+
+defb 21
+defb 24
+defb 27
+defb 30
+defb 24
+defb 36
+defb 33
+defb 39
+defb 27
+defb 21
+defb 3
+defb 27
+defb 21
+defb 24
+defb 69
+defb 33
+defb 18
+defb 36
+defb 30
+defb 39
+defb 78
+
+defb 42
+defb 45
+defb 48
+defb 51
+defb 45
+defb 57
+defb 54
+defb 60
+defb 48
+defb 42
+defb 87
+defb 48
+defb 42
+defb 45
+defb 6
+defb 54
+defb 102
+defb 57
+defb 51
+defb 60
+defb 15
+
+defb 63
+defb 66
+defb 69
+defb 72
+defb 66
+defb 78
+defb 75
+defb 81
+defb 69
+defb 63
+defb 24
+defb 69
+defb 63
+defb 66
+defb 69
+defb 75
+defb 39
+defb 78
+defb 72
+defb 81
+defb 78
+
+defb 84
+defb 87
+defb 90
+defb 93
+defb 87
+defb 99
+defb 96
+defb 102
+defb 90
+defb 84
+defb 87
+defb 90
+defb 84
+defb 87
+defb 48
+defb 96
+defb 102
+defb 99
+defb 93
+defb 102
+
+defb 57
+
+F25:
+
+
+defw 0
+defw 0
+defw 0
+defw 0
+defw 0
+defw 0
+defw 0
+defw 0
+defw 0
+defw 0
+defw -20
+defw 0
+defw 0
+defw 0
+defw 20
+defw 0
+defw -20
+defw 0
+defw 0
+defw 0
+defw 20
+
+defw 20
+defw 20
+defw 20
+defw 20
+defw 20
+defw 20
+defw 20
+defw 20
+defw 20
+defw 20
+defw 0
+defw 20
+defw 20
+defw 20
+defw 40
+defw 20
+defw 0
+defw 20
+defw 20
+defw 20
+defw 40
+
+defw -20
+defw -20
+defw -20
+defw -20
+defw -20
+defw -20
+defw -20
+defw -20
+defw -20
+defw -20
+defw -40
+defw -20
+defw -20
+defw -20
+defw 0
+defw -20
+
+defw -40
+defw -20
+defw -20
+defw -20
+defw 0
+
+defw 40
+defw 40
+defw 40
+defw 40
+defw 40
+defw 40
+defw 40
+defw 40
+defw 40
+defw 40
+defw 20
+defw 40
+defw 40
+
+defw 40
+defw 40
+defw 40
+defw 20
+defw 40
+defw 40
+defw 40
+defw 40
+
+defw -40
+defw -40
+defw -40
+defw -40
+defw -40
+defw -40
+defw -40
+defw -40
+defw -40
+defw -40
+defw -40
+
+defw -40
+defw -40
+defw -40
+defw -20
+defw -40
+defw -40
+defw -40
+defw -40
+defw -40
+
+defw -20
+
+psect text
+ld hl,0
+ld (F19+4),hl
+ld (F19),hl
+
+ld e,(ix+6)
+ld d,(ix+1+6)
+ld l,62 ;;*miniopt* was ld hl,62
+add hl,de
+ld c,(hl)
+inc hl
+ld b,(hl)
+push bc
+pop iy
+
+
+ld e,(iy+0)
+ld d,0
+ld hl,F24
+add hl,de
+ld l,(hl)
+ld h,d ;;*miniopt* was ld h,0
+ld e,(iy+1)
+;;*miniopt* removed ld d,0
+add hl,de
+ld de,F24
+add hl,de
+ld l,(hl)
+ld h,0
+ld e,(iy+2)
+ld d,h ;;*miniopt* was ld d,0
+add hl,de
+ld de,F24
+add hl,de
+ld l,(hl)
+ld h,0
+ld e,(iy+3)
+ld d,h ;;*miniopt* was ld d,0
+add hl,de
+ld de,F24
+add hl,de
+ld l,(hl)
+ld h,0
+ld e,(iy+4)
+ld d,h ;;*miniopt* was ld d,0
+add hl,de
+ld de,F24
+add hl,de
+ld l,(hl)
+ld h,0
+ld e,(iy+5)
+ld d,h ;;*miniopt* was ld d,0
+add hl,de
+ld de,F24
+add hl,de
+ld l,(hl)
+ld h,0
+ld e,(iy+6)
+ld d,h ;;*miniopt* was ld d,0
+add hl,de
+ld de,F24
+add hl,de
+ld l,(hl)
+ld h,0
+ld e,(iy+7)
+ld d,h ;;*miniopt* was ld d,0
+add hl,de
+add hl,hl
+ld de,F25
+add hl,de
+ld c,(hl)
+inc hl
+ld b,(hl)
+ld (F19+2),bc
+
+
+ld e,(iy+0)
+ld d,0
+ld hl,F24
+add hl,de
+ld l,(hl)
+ld h,d ;;*miniopt* was ld h,0
+ld e,(iy+8)
+;;*miniopt* removed ld d,0
+add hl,de
+ld de,F24
+add hl,de
+ld l,(hl)
+ld h,0
+ld e,(iy+16)
+ld d,h ;;*miniopt* was ld d,0
+add hl,de
+ld de,F24
+add hl,de
+ld l,(hl)
+ld h,0
+ld e,(iy+24)
+ld d,h ;;*miniopt* was ld d,0
+add hl,de
+ld de,F24
+add hl,de
+ld l,(hl)
+ld h,0
+ld e,(iy+32)
+ld d,h ;;*miniopt* was ld d,0
+add hl,de
+ld de,F24
+add hl,de
+ld l,(hl)
+ld h,0
+ld e,(iy+40)
+ld d,h ;;*miniopt* was ld d,0
+add hl,de
+ld de,F24
+add hl,de
+ld l,(hl)
+ld h,0
+ld e,(iy+48)
+ld d,h ;;*miniopt* was ld d,0
+add hl,de
+ld de,F24
+add hl,de
+ld l,(hl)
+ld h,0
+ld e,(iy+56)
+ld d,h ;;*miniopt* was ld d,0
+add hl,de
+add hl,hl
+ld de,F25
+add hl,de
+ld c,(hl)
+inc hl
+ld b,(hl)
+ld hl,(F19+2)
+add hl,bc
+ld (F19+2),hl
+
+
+ld e,(iy+7)
+ld d,0
+ld hl,F24
+add hl,de
+ld l,(hl)
+ld h,d ;;*miniopt* was ld h,0
+ld e,(iy+15)
+;;*miniopt* removed ld d,0
+add hl,de
+ld de,F24
+add hl,de
+ld l,(hl)
+ld h,0
+ld e,(iy+23)
+ld d,h ;;*miniopt* was ld d,0
+add hl,de
+ld de,F24
+add hl,de
+ld l,(hl)
+ld h,0
+ld e,(iy+31)
+ld d,h ;;*miniopt* was ld d,0
+add hl,de
+ld de,F24
+add hl,de
+ld l,(hl)
+ld h,0
+ld e,(iy+39)
+ld d,h ;;*miniopt* was ld d,0
+add hl,de
+ld de,F24
+add hl,de
+ld l,(hl)
+ld h,0
+ld e,(iy+47)
+ld d,h ;;*miniopt* was ld d,0
+add hl,de
+ld de,F24
+add hl,de
+ld l,(hl)
+ld h,0
+ld e,(iy+55)
+ld d,h ;;*miniopt* was ld d,0
+add hl,de
+ld de,F24
+add hl,de
+ld l,(hl)
+ld h,0
+ld e,(iy+63)
+ld d,h ;;*miniopt* was ld d,0
+add hl,de
+add hl,hl
+ld de,F25
+add hl,de
+ld c,(hl)
+inc hl
+ld b,(hl)
+ld hl,(F19+2)
+add hl,bc
+ld (F19+2),hl
+
+
+ld e,(iy+56)
+ld d,0
+ld hl,F24
+add hl,de
+ld l,(hl)
+ld h,d ;;*miniopt* was ld h,0
+ld e,(iy+57)
+;;*miniopt* removed ld d,0
+add hl,de
+ld de,F24
+add hl,de
+ld l,(hl)
+ld h,0
+ld e,(iy+58)
+ld d,h ;;*miniopt* was ld d,0
+add hl,de
+ld de,F24
+add hl,de
+ld l,(hl)
+ld h,0
+ld e,(iy+59)
+ld d,h ;;*miniopt* was ld d,0
+add hl,de
+ld de,F24
+add hl,de
+ld l,(hl)
+ld h,0
+ld e,(iy+60)
+ld d,h ;;*miniopt* was ld d,0
+add hl,de
+ld de,F24
+add hl,de
+ld l,(hl)
+ld h,0
+ld e,(iy+61)
+ld d,h ;;*miniopt* was ld d,0
+add hl,de
+ld de,F24
+add hl,de
+ld l,(hl)
+ld h,0
+ld e,(iy+62)
+ld d,h ;;*miniopt* was ld d,0
+add hl,de
+ld de,F24
+add hl,de
+ld l,(hl)
+ld h,0
+ld e,(iy+63)
+ld d,h ;;*miniopt* was ld d,0
+add hl,de
+add hl,hl
+ld de,F25
+add hl,de
+ld c,(hl)
+inc hl
+ld b,(hl)
+ld hl,(F19+2)
+add hl,bc
+ld (F19+2),hl
+
+ld bc,50
+ld de,F19
+ld l,(iy+0)
+ld h,b ;;*miniopt* was ld h,0
+add hl,hl
+add hl,de
+;;*miniopt* removed double ex de,hl
+ld e,(hl)
+inc hl
+ld d,(hl)
+ex de,hl
+add hl,bc
+ex de,hl
+ld (hl),d
+dec hl
+ld (hl),e
+ex de,hl
+
+ld de,F19
+ld l,(iy+1)
+ld h,b ;;*miniopt* was ld h,0
+add hl,hl
+add hl,de
+ld c,(hl)
+inc hl
+ld b,(hl)
+inc bc
+inc bc
+inc bc
+inc bc
+ld (hl),b
+dec hl
+ld (hl),c
+
+ld bc,16
+ld de,F19
+ld l,(iy+2)
+ld h,b ;;*miniopt* was ld h,0
+add hl,hl
+add hl,de
+;;*miniopt* removed double ex de,hl
+ld e,(hl)
+inc hl
+ld d,(hl)
+ex de,hl
+add hl,bc
+ex de,hl
+ld (hl),d
+dec hl
+ld (hl),e
+ex de,hl
+
+ld c,12 ;;*miniopt* was ld bc,12
+ld de,F19
+ld l,(iy+3)
+ld h,b ;;*miniopt* was ld h,0
+add hl,hl
+add hl,de
+;;*miniopt* removed double ex de,hl
+ld e,(hl)
+inc hl
+ld d,(hl)
+ex de,hl
+add hl,bc
+ex de,hl
+ld (hl),d
+dec hl
+ld (hl),e
+ex de,hl
+
+ld c,12 ;;*miniopt* was ld bc,12
+ld de,F19
+ld l,(iy+4)
+ld h,b ;;*miniopt* was ld h,0
+add hl,hl
+add hl,de
+;;*miniopt* removed double ex de,hl
+ld e,(hl)
+inc hl
+ld d,(hl)
+ex de,hl
+add hl,bc
+ex de,hl
+ld (hl),d
+dec hl
+ld (hl),e
+ex de,hl
+
+ld c,16 ;;*miniopt* was ld bc,16
+ld de,F19
+ld l,(iy+5)
+ld h,b ;;*miniopt* was ld h,0
+add hl,hl
+add hl,de
+;;*miniopt* removed double ex de,hl
+ld e,(hl)
+inc hl
+ld d,(hl)
+ex de,hl
+add hl,bc
+ex de,hl
+ld (hl),d
+dec hl
+ld (hl),e
+ex de,hl
+
+ld de,F19
+ld l,(iy+6)
+ld h,b ;;*miniopt* was ld h,0
+add hl,hl
+add hl,de
+ld c,(hl)
+inc hl
+ld b,(hl)
+inc bc
+inc bc
+inc bc
+inc bc
+ld (hl),b
+dec hl
+ld (hl),c
+
+ld bc,50
+ld de,F19
+ld l,(iy+7)
+ld h,b ;;*miniopt* was ld h,0
+add hl,hl
+add hl,de
+;;*miniopt* removed double ex de,hl
+ld e,(hl)
+inc hl
+ld d,(hl)
+ex de,hl
+add hl,bc
+ex de,hl
+ld (hl),d
+dec hl
+ld (hl),e
+ex de,hl
+
+ld de,F19
+ld l,(iy+8)
+ld h,b ;;*miniopt* was ld h,0
+add hl,hl
+add hl,de
+ld c,(hl)
+inc hl
+ld b,(hl)
+inc bc
+inc bc
+inc bc
+inc bc
+ld (hl),b
+dec hl
+ld (hl),c
+
+ld e,(iy+0)
+ld d,0
+ld hl,F21
+add hl,de
+ld c,(hl)
+ld b,d ;;*miniopt* was ld b,0
+ld de,F19
+ld l,(iy+9)
+ld h,b ;;*miniopt* was ld h,0
+add hl,hl
+add hl,de
+;;*miniopt* removed double ex de,hl
+ld e,(hl)
+inc hl
+ld d,(hl)
+ex de,hl
+or a
+sbc hl,bc
+ex de,hl
+ld (hl),d
+dec hl
+ld (hl),e
+ex de,hl
+
+ld e,(iy+2)
+ld d,b ;;*miniopt* was ld d,0
+ld hl,F22
+add hl,de
+ld c,(hl)
+;;*miniopt* removed ld b,0
+ld de,F19
+ld l,(iy+10)
+ld h,b ;;*miniopt* was ld h,0
+add hl,hl
+add hl,de
+;;*miniopt* removed double ex de,hl
+ld e,(hl)
+inc hl
+ld d,(hl)
+ex de,hl
+or a
+sbc hl,bc
+ex de,hl
+ld (hl),d
+dec hl
+ld (hl),e
+ex de,hl
+
+ld e,(iy+3)
+ld d,b ;;*miniopt* was ld d,0
+ld hl,F23
+add hl,de
+ld c,(hl)
+;;*miniopt* removed ld b,0
+ld de,F19
+ld l,(iy+11)
+ld h,b ;;*miniopt* was ld h,0
+add hl,hl
+add hl,de
+;;*miniopt* removed double ex de,hl
+ld e,(hl)
+inc hl
+ld d,(hl)
+ex de,hl
+or a
+sbc hl,bc
+ex de,hl
+ld (hl),d
+dec hl
+ld (hl),e
+ex de,hl
+
+ld e,(iy+4)
+ld d,b ;;*miniopt* was ld d,0
+ld hl,F23
+add hl,de
+ld c,(hl)
+;;*miniopt* removed ld b,0
+ld de,F19
+ld l,(iy+12)
+ld h,b ;;*miniopt* was ld h,0
+add hl,hl
+add hl,de
+;;*miniopt* removed double ex de,hl
+ld e,(hl)
+inc hl
+ld d,(hl)
+ex de,hl
+or a
+sbc hl,bc
+ex de,hl
+ld (hl),d
+dec hl
+ld (hl),e
+ex de,hl
+
+ld e,(iy+5)
+ld d,b ;;*miniopt* was ld d,0
+ld hl,F22
+add hl,de
+ld c,(hl)
+;;*miniopt* removed ld b,0
+ld de,F19
+ld l,(iy+13)
+ld h,b ;;*miniopt* was ld h,0
+add hl,hl
+add hl,de
+;;*miniopt* removed double ex de,hl
+ld e,(hl)
+inc hl
+ld d,(hl)
+ex de,hl
+or a
+sbc hl,bc
+ex de,hl
+ld (hl),d
+dec hl
+ld (hl),e
+ex de,hl
+
+ld e,(iy+7)
+ld d,b ;;*miniopt* was ld d,0
+ld hl,F21
+add hl,de
+ld c,(hl)
+;;*miniopt* removed ld b,0
+ld de,F19
+ld l,(iy+14)
+ld h,b ;;*miniopt* was ld h,0
+add hl,hl
+add hl,de
+;;*miniopt* removed double ex de,hl
+ld e,(hl)
+inc hl
+ld d,(hl)
+ex de,hl
+or a
+sbc hl,bc
+ex de,hl
+ld (hl),d
+dec hl
+ld (hl),e
+ex de,hl
+
+ld de,F19
+ld l,(iy+15)
+ld h,b ;;*miniopt* was ld h,0
+add hl,hl
+add hl,de
+ld c,(hl)
+inc hl
+ld b,(hl)
+inc bc
+inc bc
+inc bc
+inc bc
+ld (hl),b
+dec hl
+ld (hl),c
+
+ld bc,16
+ld de,F19
+ld l,(iy+16)
+ld h,b ;;*miniopt* was ld h,0
+add hl,hl
+add hl,de
+;;*miniopt* removed double ex de,hl
+ld e,(hl)
+inc hl
+ld d,(hl)
+ex de,hl
+add hl,bc
+ex de,hl
+ld (hl),d
+dec hl
+ld (hl),e
+ex de,hl
+
+ld e,(iy+16)
+ld d,b ;;*miniopt* was ld d,0
+ld hl,F22
+add hl,de
+ld c,(hl)
+;;*miniopt* removed ld b,0
+ld de,F19
+ld l,(iy+17)
+ld h,b ;;*miniopt* was ld h,0
+add hl,hl
+add hl,de
+;;*miniopt* removed double ex de,hl
+ld e,(hl)
+inc hl
+ld d,(hl)
+ex de,hl
+or a
+sbc hl,bc
+ex de,hl
+ld (hl),d
+dec hl
+ld (hl),e
+ex de,hl
+
+ld de,F19
+ld l,(iy+18)
+ld h,b ;;*miniopt* was ld h,0
+add hl,hl
+add hl,de
+ld c,(hl)
+inc hl
+ld b,(hl)
+inc bc
+ld (hl),b
+dec hl
+ld (hl),c
+
+ld de,F19
+ld l,(iy+21)
+ld h,0
+add hl,hl
+add hl,de
+ld c,(hl)
+inc hl
+ld b,(hl)
+inc bc
+ld (hl),b
+dec hl
+ld (hl),c
+
+ld e,(iy+23)
+ld d,0
+ld hl,F22
+add hl,de
+ld c,(hl)
+ld b,d ;;*miniopt* was ld b,0
+ld de,F19
+ld l,(iy+22)
+ld h,b ;;*miniopt* was ld h,0
+add hl,hl
+add hl,de
+;;*miniopt* removed double ex de,hl
+ld e,(hl)
+inc hl
+ld d,(hl)
+ex de,hl
+or a
+sbc hl,bc
+ex de,hl
+ld (hl),d
+dec hl
+ld (hl),e
+ex de,hl
+
+ld c,16 ;;*miniopt* was ld bc,16
+ld de,F19
+ld l,(iy+23)
+ld h,b ;;*miniopt* was ld h,0
+add hl,hl
+add hl,de
+;;*miniopt* removed double ex de,hl
+ld e,(hl)
+inc hl
+ld d,(hl)
+ex de,hl
+add hl,bc
+ex de,hl
+ld (hl),d
+dec hl
+ld (hl),e
+ex de,hl
+
+ld c,12 ;;*miniopt* was ld bc,12
+ld de,F19
+ld l,(iy+24)
+ld h,b ;;*miniopt* was ld h,0
+add hl,hl
+add hl,de
+;;*miniopt* removed double ex de,hl
+ld e,(hl)
+inc hl
+ld d,(hl)
+ex de,hl
+add hl,bc
+ex de,hl
+ld (hl),d
+dec hl
+ld (hl),e
+ex de,hl
+
+ld e,(iy+24)
+ld d,b ;;*miniopt* was ld d,0
+ld hl,F23
+add hl,de
+ld c,(hl)
+;;*miniopt* removed ld b,0
+ld de,F19
+ld l,(iy+25)
+ld h,b ;;*miniopt* was ld h,0
+add hl,hl
+add hl,de
+;;*miniopt* removed double ex de,hl
+ld e,(hl)
+inc hl
+ld d,(hl)
+ex de,hl
+or a
+sbc hl,bc
+ex de,hl
+ld (hl),d
+dec hl
+ld (hl),e
+ex de,hl
+
+ld e,(iy+31)
+ld d,b ;;*miniopt* was ld d,0
+ld hl,F23
+add hl,de
+ld c,(hl)
+;;*miniopt* removed ld b,0
+ld de,F19
+ld l,(iy+30)
+ld h,b ;;*miniopt* was ld h,0
+add hl,hl
+add hl,de
+;;*miniopt* removed double ex de,hl
+ld e,(hl)
+inc hl
+ld d,(hl)
+ex de,hl
+or a
+sbc hl,bc
+ex de,hl
+ld (hl),d
+dec hl
+ld (hl),e
+ex de,hl
+
+ld c,12 ;;*miniopt* was ld bc,12
+ld de,F19
+ld l,(iy+31)
+ld h,b ;;*miniopt* was ld h,0
+add hl,hl
+add hl,de
+;;*miniopt* removed double ex de,hl
+ld e,(hl)
+inc hl
+ld d,(hl)
+ex de,hl
+add hl,bc
+ex de,hl
+ld (hl),d
+dec hl
+ld (hl),e
+ex de,hl
+
+ld c,12 ;;*miniopt* was ld bc,12
+ld de,F19
+ld l,(iy+32)
+ld h,b ;;*miniopt* was ld h,0
+add hl,hl
+add hl,de
+;;*miniopt* removed double ex de,hl
+ld e,(hl)
+inc hl
+ld d,(hl)
+ex de,hl
+add hl,bc
+ex de,hl
+ld (hl),d
+dec hl
+ld (hl),e
+ex de,hl
+
+ld e,(iy+32)
+ld d,b ;;*miniopt* was ld d,0
+ld hl,F23
+add hl,de
+ld c,(hl)
+;;*miniopt* removed ld b,0
+ld de,F19
+ld l,(iy+33)
+ld h,b ;;*miniopt* was ld h,0
+add hl,hl
+add hl,de
+;;*miniopt* removed double ex de,hl
+ld e,(hl)
+inc hl
+ld d,(hl)
+ex de,hl
+or a
+sbc hl,bc
+ex de,hl
+ld (hl),d
+dec hl
+ld (hl),e
+ex de,hl
+
+ld e,(iy+39)
+ld d,b ;;*miniopt* was ld d,0
+ld hl,F23
+add hl,de
+ld c,(hl)
+;;*miniopt* removed ld b,0
+ld de,F19
+ld l,(iy+38)
+ld h,b ;;*miniopt* was ld h,0
+add hl,hl
+add hl,de
+;;*miniopt* removed double ex de,hl
+ld e,(hl)
+inc hl
+ld d,(hl)
+ex de,hl
+or a
+sbc hl,bc
+ex de,hl
+ld (hl),d
+dec hl
+ld (hl),e
+ex de,hl
+
+ld c,12 ;;*miniopt* was ld bc,12
+ld de,F19
+ld l,(iy+39)
+ld h,b ;;*miniopt* was ld h,0
+add hl,hl
+add hl,de
+;;*miniopt* removed double ex de,hl
+ld e,(hl)
+inc hl
+ld d,(hl)
+ex de,hl
+add hl,bc
+ex de,hl
+ld (hl),d
+dec hl
+ld (hl),e
+ex de,hl
+
+ld c,16 ;;*miniopt* was ld bc,16
+ld de,F19
+ld l,(iy+40)
+ld h,b ;;*miniopt* was ld h,0
+add hl,hl
+add hl,de
+;;*miniopt* removed double ex de,hl
+ld e,(hl)
+inc hl
+ld d,(hl)
+ex de,hl
+add hl,bc
+ex de,hl
+ld (hl),d
+dec hl
+ld (hl),e
+ex de,hl
+
+ld e,(iy+40)
+ld d,b ;;*miniopt* was ld d,0
+ld hl,F22
+add hl,de
+ld c,(hl)
+;;*miniopt* removed ld b,0
+ld de,F19
+ld l,(iy+41)
+ld h,b ;;*miniopt* was ld h,0
+add hl,hl
+add hl,de
+;;*miniopt* removed double ex de,hl
+ld e,(hl)
+inc hl
+ld d,(hl)
+ex de,hl
+or a
+sbc hl,bc
+ex de,hl
+ld (hl),d
+dec hl
+ld (hl),e
+ex de,hl
+
+ld de,F19
+ld l,(iy+42)
+ld h,b ;;*miniopt* was ld h,0
+add hl,hl
+add hl,de
+ld c,(hl)
+inc hl
+ld b,(hl)
+inc bc
+ld (hl),b
+dec hl
+ld (hl),c
+
+ld de,F19
+ld l,(iy+45)
+ld h,0
+add hl,hl
+add hl,de
+ld c,(hl)
+inc hl
+ld b,(hl)
+inc bc
+ld (hl),b
+dec hl
+ld (hl),c
+
+ld e,(iy+47)
+ld d,0
+ld hl,F22
+add hl,de
+ld c,(hl)
+ld b,d ;;*miniopt* was ld b,0
+ld de,F19
+ld l,(iy+46)
+ld h,b ;;*miniopt* was ld h,0
+add hl,hl
+add hl,de
+;;*miniopt* removed double ex de,hl
+ld e,(hl)
+inc hl
+ld d,(hl)
+ex de,hl
+or a
+sbc hl,bc
+ex de,hl
+ld (hl),d
+dec hl
+ld (hl),e
+ex de,hl
+
+ld c,16 ;;*miniopt* was ld bc,16
+ld de,F19
+ld l,(iy+47)
+ld h,b ;;*miniopt* was ld h,0
+add hl,hl
+add hl,de
+;;*miniopt* removed double ex de,hl
+ld e,(hl)
+inc hl
+ld d,(hl)
+ex de,hl
+add hl,bc
+ex de,hl
+ld (hl),d
+dec hl
+ld (hl),e
+ex de,hl
+
+ld de,F19
+ld l,(iy+48)
+ld h,b ;;*miniopt* was ld h,0
+add hl,hl
+add hl,de
+ld c,(hl)
+inc hl
+ld b,(hl)
+inc bc
+inc bc
+inc bc
+inc bc
+ld (hl),b
+dec hl
+ld (hl),c
+
+ld e,(iy+56)
+ld d,0
+ld hl,F21
+add hl,de
+ld c,(hl)
+ld b,d ;;*miniopt* was ld b,0
+ld de,F19
+ld l,(iy+49)
+ld h,b ;;*miniopt* was ld h,0
+add hl,hl
+add hl,de
+;;*miniopt* removed double ex de,hl
+ld e,(hl)
+inc hl
+ld d,(hl)
+ex de,hl
+or a
+sbc hl,bc
+ex de,hl
+ld (hl),d
+dec hl
+ld (hl),e
+ex de,hl
+
+ld e,(iy+58)
+ld d,b ;;*miniopt* was ld d,0
+ld hl,F22
+add hl,de
+ld c,(hl)
+;;*miniopt* removed ld b,0
+ld de,F19
+ld l,(iy+50)
+ld h,b ;;*miniopt* was ld h,0
+add hl,hl
+add hl,de
+;;*miniopt* removed double ex de,hl
+ld e,(hl)
+inc hl
+ld d,(hl)
+ex de,hl
+or a
+sbc hl,bc
+ex de,hl
+ld (hl),d
+dec hl
+ld (hl),e
+ex de,hl
+
+ld e,(iy+59)
+ld d,b ;;*miniopt* was ld d,0
+ld hl,F23
+add hl,de
+ld c,(hl)
+;;*miniopt* removed ld b,0
+ld de,F19
+ld l,(iy+51)
+ld h,b ;;*miniopt* was ld h,0
+add hl,hl
+add hl,de
+;;*miniopt* removed double ex de,hl
+ld e,(hl)
+inc hl
+ld d,(hl)
+ex de,hl
+or a
+sbc hl,bc
+ex de,hl
+ld (hl),d
+dec hl
+ld (hl),e
+ex de,hl
+
+ld e,(iy+60)
+ld d,b ;;*miniopt* was ld d,0
+ld hl,F23
+add hl,de
+ld c,(hl)
+;;*miniopt* removed ld b,0
+ld de,F19
+ld l,(iy+52)
+ld h,b ;;*miniopt* was ld h,0
+add hl,hl
+add hl,de
+;;*miniopt* removed double ex de,hl
+ld e,(hl)
+inc hl
+ld d,(hl)
+ex de,hl
+or a
+sbc hl,bc
+ex de,hl
+ld (hl),d
+dec hl
+ld (hl),e
+ex de,hl
+
+ld e,(iy+61)
+ld d,b ;;*miniopt* was ld d,0
+ld hl,F22
+add hl,de
+ld c,(hl)
+;;*miniopt* removed ld b,0
+ld de,F19
+ld l,(iy+53)
+ld h,b ;;*miniopt* was ld h,0
+add hl,hl
+add hl,de
+;;*miniopt* removed double ex de,hl
+ld e,(hl)
+inc hl
+ld d,(hl)
+ex de,hl
+or a
+sbc hl,bc
+ex de,hl
+ld (hl),d
+dec hl
+ld (hl),e
+ex de,hl
+
+ld e,(iy+63)
+ld d,b ;;*miniopt* was ld d,0
+ld hl,F21
+add hl,de
+ld c,(hl)
+;;*miniopt* removed ld b,0
+ld de,F19
+ld l,(iy+54)
+ld h,b ;;*miniopt* was ld h,0
+add hl,hl
+add hl,de
+;;*miniopt* removed double ex de,hl
+ld e,(hl)
+inc hl
+ld d,(hl)
+ex de,hl
+or a
+sbc hl,bc
+ex de,hl
+ld (hl),d
+dec hl
+ld (hl),e
+ex de,hl
+
+ld de,F19
+ld l,(iy+55)
+ld h,b ;;*miniopt* was ld h,0
+add hl,hl
+add hl,de
+ld c,(hl)
+inc hl
+ld b,(hl)
+inc bc
+inc bc
+inc bc
+inc bc
+ld (hl),b
+dec hl
+ld (hl),c
+
+ld bc,50
+ld de,F19
+ld l,(iy+56)
+ld h,b ;;*miniopt* was ld h,0
+add hl,hl
+add hl,de
+;;*miniopt* removed double ex de,hl
+ld e,(hl)
+inc hl
+ld d,(hl)
+ex de,hl
+add hl,bc
+ex de,hl
+ld (hl),d
+dec hl
+ld (hl),e
+ex de,hl
+
+ld de,F19
+ld l,(iy+57)
+ld h,b ;;*miniopt* was ld h,0
+add hl,hl
+add hl,de
+ld c,(hl)
+inc hl
+ld b,(hl)
+inc bc
+inc bc
+inc bc
+inc bc
+ld (hl),b
+dec hl
+ld (hl),c
+
+ld bc,16
+ld de,F19
+ld l,(iy+58)
+ld h,b ;;*miniopt* was ld h,0
+add hl,hl
+add hl,de
+;;*miniopt* removed double ex de,hl
+ld e,(hl)
+inc hl
+ld d,(hl)
+ex de,hl
+add hl,bc
+ex de,hl
+ld (hl),d
+dec hl
+ld (hl),e
+ex de,hl
+
+ld c,12 ;;*miniopt* was ld bc,12
+ld de,F19
+ld l,(iy+59)
+ld h,b ;;*miniopt* was ld h,0
+add hl,hl
+add hl,de
+;;*miniopt* removed double ex de,hl
+ld e,(hl)
+inc hl
+ld d,(hl)
+ex de,hl
+add hl,bc
+ex de,hl
+ld (hl),d
+dec hl
+ld (hl),e
+ex de,hl
+
+ld c,12 ;;*miniopt* was ld bc,12
+ld de,F19
+ld l,(iy+60)
+ld h,b ;;*miniopt* was ld h,0
+add hl,hl
+add hl,de
+;;*miniopt* removed double ex de,hl
+ld e,(hl)
+inc hl
+ld d,(hl)
+ex de,hl
+add hl,bc
+ex de,hl
+ld (hl),d
+dec hl
+ld (hl),e
+ex de,hl
+
+ld c,16 ;;*miniopt* was ld bc,16
+ld de,F19
+ld l,(iy+61)
+ld h,b ;;*miniopt* was ld h,0
+add hl,hl
+add hl,de
+;;*miniopt* removed double ex de,hl
+ld e,(hl)
+inc hl
+ld d,(hl)
+ex de,hl
+add hl,bc
+ex de,hl
+ld (hl),d
+dec hl
+ld (hl),e
+ex de,hl
+
+ld de,F19
+ld l,(iy+62)
+ld h,b ;;*miniopt* was ld h,0
+add hl,hl
+add hl,de
+ld c,(hl)
+inc hl
+ld b,(hl)
+inc bc
+inc bc
+inc bc
+inc bc
+ld (hl),b
+dec hl
+ld (hl),c
+
+ld bc,50
+ld de,F19
+ld l,(iy+63)
+ld h,b ;;*miniopt* was ld h,0
+add hl,hl
+add hl,de
+;;*miniopt* removed double ex de,hl
+ld e,(hl)
+inc hl
+ld d,(hl)
+ex de,hl
+add hl,bc
+ex de,hl
+ld (hl),d
+dec hl
+ld (hl),e
+ex de,hl
+
+ld de,(F19+4)
+ld hl,(F19+2)
+or a
+sbc hl,de
+jp l2
+
+l2:
+psect bss
+F19:
+ defs 6
+psect text
+jp cret
+f5 equ 0

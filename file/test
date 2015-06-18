@@ -1,0 +1,42 @@
+#include <oz.h>
+#include "file.h"
+
+extern unsigned _ozcdirpages[];
+
+main()
+{
+    int pos=0;
+    char *firstcluster;
+    register ozfile_firstpart_header_t *header;
+    unsigned page,offset,recnum,loc;
+    page=offset=0;
+    while(loc=ozfindnext('c',&page,&offset,&recnum) && !ozkeyhit())
+        ozunlink(TYPENUM_SCHEDULE,recnum);
+}
+
+#include <stdlib.h>
+#include <oz.h>
+
+main()
+{
+    static int pos=0;
+    static byte mode=FIND_RESET;
+    register char *name;
+    ozcls();
+    while(NULL!=(name=ozgetnextfilename(mode)))
+    {
+        if(pos>=72)
+        {
+            ozputs(0,pos,"Press any key to continue");
+            ozgetch();
+            ozcls();
+            pos=0;
+        }
+        mode=0;
+        ozputs(0,pos,name);
+        pos+=8;
+    }
+    ozputs(0,pos,"Done: press any key to continue");
+    ozgetch();
+}
+

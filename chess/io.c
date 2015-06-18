@@ -1,0 +1,247 @@
+/*
+  This module handles all of the input/output of the chess program.
+  No effort is made for a fancy screen display, that would add code and
+  increse the effort to port
+*/
+
+/* #define BENCHMARK /* allow timing commands */
+#define LOAD_SAVE
+#define HEADER
+#include "arvar.c"
+#include <ozaux.h>
+
+extern uchar currow,curcol;
+
+#ifdef LOAD_SAVE
+static unsigned save_pos;
+static unsigned checksum;
+
+void (*fu)(unsigned,uchar *);
+
+static void wr(unsigned pos,uchar *p)
+{
+	ozwriteauxbyte(pos,*p);
+}
+
+static void re(unsigned pos,uchar *p)
+{
+	*p=ozreadauxbyte(pos);
+}
+
+void process_var(void *v, unsigned length)
+{
+	register uchar *p=v;
+	while(length--)
+        fu(--save_pos,p++);
+}
+
+#define S(v) { &v, sizeof(v) }
+
+struct tosave_s
+{
+	void *pos;
+	unsigned len;
+} tosave[]=
+{
+   S(board),
+   S(brdcolor),
+   S(castled),
+   S(computer),
+   S(draw),
+   S(epsquare),
+   S(game50),
+   S(gamehist),
+   S(human),
+   S(kingloc),
+   S(level),
+   S(mate),
+   S(movenum),
+   S(shifted_gamehist),
+   S(mvboard),
+   S(playlevel),
+/*	 S(pvsflag), */
+   S(qsearch),
+   S(responsetime),
+   S(reverse),
+   S(tcontrol),
+   S(tomove),
+   S(font),
+   S(smallboard),
+   S(doblank)
+};
+
+static unsigned dosum(void)
+{
+   register struct tosave_s *p;
+   static unsigned pos;
+   static unsigned len;
+   static unsigned sum;
+   len=0;
+   for(p=tosave;p<tosave+(sizeof tosave)/(sizeof *tosave);p++)
+      len+=p->len;
+   sum=0x81A3;
+   pos=16382-len;
+   for(;pos<16382;pos++) sum+=ozreadauxbyte(pos);
+   return sum;
+}
+
+void process(void)
+{
+   register struct tosave_s *p;
+   save_pos=16382;
+   for(p=tosave;p<tosave+(sizeof tosave)/(sizeof *tosave);p++)
+      process_var(p->pos,p->len);
+}
+
+void save(void)
+{
+   fu=wr;
+   process();
+   save_pos=16384;
+   checksum=dosum();
+   process_var(&checksum,sizeof checksum);
+   strcpy(msg,"Saved");
+}
+
+void load(void)
+{
+   save_pos=16384;
+   fu=re;
+   process_var(&checksum,sizeof checksum);
+   if(checksum!=dosum())
+   {
+     strcpy(msg,"Erro\xF2""reading");
+     return;
+   }
+   process();
+   strcpy(msg,"Loaded");
+   estscore=0;
+   ElapClock=0;
+   gameptr=gamehist+movenum;
+}
+#endif
+
+#if 0
+void entermoves(void)
+{ static bool done;
+
+done=FALSE;
+while (!done)
+  {printboard();
+   printf("ENTERMOVE\xD3""command\xAE""DON\xC5""t\xEF""return\n%s\n",msg);
+   printf("BLAC\xCB""DON\xC5""UND\xCF""WHITE\n");
+   printf("MOVE\xBA""");readcmd();
+
+   if (cmdis("BLACK"))      tomove=BLACK;
+   else if (cmdis("DONE"))  done=TRUE;
+   else if (cmdis("UNDO"))  undo();
+   else if (cmdis("WHITE")) tomove=WHITE;
+   else verifymove();
+  }
+}
+#endif
+
+void undo(void)
+/* take back 1 move */
+{ register gametype *gp;
+
+if (movenum<=0)
+  {Bell();strcpy(msg,"Can'\xF4""undo!");return;}
+
+gp=&gamehist[movenum];
+unmakemove();
+tomove=gp->color;
+draw=mate=FALSE;
+msg[0]=/* pvsmsg[0]= */ 0;
+}
+
+void inputcommand(void)
+/*input a command or move from the human*/
+{static bool done;
+/* static movetype fakemv; */
+/* static bool check; */
+
+done=FALSE;/* fakemv.flags=0; */
+while (! (done))
+  {checkstatus(tomove);printboard();
+/*	 if (pvsflag) printf("%s\n",pvsmsg); */
+   currow=6; atright();
+   if (status[0]) termputs(status);
+   currow=7; atright();
+   printf(msg);
+   currow=8; atright();
+   printf("Hel\xF0""Ne\xF7""Quit\n");
+   atright();
+   printf("Cmd\xBA""");movepieces=1;readcmd();movepieces=0;
+   *msg=0;
+   if ( (cmdis("QUIT")))
+   {
+    ozdelay64hz(16);
+    exit(0);
+   }
+   else if (cmdis("T"))
+        {   currow=9;atright(); printf("Time:\4\8\8\8");readcmd();
+		 responsetime=atoi(cmdline);tcontrol=TRUE;
+/* limit search time to 6500 seconds (or 108 minutes, or 1 hr, 48 min) */
+		 if (responsetime>6500)   responsetime=6500;
+		 if (responsetime<1)	  responsetime=1;}
+   else if (cmdis("LE"))
+        {   currow=9;atright(); printf("Depth:\4\8\8\8");readcmd();
+		 playlevel=atoi(cmdline);tcontrol=FALSE;
+		 if (playlevel>MAXLEVEL) playlevel=MAXLEVEL;
+         if (!playlevel) playlevel=1;}
+   else if (cmdis("BLAC"))    tomove=BLACK;
+   else if (cmdis("BOT"))     {bothsides=TRUE;done=TRUE;}
+#ifdef BENCHMARK
+   else if (cmdis("CAPTIME"))  captime();
+#endif
+#ifdef DEBUG_STACK
+   else if (cmdis("STACK"))    { extern unsigned minstack;
+								 currow=0; curcol=0;
+								 printf("%d",minstack);
+								 ozgetch(); }
+#endif
+#ifdef BENCHMARK
+   else if (cmdis("EVALTIME")) evaltime();
+   else if (cmdis("GENTIME"))  gentime();
+#endif
+#if 0
+   else if (cmdis("ENTER"))    entermoves();
+   else if (cmdis("EVAL"))     {findpieces();
+			estscore=evalu8(&fakemv,0,tomove,-BIGNUM,BIGNUM,1,&check,FALSE);}
+#endif
+   else if (cmdis("G"))       done=TRUE;
+   else if (cmdis("H"))     help();
+   else if (cmdis("M"))     selectmove(tomove);
+   else if (cmdis("NEW"))      initgame();
+   else if (cmdis("P"))     done=TRUE;
+/*	 else if (cmdis("PVSY"))     pvsflag=TRUE;
+   else if (cmdis("PVSN"))     pvsflag=FALSE; */
+   else if (cmdis("QSEARCHY")) qsearch=TRUE;
+   else if (cmdis("QSEARCHN")) qsearch=FALSE;
+   else if (cmdis("R"))  reverse=!reverse;
+   else if (cmdis("SE"))    setboard();
+   else if (cmdis("SI"))     tomove=chngcolor(tomove);
+   else if (cmdis("SK"))     {done=TRUE;tomove=chngcolor(tomove);}
+   else if (cmdis("SW"))     {human=chngcolor(human);
+								computer=chngcolor(computer);
+								reverse=!reverse;
+                                /* tomove=chngcolor(tomove); */
+                                done=TRUE; }
+   else if (cmdis("UNDO"))     undo();
+   else if (cmdis("UNDR"))   draw=FALSE;
+   else if (cmdis("UNM"))   mate=FALSE;
+   else if (cmdis("W"))    tomove=WHITE;
+   else if (cmdis("SNAP"))     { ozsnap(); ozsnap(); }
+   else if (cmdis("F"))     font=!font;
+   else if (cmdis("BOA"))    smallboard=!smallboard;
+   else if (cmdis("BLAN"))    doblank=!doblank;
+#ifdef LOAD_SAVE
+   else if (cmdis("LOAD"))     load();
+   else if (cmdis("SA"))     save();
+#endif
+   else  done=verifymove();
+  };
+checkstatus(tomove);
+}
+

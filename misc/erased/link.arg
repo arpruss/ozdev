@@ -1,0 +1,1 @@
+-C8000h -odumperas.bin -plowpage=8000h,midpage,text,data,bss -mdumperas.map 16k.obj dumperas.obj ozfileer.obj ozread.obj       libc0.lib liboz.lib libc0.lib liboz.lib 

@@ -1,0 +1,19 @@
+zc.c
+zc.c(534) : warning C4033: 'compile' must return a value
+zc.c(548) : warning C4033: 'compile' must return a value
+zc.c(269) : warning C4716: 'setup' : must return a value
+zc.c(359) : warning C4716: 'doit' : must return a value
+zc.c(374) : warning C4716: 'rm' : must return a value
+zc.c(382) : warning C4716: 'print' : must return a value
+zc.c(388) : warning C4716: 'put_cmd' : must return a value
+zc.c(411) : warning C4716: 'addobj' : must return a value
+zc.c(423) : warning C4716: 'addlib' : must return a value
+zc.c(430) : warning C4716: 'error' : must return a value
+zc.c(467) : warning C4716: 'doexec' : must return a value
+zc.c(496) : warning C4716: 'assemble' : must return a value
+zc.c(561) : warning C4716: 'compile' : must return a value
+Microsoft (R) Incremental Linker Version 6.00.8168
+Copyright (C) Microsoft Corp 1992-1998. All rights reserved.
+
+/out:zc.exe 
+zc.obj 

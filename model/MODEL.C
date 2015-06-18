@@ -1,0 +1,61 @@
+#include <oz.h>
+
+struct
+{
+    char *modelname;
+    char *sram;
+    char *flash;
+    char *language;
+    char *other;
+} models[]=
+{
+    { "OZ-730PC or ZQ-700PC",
+      "128Kb",
+      "2Mb",
+      "English only",
+      "(none)" }, /* 000 */
+    { "OZ-750PC or ZQ-750PC",
+      "256Kb",
+      "3Mb",
+      "English only",
+      "IR port" }, /* 001 */
+    { NULL,NULL,NULL,NULL,NULL }, /* 010 */
+    { "OZ-770PC or ZQ-770PC",
+      "128Kb",
+      "3Mb",
+      "English only",
+      "new file system format" }, /* 011 */
+    { "ZQ-700M",
+      "128Kb",
+      "2Mb",
+      "Multilingual",
+      "(none)" }, /* 100 */
+    { "ZQ-750M",
+      "256Kb",
+      "3Mb",
+      "Multilingual",
+      "IR port" }
+};
+
+main()
+{
+    static unsigned model;
+    extern byte _ozcury;
+    ozcls();
+    model=ozdetectmodel();
+    _ozcury=0;
+    printf("Model identifier: %u\n"
+           "Model: %s\n"
+           "SRAM memory: %s\n"
+           "Flash memory: %s\n"
+           "OS localization: %s\n"
+           "Additional features: %s\n\n"
+           "Press any key to exit",
+            model,
+            models[model].modelname,
+            models[model].sram,
+            models[model].flash,
+            models[model].language,
+            models[model].other);
+    ozgetch();
+}

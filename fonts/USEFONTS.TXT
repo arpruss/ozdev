@@ -1,0 +1,6 @@
+To use the fonts, simply upload Fonts.wzd to your organizer.  Then,
+upload one of the font packages with extension .wzd in the SAMPLES directory
+(look at the README.TXT files there for attributions) and run Fonts.  You
+can load fonts into one of two slots.  MemoEdit will support both slots.
+You can also access fonts in .wzf format from WizBookConverter--press the
+OPTIONS button.

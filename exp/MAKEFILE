@@ -1,0 +1,16 @@
+OBJS2 = ozread.obj
+
+all: expdump.wzd
+
+.c.obj:
+        zxc -c -o $*.c
+
+.as.obj:
+        zxas $*.as
+
+expdump.obj: expdump.c exp.h
+
+expdump.wzd: expdump.obj $(OBJS2) expdump.dsc
+        ozlink expdump $(OBJS2)
+        makewzd expdump "Expdump 0.02" @expdump.dsc
+

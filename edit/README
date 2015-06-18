@@ -1,0 +1,16 @@
+ALPHA TEST VERSION: USE AT YOUR OWN RISK!
+
+This is a memo editor.  If you like it, you are invited (but not
+required) to donate $8 to a pro-life organization.  (Press MENU for more
+information inside the memo editor.)
+
+If edit.h starts with
+        #define FIXED
+not commented out, then this compiles a fixed-width font version.
+
+See edit.inf for instructions.
+
+A secure text editor with 128-bit encryption is available from Alexander
+R. Pruss (ap85@georgetown.edu) for $15 for residents of the U.S. and
+Canada.  A demo (with encryption disabled) is available by email upon
+request.

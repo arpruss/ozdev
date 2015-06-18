@@ -1,0 +1,114 @@
+setbuf.obj      U __buffree     D _setbuf       U cret          U csv         
+		U indir         U ncsv          
+ctime.obj       D _asctime      D _ctime        D _gmtime       D _localtime  
+		D _monlen       U _time_zone    U adiv          U aldiv       
+		U almod         U alsub         U amod          U amul        
+		U asaldiv       U asldiv        U cret          U csv         
+		U indir         U lmod          U ncsv          U wrelop      
+stdclean.obj    D __cleanup     D __iob         D __sibuf       U _fclose     
+		U cret          U csv           U indir         U ncsv        
+buf.obj         D __bufallo     D __buffree     U _sbrk         U cret        
+		U csv           U indir         U ncsv          
+start1.obj      D __argc_       U __getargs     D startup       
+start2.obj      U __argc_       D __getargs     
+convtime.obj    D _convtime     D _frmbcd       U asaladd       U asalmul     
+		U cret          U csv           U indir         U lmul        
+		U ncsv          
+timezone.obj    D _time_zone    
+getuid.obj      D _getuid       D _setuid       U cret          U csv         
+_exit.obj       U __cpm_clean   D __exit        
+fakeclean.obj   D __cleanup     
+fakecpcln.obj   D __cpm_clean   
+sys_err.obj     D _errno        D _sys_err      D _sys_ner      
+memcmp.obj      D _memcmp       U cret          U csv           U indir       
+		U ncsv          
+abs.obj         D _abs          
+asallsh.obj     U allsh         D asallsh       D aslllsh       U iregstore   
+allsh.obj       D allsh         D lllsh         
+asalrsh.obj     U alrsh         D asalrsh       U iregstore     
+asar.obj        D asar          U shar          
+asdiv.obj       U adiv          D asadiv        D asldiv        U ldiv        
+asladd.obj      U aladd         D asaladd       D aslladd       U iregset     
+		U iregstore     
+asland.obj      U aland         D asaland       D aslland       U iregset     
+		U iregstore     
+asll.obj        D asal          D asll          U shal          
+asllrsh.obj     D asllrsh       U iregstore     U llrsh         
+aslmul.obj      U almul         D asalmul       D asllmul       U iregset     
+		U iregstore     
+aslor.obj       U alor          D asalor        D asllor        U iregset     
+		U iregstore     
+aslsub.obj      U alsub         D asalsub       D asllsub       U iregset     
+		U iregstore     
+aslxor.obj      U alxor         D asalxor       D asllxor       U iregset     
+		U iregstore     
+asmod.obj       U amod          D asamod        D aslmod        U lmod        
+atoi.obj        D _atoi         
+atol.obj        U __ctype_      D _atol         U aladd         U almul       
+		U cret          U indir         U ncsv          
+blkclr.obj      D _blkclr       
+calloc.obj      U _bmove        D _calloc       D _cfree        U _free       
+		U _malloc       U asamul        U cret          U csv         
+		U indir         U ncsv          
+asmul.obj       U amul          D asamul        D aslmul        
+bitfield.obj    D bfext         D bfins         
+ctype_.obj      D __ctype_      
+getsp.obj       D __getsp       
+index.obj       D _index        U cret          U rcsv          
+strchr.obj      D _strchr       U cret          U rcsv          
+inout.obj       D _in           D _inp          D _out          D _outp       
+iregset.obj     D iregset       D iregstore     
+isalpha.obj     D _isalpha      
+isdigit.obj     D _isdig        D _isdigit      
+islower.obj     D _islower      
+isupper.obj     D _isupper      
+ladd.obj        D aladd         D lladd         
+land.obj        D aland         D lland         
+linc.obj        D ladec         D lainc         D lldec         D llinc       
+llrsh.obj       D llrsh         
+longjmp.obj     D _longjmp      D _setjmp       
+lor.obj         D alor          D llor          
+brelop.obj      D brelop        
+lrelop.obj      D arelop        D lrelop        
+frelop.obj      D frelop        
+lsub.obj        D alsub         D llsub         
+lxor.obj        D alxor         D llxor         
+malloc.obj      U _bmove        D _free         D _malloc       D _realloc    
+		U _sbrk         U adiv          U amul          U cret        
+		U csv           U indir         U ldiv          U lmul        
+		U ncsv          U wrelop        
+max.obj         D _max          
+pnum.obj        D __pnum        U aslldiv       U brelop        U cret        
+		U indir         U llmod         U ncsv          U wrelop      
+ldiv.obj        D aldiv         D almod         D asaldiv       D asalmod     
+		D aslldiv       D asllmod       D lldiv         D llmod       
+swap.obj        D _swap_chars   
+aslr.obj        D aslr          U shlr          
+bmove.obj       D _bmove        D _movmem       
+rand.obj        D ___seedrandx  D _rand         D _srand        U almul       
+		U alrsh         U cret          U csv           U indir       
+		U ncsv          
+alrsh.obj       D alrsh         
+lmul.obj        D almul         D llmul         
+rindex.obj      D _rindex       U cret          U rcsv          
+strrchr.obj     D _strrchr      U cret          U rcsv          
+shar.obj        D shar          
+shll.obj        D shal          D shll          
+shlr.obj        D shlr          
+strcat.obj      D _strcat       
+strcmp.obj      D _strcmp       
+strcpy.obj      D _strcpy       
+strlen.obj      D _strlen       
+strncat.obj     D _strncat      U cret          U rcsv          
+strncmp.obj     D _strncmp      U cret          U rcsv          
+strncpy.obj     D _strncpy      U cret          U rcsv          
+csv.obj         D cret          D csv           D indir         D ncsv        
+rcsv.obj        D rcsv          
+tolower.obj     D _tolower      
+toupper.obj     D _toupper      
+xtoi.obj        D _ishex        D _xtoi         
+rg_qsort.obj    D _qsort        U _swap_chars   U cret          U indir       
+		U ldiv          U lmul          U ncsv          U wrelop      
+idiv.obj        D adiv          D amod          D ldiv          D lmod        
+isspace.obj     D _isspace      
+

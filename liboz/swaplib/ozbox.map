@@ -1,0 +1,20 @@
+Machine type is Z80
+
+p:ozbox.obj     lowpage      8000     2000
+
+p:ozbox.lib
+ozbox.obj       text         A000       2A
+
+TOTAL		Name         Link     Load   Length
+		(abs)           0        0        0
+		lowpage      8000     8000     2000
+		bss          A02A     A02A        0
+		data         A02A     A02A        0
+		text         A000     A000       2A
+
+                                  Symbol Table
+
+__Hbss     bss     A02A  __Hdata    data    A02A  __Hlowpage lowpage A000
+__Htext    text    A02A  __Lbss     bss     A02A  __Ldata    data    A02A
+__Llowpage lowpage 8000  __Ltext    text    A000  __Sozbox   text    A000
+

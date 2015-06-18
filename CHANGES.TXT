@@ -1,0 +1,996 @@
+MA  = Mark Atkin
+LC  = Lawrence Chitty
+GG  = Giancarlo Gastaldello
+BG  = Benjamin Green
+MH  = Mark Hamilton
+RJ  = Rob Jahnke
+SPJ = Stephen P. Joyner
+PK  = Phil Karau
+ARP = Alexander R. Pruss (all changes are attributed to ARP unless
+      marked otherwise)
+DR  = David Reedy Jr
+DT  = Danny Taylor
+
+Not all changes to the sample applications are logged.
+
+Four asterisks (****) mark changes that could reasonably affect
+backwards compatibility and force programmers to change old code, or that
+are important for some other reason.
+
+07-10-03: 1.01 release
+
+         Fixed bug in putchar() and ozeditline(). [LC]
+
+         Fixed documentation of ozenterisreturn().
+
+         Fixed some typos in liboz.txt. [SPJ]
+
+01-07-03: 1.00 release
+
+         Documented ozgetnextfilename().
+
+         Added tell1() and lseek1set().
+
+         Added ozenterisreturn() to documentation.
+
+         Added Hebrew font.  Foreign fonts in fonts\samples now include
+         Hebrew, Polish and Russian.
+
+         Small update to ozpack. [LC]
+
+         The privacy fixes also restore proper functionality according
+         to which an assembly defs statement with non-defs statements
+         after it generates zeros, as per manual.
+
+         ****Added a workaround for Pacific C's HLINK linker's privacy
+         problem. Just run HLIN1.EXE instead of HLINK.EXE, making sure
+         HLINK.EXE is in the same directory as HLIN1.EXE.  If you've
+         installed HLINK.EXE via the INSTP batch file, you will need to
+         run INSTP again to install the privacy fix.
+
+         ****Because of the privacy problems plaguing previous releases
+         (data from your computer--possibly private data--could have
+         been included in executables), it is recommended you recompile or
+         at least re-link all old code.  One exception so far checked is
+         that everything was probably working just fine under Windows XP, so
+         if you compiled under WinXP before, no action is required.
+
+         ****Removed a privacy problem from the Z80 Hi-Tech C linker.  This
+         was capable of including randomly selected data from your
+         computer's memory in your executable.  [LC]
+
+         Sped up crc code by factor of four.  [LC]
+
+         ozgetch() can now trap KEY_POWER if power key handling is disabled.
+         See docs\liboz.txt.
+
+         Fixed bug in ozputs().  There used to be trouble in displaying
+         eight-pixel-width characters on a non-white background, and
+         always an unnecessary pixel column would be cleared after each
+         character.
+
+         Fixed(?) cursor height in ozeditline() and ozgreyeditline().
+
+         REALLY added new version of zcc.
+
+         ozinstallmemorywiper() documented.
+
+7-13-02: 0.100
+
+         Fixed bug in _ozputsprite() and added __ozputsprite().
+
+         New version of zcc.  Now if you use any of the -z* flags, you
+         don't need to have the -z flag.  Thus, zcc -zs hello.c works.
+         [LC]
+
+         Added information on locating the latest release of djgpp to
+         readme.txt as per djgpp license.
+
+         Support for ozpack.  See docs\ozpack.txt.  Ozpack allows one
+         to compress .wzd program files.  [LC]
+
+         Optimized ozsetisr().  Alas, using a combination of both
+         ozsetisr() and _ozsetisr() will take a little more memory than
+         it used to, but rarely will a program need to do that.
+
+         Optimized model detection code and fixed a copyright problem.
+
+         Included ozmemo.h in oz.h.
+
+         Fixed a bug in the sample data memo code.
+
+         Fixed bug in miniopt2 optimizer.  The bug was in processing
+         some arrays of pre-initialized pointers.
+
+         **** The 64hz timer is no longer running all the time
+         by default, in order to conserve battery power.  It runs for a
+         short time after each keystroke, but that's all.  If you were
+         using _oz64hz_word or _oz64hz_dword for timing things, you must
+         now call oz64hztimeron() before doing this.  A well-behaved
+         program will restore the 64hz timer status afterwards, too, to
+         conserve battery power--you'll want to use oz64hztimeroff()
+         afterwards.
+
+         **** Standard ozgetch() and getch() now have screen blanker
+         functionality built in.  If you don't like this, you can always
+         turn it off or use _ozgetch().
+
+         The screen blanker inside ozgetchblank() is now more energy
+         efficient.  In fact, if all is working, then the Wizard uses
+         about as much battery power with the screen blanked as with the
+         power off, unless you have explicitly activated the 64hz timer.
+
+         Modified the units for measuring the blank/power-off times for
+         ozgetchblank().  Now these are measured in seconds.
+
+         Added a 16-bit 1hz timer that runs all the time: _oz1hz.
+
+         **** Modified legal range for key repeat/delay speeds to
+         between 1 and 254.  If you were using speeds 0 or 255 before,
+         you might have trouble now.
+
+         Added getprcfont program for converting Palm font resources.
+         See DOCS\FONTS.TXT
+
+5-25-02: 0.092
+
+         Added convenient font2wzd batch file.
+
+         Made font2wiz and getmacfont work with more fonts.
+
+5-22-02: 0.091
+
+         Fixed major bug in ozputs() and ozputch() introduced in 0.090.
+
+5-20-02: 0.090
+
+         Added custom font support.  See docs\fonts.txt, and also
+         docs\liboz.txt Section 1.2.1.  There are all sorts of font
+         conversion programs in the FONTS directory, as well as a
+         font browser.
+
+         License changed slightly: some file system utilizing programs
+         are exempted from the requirement to apply for an owner ID.
+
+         KeyTune-type of stuff has been changed for the 750.  All
+         applications using ozsavekeysettings() and
+         ozrestorekeysettings() need to be recompiled and users need
+         to be directed to the new version of KeyTune.
+
+         Did some work on a privacy issue in zxcc (random memory could
+         get output to zxc output files).
+
+         New version of tomemo--produces much smaller files but needs
+         new frommemo.wzd (in FILE directory).
+
+         Add ozscrollleft() and ozscrollright().  [LC]
+
+         Optimized getch() slightly and reduced power consumption for it.
+
+         Slightly optimized file i/o routines hash function.
+
+3-16-02: 0.082
+
+         Updated zcc to 1.01.  [LC]
+
+3-16-02: 0.081
+
+         Included somewhat updated version of zcc.  Should work on
+         Windows 2000.  [LC]
+
+         Added 3D library in 3D\.  [MH, some changes by ARP]
+
+         Fixed bug in read().
+
+         Added print option to checksym.
+
+         Added overflow checking to exp().
+
+         Included Carey Bloodworth's ARCHESS program, ported for the Wizard.
+
+         Added ozsnap() to send a screen snapshot to the PC.  [BG]
+
+         Added some shift optimization to miniopt. Fixed bugs in
+         miniopt0 and miniopt.  Improved quality of optimization in
+         miniopt2--now converts more static variables to self-modifying
+         code than before.
+
+         Made floating point sprintf() longer but now it handles %g much
+         better.
+
+         Replaced "unlinkallowned" with "ozunlinkallowned" in docs\liboz.txt.
+
+         Optimized ozmenu(), _ozline(), atof(), sqrt(), log(), sin(), exp(),
+         pow(), sinh(), cosh(), tanh().
+
+         Recompiled floating point library with minioptf.
+
+         Added minioptf to the miniopt package.  This slightly improves
+         the precision of floating point constants, optimizes floating
+         point constants in code (the Hi-Tech C compiler handles floating
+         point rather poorly), and gets around a bug in the Hi-Tech C
+         compiler in handling very long floating point constants.
+
+         Included zcc.h and czcc.bat (for compiling).
+
+2-15-02: 0.080
+
+         Included zcc, a highly improved command-line shell for the
+         compiler, with better memory usage, more features, etc.  It is
+         highly recommended that zcc be used instead of zxc henceforth
+         by all programmers whenever reasonably possible.  See DOCS\ZCC.TXT
+         for more information on zcc.  [LC]
+
+         Optimized fabs().
+
+         Fixed (?) in libsrc\gen\frelop.as which caused bugs in comparison
+         of negative floating point numbers.
+
+         Optimized floating point routines at cost of making them
+         non-reentrant.  The original math library is still available as
+         libf-norm.lib.
+
+         Added some error trapping to floating point routines.  Whenever
+         an error occurs in a floating point routine, the unsigned char
+         variable __fperr (declared in math.h) is set to 1.  To check if
+         an error occurs in a calculation, set __fperr=0 before the
+         calculation, and test it afterwards.
+
+         Added scrolling indicators to ozmenu() and fixed PageUp code.
+
+         Fixed bug in ozeditline().
+
+         Implemented alloca(), though it only works with zcc -a, and
+         needs #include <alloca.h>.  No stack overflow checking.
+
+         Optimized ozkey.as, ozcls.as, ozcopy.as, 32k.as, oztime.as,
+         ozfr.as, ozdetect.as.
+
+         Included irrel, an irrelevant prototype remover from Minix,
+         which is used by some compilation batch files and zcc.  [LC]
+
+         Optimized many LIBOZ routines on assumption that they are
+         called with a000 set to page 407 -- this assumption is now
+         normative.
+
+         Added warning to README.TXT about atexit()'s nine-call limit.
+
+         Optimized ozputs() somewhat.
+
+         Optimized the file1.c functions some more.
+
+         Optimized atexit() and related functions.
+
+         Removed automatic ozslow() call from de-init code--now it's
+         only there if you've actually used ozfast() or ozblank().
+
+         Made executable smaller for zxc, zxlibr and zxlink.
+
+         Optimized zxcc some more, and made the executable smaller.  [LC]
+
+         Optimized flash routines. [DR]
+
+         Fixed a very rarely occurring (never observed) bug in ozintwait().
+
+         Removed need for #include <ozmenu.h> and fixed a header bug
+         involving ozmenu.h.
+
+         Added oz*keysettings() for saving/restoring keyboard settings,
+         and the KeyTune program in the KEY directory for manipulating
+         these.  Not tested on 750 models.
+
+         Added ozcrc16auxmem().
+
+         Another 14% speedup in compiling (benchmark by ccopt0 edit.c in
+         EDIT\) by using Multi-Z80 CPU emulator by Neil Bradley
+         (neil@synthcom.com).  [LC]
+
+         Added functions for easy storage of data in memos.  See same\io.c
+         for an example.  See also the documentation in docs\liboz.txt.
+
+         Fixed bug in how getch() functions in capslock mode.
+
+         Made unlink(), unlinkallowned() and some other file routines
+         more reliable.  Made some of these routines smaller and others
+         larger.
+
+         Put ozserial.h back into oz.h.
+
+12-26-01: 0.074
+
+         Fixed bug in the cached file i/o routines in FILE\CACHED.
+
+         Removed warnings about ozputs() and file i/o routines not
+         working on 7xxM models.
+
+         Added ozputsor() and ozputchor().
+
+         Fixed some bugs in flash routines. [DR]
+
+         Modified unlink() a little.  Hope it'll still work.  It's now
+         smaller.
+
+         Changed documentation for unlink().
+
+         Slight optimization to file i/o routine size.
+
+         Fixed small bug in ozputs() and ozputch() that caused these
+         routines to run out of screen space too soon.
+
+         Added Same!, a clone of Mac/Unix SameGame.  In SAME\.
+
+         Added ozkeydelay64hz().
+
+         Fixed minor bugs in ozmenu().
+
+         Fixed bug in ozrestorescreen().
+
+         Finally fixed the backlight when writing/deleting files problem.
+
+         Sped up compilation by about 1/3 or more by optimizing zxcc's
+         Z80 emulator.
+
+12-18-01: 0.073
+
+         Changes made to license.  Please read it (it's in readme.txt)
+         since by using the package, you agree with it.
+
+         Modified things so that the 8086 native linker and librarian from
+         Hi-Tech's Pacific C package works with this.  This speeds up
+         compilation if one uses ozlink*.  For more information, see
+         readme.txt and/or run INSTP.BAT.
+
+         Added things like MASK2ND|KEY_LOWER_ENTER to getch().
+
+         A test version of the MemoEdit editor is included in EDIT.
+
+         Created bin\ccopt0.bat for (optimized) compiling of larger
+         projects. Unfortunately, oz.h has grown so much that Hi-Tech C
+         has started running out of memory (remember it runs within an
+         emulated 64K space!)  To compile with a little bit more memory, run:
+                ccopt0 filename
+         (no extension).  Note that you'll need to edit bin\ccopt0.bat if
+         your Hi-Tech C directory is not c:\progra~1\wiz\hitech.
+
+         Fixed some non-standard stuff in some Hi-Tech C header files.
+
+         Fixed(?) some bugs in ozsound() and key-click interaction.
+
+         Fixed a very nasty bug in ozwriteauxmem() and ozreadauxmem()
+         which would produce crashes when the length was divisible by
+         256.
+
+         Enabled keys like KEY_LEFT|MASKSHIFT in getch.c.
+
+         Fixed some backlight problems.
+
+         Officially added _ozputsprite() function. [BG, modified ARP]
+
+         Added oz?etindexby() function.
+
+         Changed data type in ozgetappindexlist() and documented it a
+         little.
+
+         Fixed source code for ozeditline() and ozgreyeditline() to
+         allow compilation with latest version of oz.h.
+
+         Added ozmenu() function for creating nice menus easily.
+
+         Documented ozfarmemcpy() function.
+
+         Added ozsavescreen() and ozrestorescreen() functions.
+
+         Added fast _ozfilledbox() routine and made ozfilledbox()
+         faster.  [LC]
+
+         Added version number marker within 32k.as.
+
+12-02-05: 0.072
+
+         Fixed another ozwrite() bug.
+
+         Discovered programs can crash (battery removal needed!) if power
+         key is pressed while data is written.
+
+12-02-02: 0.071
+
+         Fixed a very major bug in the file i/o routines.  This bug
+         precluded files of any type from being read on all 770 systems.
+
+         Fixed a bug occurrent when running ViewWeek at almost exactly a
+         certain time very close to midnight.  The likelihood you ever
+         ran across this bug is miniscule.
+
+12-02-01: 0.070
+
+         Fixed a major bug in the oz*aux*() routines that caused
+         incorrect data to be read or written to the auxiliary memory
+         area.  All software compiled with oz*aux*() should be
+         recompiled.  In particular, you should upgrade your version of
+         pix.
+
+         Makewzd has been overhauled.  It works almost as before, except
+         now to split text into paragraphs in the description file, you
+         need to insert a complete blank line between paragraphs.
+         Moreover, makewzd now have the facility to generate icons from
+         text files.  See docs\makewzd.txt for more information.
+
+         Privacy improvements.  Previously, liboz-linked code would
+         occasionally include random bytes from the compiling PC's
+         memory.  This posed privacy problems, which should have now
+         been by and large fixed, except if you use the oz*aux*()
+         routines in the 48K model but your code is not big enough and
+         ozlink48 gives a warning about re-linking.  To fix this
+         problem, define some large initialized-data arrays in your
+         program to remove the warning.  If you're not worried about
+         data in your computer memory showing up in the program, don't
+         worry about this.
+
+         MODIFIED THE LICENSE IN readme.txt.  PLEASE MAKE SURE YOU READ
+         IT SINCE IT IS LEGALLY BINDING AS SOON AS YOU USE ANYTHING IN
+         THIS PACKAGE (OTHER THAN CLOCKCAL WHICH IS UNDER THE GPL).
+
+         Brief documentation added to pix.
+
+         Added ozgetappindexlist(), but did not document it yet.
+         Subject to future revision.
+
+         Made ozwritefile() smaller and added ozgetlastrecnum().
+         Previous versions had tiny snippets of Sharp copyright code
+         from the OS in them.  This has been removed.  The code for
+         ozwritefile() is now much clearer.
+
+         Added oztime(), and documented roll-over bug/problem in
+         ozsec(), ozmin(), etc.  If you use these functions, see
+         liboz\liboz.txt for some important information!  oztime() is
+         not tested yet.
+
+         Got rid of ozread.c from viewweek, wizterm and wiztris.
+         Introduced new faster and smaller functions ozopenfile(),
+         ozclosefile(), ozreadfile(), etc. for accessing Wizard built-in
+         file types.
+
+         Documented ozkeyclick().
+
+         Serial routines overhauled.  Make sure you call ozserinton()
+         before the first call to ozserialgetc() to turn on the serial
+         interrupt handler and buffer now.  ozserintoff() works better
+         now. New _ozserinton() and _ozserintoff() routines which simply
+         control the serial interrupt at a low level, without
+         controlling the handler have been added. oz?etrxhandshaking()
+         routines added to control receive handshaking.
+
+         16K model support is being deprecated now.  ozlink will now be
+         synonymous with ozlink32.  The old 16K model is still available
+         for special purposes via ozlink16, but it is unsupported.
+         Library functions that use custom interrupt handlers will not
+         work on it.  For the ordinary programmer's sake, the
+         documentation no longer discusses which routines work and which
+         do not.  Basically, special keyboard speed controls do not
+         work, buffered serial i/o does not work, and greyscale does not
+         work with the 16K model.  Since everybody will now be using the
+         32K model, this should be no problem.
+
+         zxc -z now uses the 32K model.
+
+         KEY_BACKSPACE now equals 8, instead of the old value which was
+         designed for the 16K model.  This may break some programs, but
+         should be easy to fix.
+
+11-22-01: Version 0.061
+
+         Fixed major bug in close1() which caused junk files to be
+         written for files created with open1() if the last file before
+         program termination was an O_WRONLY file.  All programs using
+         the open1(), write1(), close1() type routines should be
+         recompiled.
+
+         Fixed minor bug in all close*() which caused junk return
+         values.
+
+         Fixed ozsound() problem.  [LC]
+
+         Added putchar(), printf(), ozscrolllinesclear() and ozgotoxy(),
+         though did not document yet as no floating point support yet
+         for printf().  Note: To use putchar(), you must either compile
+         with -DOZ7XX or else include
+                #define OZ7XX
+         before the #include <stdio.h>, or else #include <oz.h> at the
+         top of each source file using putchar().
+
+         Fixed bug in ozslow() and ozunblankscreen().
+
+         Added ozdelay64hz().
+
+         Fixed bug in ozfilledbox() that did not allow y-coordinate 79
+         to display.
+
+07-14-01: Version 0.060
+
+         Added source code for indexby program that lets you index
+         telephone entries by company name.
+
+         Integrated a grey-scale kernel into the custom interrupt
+         handler and added lots of grey-scale display functions.  See
+         section 1.5 of docs\liboz.txt.  They grey-scale functions need
+         further testing, of course.
+
+         Added ozfilledbox().
+
+         After the power key is pressed in the custom interrupt handler
+         or the 32k/48k mode, the atexit() functions as in previous
+         versions get called before the Wizard is turned off.  However,
+         now the power key is turned off after the power key is pressed,
+         so that the atexit() functions don't get interrupted via a
+         second press of the power key.  This only happens when the
+         atexit() functions are called from an exit initiated with the
+         power key.  An ordinary program exit does not disable power key
+         handling.  The features described here have not been tested
+         very thoroughly.  Moreover, the power key handling may come
+         back on in file-writing routines as control in them is passed
+         to the Wizard OS.  This is inconvenient and may cause your
+         program's emergency save functions (activated on power-key
+         press, say) to fail if the user presses the power key again. It
+         may be a good idea to warn the user that an emergency save is
+         in progress and the Wizard will turn off shortly.
+         
+         Changed the custom interrupt handler to disable power key
+         handling after it has once been triggered.  Power key handling
+         can be controlled and checked with oz?etpowerkeyhandling() now.
+
+         Improved ozserinton() and ozserintoff().  You should call
+         ozserinton() before using the ozserialgetc() function.
+
+         Fixed some minioptimizer bugs and recompiled library.
+
+         Added warning about float to byte-length cast bug to README.
+
+         Fixed a bug in the (still) unsupported function ozfarmemcpy(). [PK]
+
+         Fixed a bug in makewzd.  [PK]
+
+         Fixed a bug in ozeditline().
+
+         Fixed a paste bug in wizterm.
+
+04-02-01: Version 0.051
+
+         Fixed and improved ccopt optimizers again.  Recompiled liboz
+         library.  Please re-link all projects linked against 0.050 or
+         0.049 libraries.
+
+03-22-01: Version 0.050
+
+         Fixed and improved ccopt optimizers.
+
+03-19-01: Version 0.049
+
+         Added ozeditline() function for inputting a line of text.
+
+         Improved the miniopt optimizer and added the ccopt batch file
+         for compiling with it.  See readme.txt for information on how
+         to use it instead of zxc.
+
+         Added oz*repeat*() functions to control key repeat.
+
+         Fixed bug in ctype.h (tolower() and toupper() declarations).
+
+         Wiztris highscores added, and other Wiztris enhancements.
+
+         Modified file routines to allow simultaneous read/write, to fix
+         bug.  Now the ozfindxxxx() return logical cluster numbers.
+
+         Fixed bug in ozclick().
+
+         Fixed(?) a bug operative when a file is open for reading while
+         another file is open for writing.
+
+         Fixed a frommemo bug operative when file system gets filled up.
+
+         Added sizer and wrapper programs: useful for development.  See
+         sizer\readme.
+
+         Added open1(), read1(), write1(), lseek1(), rewind1(),
+         close1(), open1ro(), read1ro(), close1ro(), lseek1ro(),
+         and rewind1ro() functions for memory efficient file i/o with
+         only one file open at a time (and read-only for the 1ro
+         variants).  See docs\liboz.txt for more information.
+
+         Added localecho, visualbeep and keyclick options to Wizterm.
+
+         Updated readme.txt.
+
+         Sped up lseek() for large files.
+
+         Fixed bug in file routines that made it impossible to have more
+         than one file open at a time.
+
+         Fixed bug in ozscroll() that made it not work in >=32k model.
+
+01-22-01: Version 0.048
+
+         Fixed bugs in lseek.c.
+
+         Finished implementing auxiliary memory area functions.
+
+         Fixed bug in makewzd.c and makewzd.exe.
+
+12-23-00: Version 0.047
+
+         Added CLOCKCAL software and source.  Enjoy!
+
+         WARNING: The file writing routines might not work on European
+         multilingual ZQ-7xxM models.  This includes the open(), write()
+         and ozwritefile() routines.  End-users should be warned.  There
+         may also be sync problems for other users--who knows?
+
+         Fixed major bug in ViewWeek's repeating appointment generator
+         and added some features.
+
+         Fixed bug in ozputs when printing at y=80 (used to cause
+         crash).
+
+         Sped up and shortened ozdisplay*byte() routines.
+
+         Documented quirk in backspace handling (docs\liboz.txt).
+
+         Fixed(?) bug in file update/delete routines.  This necessitated
+         a re-doing of the file formats.  As a result, maximum filename
+         length for open() reduced to 23 characters.  The present
+         version of the file system is incapable of reading any files
+         produced with previous versions.  You will need to delete the
+         old versions of the files before using this.
+
+11-19-00: Version 0.046
+
+         Backlight still doesn't work properly in 16k mode.
+
+         Added ozdisplayputbyte().
+
+         Added ozngetch(), ngetch(), oznkeyhit() and nkbhit() which are
+         "nice" versions of ozgetch() and getch() that check for exit
+         keys and terminate the program if necessary and also do
+         backlight control.  It is highly recommended programs use these
+         nice versions unless speed or memory is of essence (these
+         versions are somewhat slower than the not nice ones).
+
+         Sped up horizontal line drawing a lot.
+
+         Added second video page support.  See gfx\bounce.c to see how
+         to use this for simple animation.  See wizterm\wizterm.c to see
+         how it helps implement help screens and the like.  See
+         docs\liboz.txt for more information on video page access
+         functions.
+
+11-11-00: Version 0.045
+
+         Re-did C file system--it seems to work on the 770 now, but if
+         there is a lot of data in the C file system, appointments may
+         not sync well together with DTO.  I don't mind since I don't
+         care all that much about sync'ing my appointments.
+
+         Fixed backlight functions, added ozgetlight() and documented
+         ozsetlight().
+
+         Implemented ozgetcontrast(), ozsetcontrast(), ozblankscreen(),
+         ozunblankscreen(), ozfast(), ozslow(), ozenableinterrupts() and
+         ozdisableinterrupts() in library.
+
+         Added 12/24 hour toggle to viewweek.
+
+         Added ozinitsound(), ozsound() and ozquiet() to library.
+
+         Fixed major bug in ozwrite() that would cause crash in 32k mode
+         when filesize was divisible by 256.  Recompiled wizterm and
+         viewweek.  Fixed a bug in viewweek's annual repeater.
+
+         Disabled alarm during 16k programs (it's probably disabled as
+         well during 32k programs--not tested!) as it caused hang.
+         Sorry: This will mean a missed alarm if it comes up during a
+         16k program.
+
+         Sped up ozfilexxxx() routines slightly.  Added ozfindfilename()
+         for additional speed and modified file system routines to use
+         it.
+
+         Improved power-off key handling in ozcustom.as and made exit
+         via battery switch ignore atexit() functions.
+
+         Minor changes to license.
+
+         Recompiled ozline.obj in liboz.  Don't know what was wrong with
+         the old one but it crashed wiztris.
+
+09-22-00: Version 0.042
+
+         ozcustom() keyboard handler now repeats upper keys as well.
+
+         Fixed floating point sprintf() and sscanf() and made them
+         smaller and faster.
+
+         Made owner setting in makewzd simpler.  See docs\liboz.txt for
+         more information.
+
+         Fixes and optimizations to file i/o routines.  open(), read(),
+         write(), access() and lseek() should now work.  Removed warning
+         from docs not to use open(), read() and write().
+
+09-14-00: Version 0.041
+
+         Added warning to docs not to use open(), read() and write() yet
+         until the bugs are worked out.
+
+         Ensured the presence of definitions of the macros _tolower()
+         and _toupper() in ctype.h and made sure tolower() and toupper()
+         conform to the standard.
+
+         ZQ-7xxM support for file i/o and (hopefully) for ozputs() and
+         ozputch().  PLEASE RECOMPILE ANY RELEASED PROGRAMS FOR THIS NEW
+         FUNCTIONALITY.
+
+         Revised ozinclocation() to handle files continued on other
+         pages.
+
+         Italian translation of ViewWeek.  [GG]
+
+         Made ozline() prettier.  [ARP,DT]
+
+         Reduced memory usage of ozfindxxxx().
+
+09-03-00: Version 0.040
+
+         Added open(), read(), write(), close(), closeall(), unlink(),
+         unlinkallowned() functions.  **Important revisions to the
+         license agreement in connection with these functions have been
+         made.  See README.TXT.**
+
+         Added atexit() to library and modified 16k.as and 32k.as to use
+         exit functions.
+
+         Added ozexitto() to library and modified 32k.as to preserve
+         keyboard buffer after exit.  ozexitto(KEY_TELEPHONE), for
+         instance, exits to the telephone directory.
+
+         Added fake bdos() to init code.
+
+         Made ozwritefile() and ozundelete() support the OZ-770 and call
+         ozinitfs() when done.
+
+         Added ozwritefile() to library.
+
+         Changed ozfindxxxx() to support OZ-770.
+
+08-19-00:
+        Version 0.037.
+
+         Added *recnumptr parameter to ozfindxxxx().
+
+         Added ozunlink() file delete routine to library.
+
+         Added ozputsgetend() to library and fixed minor viewweek bug.
+
+
+         Made internal variables in ozcircsm.c static.
+
+         Merged internal code for ozfindnext() and ozfindmemo() to
+         reduce the size of programs that use both.
+
+         Working on OZ770 compatibility issues.  See week\ozfile.as.
+
+8-09-00:
+        Version 0.036.
+
+         Fixed file writing code in Wizterm.
+
+         Added ozline() to library.  [DT, modified by ARP]
+
+         Added ozcircle() to library.
+
+         Defined a dummy close() in 16k.obj and 32k.obj.
+
+         Replaced the multiplication routine in the Hi-Tech C library
+         with a faster (but about 66 bytes longer) routine in LIBOZ.
+
+
+         Replaced memcpy, memset, sprintf and sscanf with smaller and
+         faster versions.  Removed more non-working CP/M stuff from
+         standard library.  The sprintf and sscanf for floating point
+         are unchanged.
+
+         Fixed bugs in the library isspace().  This doesn't really
+         matter since normally the macro form will be used and that
+         seems OK.
+
+         Added DOCS\MEMORY.TXT and DOCS\LIBOZ.TXT with useful
+         documentation.
+
+         Othello restored with updates.
+
+         Minor bug-fix in c.com.
+
+         Miscellaneous optimizations in LIBOZ.
+
+8-02-00:
+        Version 0.035.
+
+         Othello temporarily removed due to report of it incapacitating
+         someone's Wizard--caution is suggested with all other programs.
+
+
+         Wizterm now has screen capture code in copy.as and copyscr.c.
+         Use this as a stencil for other file-writing code.
+
+-------:
+        Version 0.034.
+
+         Another emergency update to wizterm.
+
+         Includes BIN\CHECKSYM.EXE for checking symbol locations.
+         The ozlink and ozlink32 batch files now use CHECKSYM to
+         make sure that the lowpage and highpage psects are correctly
+         located.
+
+7-29-00:
+        Version 0.033.
+
+         Emergency update to wizterm.
+
+7-29-00:
+        Version 0.032.
+
+         Changed the zx*.exe executables so that the whole package can
+         be unzipped (keeping directory structure constant) in any
+         directory, not just c:\progra~1\wiz\hitech.
+
+         Softkeys and paste support added to wizterm.
+
+7-25-00:
+        Version 0.031.
+
+         ozputs() and ozputch() no longer call system functions, are
+         faster and can be used in the 32k memory model. The older
+         versions are available as ozputs_system() and ozputch_system().
+         Using ozputs_system() will work only in the 16k model, and will
+         be about twice as slow, but one will save some main memory at
+         the expense of stack space.
+
+         Changed README.TXT, updating information and changing the
+         licensing.  YOU MUST READ THE CHANGES IF YOU WANT TO CONTINUE
+         USING THE NEW VERSION.
+
+         Modified compiler\stdlib.h to get around minor compiler
+         warning-generator bug involving qsort().
+
+         Replaced the standard library qsort by a faster version not
+         requiring malloc().
+
+         Modified makewzd to allow inclusion of icon file.
+
+         Modified assembler documentation.
+
+         Finished off the upper keyboard support in ozcustom.as.  But
+         there is still no key repeat on the upper keys.
+
+         Fixed left/right arrow key confusion again!
+
+         Still working on file system.  See WEEK\ for a week-at-a-time
+         schedule viewer that accesses the todos/schedules/anniversaries
+         directly from flash.  But at least the low-level file-access
+         functions ozfindmemo(), ozfindnext(), ozloadcluster() and
+         ozinclocation() are now in LIBOZ and seem to work.
+
+         The various application demos (wizterm, wiztris, viewweek
+         and othello) have been updated in various ways.
+
+7-6-00: Version 0.03.
+
+         Removed some stuff from libc0.lib that doesn't work on the
+         Wizard.
+
+         Fixed timings in wiztris.
+
+         Some work on graphics.  A circle drawing routine is found in
+         GFX\OZCIRCLE.AS, but filled circles do not crop perfectly yet.
+         Unfilled or filled-and-uncropped circles are fine.
+
+         Added M_PI and M_SQRT2 to math.h.
+
+         Added ozpoint() to library for plotting a single point.
+
+         Added ozungetch() to library.
+
+         Added the higher level keyboard input routines kbhit() and getch()
+         which know about shift, capslock, ctrl and the like.
+
+         Fixed buggy definitions of KEY_LEFT and KEY_RIGHT in oz.h and
+         adjusted stuff in TERM\ accordingly.
+
+         Working on file system.  Work in progress in MISC\.
+
+         Fixed a bug in ozgetch.as that caused system hangs, and made
+         some other refinements to it, including power saving.
+
+         Changed ozcls.as to use ldir instead of calling the OS.
+
+         Changed ozkey.as to fix hangs due to auto power off.
+
+         Added -T speed optimization flag for zxc.  It doesn't do
+         anything beyond -O as far as I can tell, but it's supposed to
+         be there.
+
+         Created ISR install routines ozint.as and oz_int.as, and added
+         to LIBOZ.  Made the init code compatible with them.  Made
+         _ozexitrestoreint() for restoring original interrupts and
+         exiting.  Now can use a single init code for programs that
+         use a custom ISR and for those that do not.
+
+         MAKEWZD, 16K.AS: Made internal filename accessible to user
+         programs via extern char *_ozfilename and via main()'s argv[0].
+         I'm not sure this works.
+
+         32K.AS: Added 32k memory mode.  Still in testing stage--there
+         may be some *alloc() problems.  For an example of usage, see
+         the OTHELLO directory, where you will find a fully functional
+         OTHELLO game.
+
+6-16-00: Version 0.021.
+
+         Revisions to zxc*.exe allowing use of @ to pass long command
+         lines to Hi-Tech programs.  This speeds up the building of
+         liboz.lib.
+
+         Modified libsrc\gen\makefile.  It now works.
+
+         Many changes to terminal emulator in term\. [BG,ARP]
+
+         Changed init code (16k.obj) to make more stack space available
+         for programs.
+
+         Slight speedup of Z80 emulator--about 8% improvement of compile
+         times.
+
+         Added backlight control stuff to liboz.
+
+6-02-00: Version 0.02.
+
+         EMERGENCY UPDATE: Fixed nasty bug in BSS initialization code
+         that could cause major damage for programs that do not have a
+         bss segment.
+
+         Added -z option to compiler command line.  zxc -z hello.c now
+         produces a hello.bin file that can be processed with makewzd.
+
+
+         Changed initialization code so it returns directly to
+         MyPrograms when a program is finished.  If you want to wait for
+         a key press, add an ozgetch() call at the end of the program.
+         [RJ]
+
+         Changed B icon to C icon and made miscellaneous changes to
+         makewzd.c. [MA]
+
+5-30-00: Version 0.01.
+
+         Fixed bug in liboz\16k.as that caused linking problems with
+         ozlink.bat for programs that lacked bss/data.
+
+         Initialization now clears bss segment, ensuring that
+         uninitialized static and global variables are zeroed as
+         expected.
+
+         malloc() now should work.
+
+         Made all library routines save IY as Hi-Tech C lets one use
+         IY as a register variable of pointer type.
+
+         Changed makewzd to check for zero-length output.
+
+         Miscellaneous work on terminal emulator.
+
+         Miscellaneous changes to CP/M emulator code, speeding up the
+         Hi-Tech C compiler under the emulator by about 30%.
+
+5-25-00: Version 0.00.
+
+         Initial release.
+

@@ -1,0 +1,8 @@
+afnx2710.bin: a few big arrows and big miscellaneous symbols
+afnx2711.bin: more big symbols
+afnx2712.bin: big triangular up and down arrows
+afnx2713.bin: enormous calculator digits
+afnx7d00.bin: normal font
+afnx7d01.bin: bold font
+afnx7d02.bin: big font
+afnx7d03.bin: big and bold font

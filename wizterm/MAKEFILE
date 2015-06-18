@@ -1,0 +1,25 @@
+all: wizterm.wzd
+
+OBJS1 =
+OBJS2 = putch.obj scr.obj paste.obj config.obj size.obj \
+                copy.obj copyscr.obj ser.obj
+
+
+wizterm.lib: $(OBJS2)
+        zxlibr r wizterm.lib $(OBJS2)
+
+scr.obj: scr.as font.as
+
+.as.obj:
+        zxas $*.as
+
+.c.obj:
+        zcc -ox -c  $*.c
+
+wizterm.wzd:  wizterm.obj $(OBJS1) wizterm.lib wizterm.inf
+        ozlink32 wizterm $(OBJS1) wizterm.lib
+        makewzd wizterm @wizterm.inf
+        ozpack wizterm.wzd
+
+wizterm.zip: readme wizterm.wzd wtconfig.wzd
+        zip -9 wizterm readme wizterm.wzd wtconfig.wzd

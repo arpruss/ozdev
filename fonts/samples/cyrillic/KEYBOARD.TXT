@@ -1,0 +1,41 @@
+The following is the cyrillic character set as implemented in the
+vp_rus.txt font.
+
+Remember that the <>[{]}\|~` characters are not on the Wizard keyboard.  They
+can, however, be accessed in MemoEdit.  Go to the help screen (press MENU
+when editing) in MemoEdit to see how to access these characters.
+
+a  - a
+be - b
+ve - w
+ge - g
+de - d
+ye - e
+yo - <>
+zhe - v
+ze - z
+i - i
+i kratkoe - j
+ka - k
+el - l
+em - m
+en - n
+o - o
+pe - p
+er - r
+es - s
+te - t
+u - u
+ef - f
+kha - x
+tse - c
+che - h
+sha - [{
+scha - ]}
+tverdiy znak - &
+miagkiy znak - ^
+e - \|
+yu - ~`
+ya - q
+
+

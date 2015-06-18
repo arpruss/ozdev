@@ -1,0 +1,264 @@
+Linker command line:
+
+-w9 -X -C8000h -plowpage=8000h,midpage,text,data,bss -mkeytune.map \
+  -okeytune.bin C:\PROGRA~1\WIZ\HITECH\compiler\32k.obj keytune.obj \
+  C:\PROGRA~1\WIZ\HITECH\compiler\libc0.lib \
+  C:\PROGRA~1\WIZ\HITECH\compiler\liboz.lib \
+  C:\PROGRA~1\WIZ\HITECH\compiler\libc0.lib \
+  C:\PROGRA~1\WIZ\HITECH\compiler\liboz.lib 
+
+Machine type is Z80
+
+		Name          Link     Load   Length Selector Space Scale
+C:\PROGRA~1\WIZ\HITECH\compiler\32k.obj
+		lowpage       8000     8000      18B    8000     0
+		bss           C545     C545        1    8000     0
+		data          BF8A     BF8A        3    8000     0
+keytune.obj     bss           C546     C546      15E    8000     0
+		data          BF8D     BF8D      478    8000     0
+		text          8E6B     8E6B      59E    8000     0
+
+C:\PROGRA~1\WIZ\HITECH\compiler\libc0.lib
+atoi.obj        text          9409     9409       40    8000     0
+asmul.obj       text          9449     9449        F    8000     0
+strchr.obj      text          9458     9458       15    8000     0
+brelop.obj      text          946D     946D       14    8000     0
+strcpy.obj      text          9481     9481       12    8000     0
+csv.obj         text          9493     9493       28    8000     0
+rcsv.obj        text          94BB     94BB       1E    8000     0
+idiv.obj        text          94D9     94D9       6C    8000     0
+
+C:\PROGRA~1\WIZ\HITECH\compiler\liboz.lib
+ozdel64.obj     text          9545     9545       38    8000     0
+ozgetl.obj      text          957D     957D      338    8000     0
+file1.obj       bss           C6A4     C6A4       5D    8000     0
+		data          C405     C405       12    8000     0
+		text          98B5     98B5      869    8000     0
+file1b.obj      bss           C701     C701      7C0    8000     0
+unlink.obj      bss           CEC1     CEC1        E    8000     0
+		text          A11E     A11E      171    8000     0
+owner.obj       text          A28F     A28F       DD    8000     0
+hash.obj        bss           CECF     CECF        2    8000     0
+		text          A36C     A36C       51    8000     0
+getch.obj       data          C417     C417        B    8000     0
+		text          A3BD     A3BD      471    8000     0
+ozputs2.obj     lowpage       818B     818B      278    8000     0
+		bss           CED1     CED1        1    8000     0
+ftable.obj      lowpage       8403     8403       30    8000     0
+ozmenu.obj      data          C422     C422        3    8000     0
+		text          A82E     A82E      821    8000     0
+ozsavscn.obj    text          B04F     B04F       26    8000     0
+ozlight.obj     text          B075     B075       36    8000     0
+ozint2.obj      text          B0AB     B0AB       7A    8000     0
+ozsave.obj      lowpage       8433     8433       53    8000     0
+ozsavep.obj     lowpage       8486     8486       25    8000     0
+ozkeyspd.obj    text          B125     B125       22    8000     0
+ozfi4.obj       text          B147     B147       1D    8000     0
+ozfi3.obj       text          B164     B164       51    8000     0
+ozfile.obj      lowpage       84AB     84AB      215    8000     0
+		bss           CED2     CED2        1    8000     0
+		text          B1B5     B1B5       31    8000     0
+oztime.obj      text          B1E6     B1E6       36    8000     0
+ozfont.obj      data          C425     C425        1    8000     0
+		text          B21C     B21C       1B    8000     0
+ozcls.obj       lowpage       86C0     86C0       19    8000     0
+ozunlink.obj    midpage       8DE1     8DE1       81    8000     0
+ozcustom.obj    bss           CED3     CED3       1C    8000     0
+		data          C426     C426       86    8000     0
+		text          B237     B237      2F0    8000     0
+ozclick.obj     text          B527     B527       1A    8000     0
+_ozbox.obj      text          B541     B541       70    8000     0
+_ozboxf.obj     lowpage       86D9     86D9       AC    8000     0
+ozgetfh.obj     text          B5B1     B5B1       18    8000     0
+newmul.obj      text          B5C9     B5C9       76    8000     0
+memcpy.obj      text          B63F     B63F       14    8000     0
+sprintf.obj     data          C4AC     C4AC        7    8000     0
+		text          B653     B653      324    8000     0
+spnum.obj       bss           CEEF     CEEF       1E    8000     0
+		data          C4B3     C4B3       11    8000     0
+		text          B977     B977      165    8000     0
+ozwrite.obj     lowpage       8785     8785      125    8000     0
+		midpage       8E62     8E62        9    8000     0
+		text          BADC     BADC       26    8000     0
+ozfi1.obj       lowpage       88AA     88AA      250    8000     0
+pcopy.obj       lowpage       8AFA     8AFA       3E    8000     0
+pcopy0.obj      lowpage       8B38     8B38      100    8000     0
+ozexitto.obj    text          BB02     BB02       11    8000     0
+ozgetchb.obj    bss           CF0D     CF0D        6    8000     0
+		text          BB13     BB13       B3    8000     0
+ozkey.obj       text          BBC6     BBC6       6F    8000     0
+ozdetect.obj    lowpage       8C38     8C38       56    8000     0
+atexit.obj      text          BC35     BC35       26    8000     0
+ozexitf.obj     text          BC5B     BC5B       1F    8000     0
+ozfsdirt.obj    bss           CF13     CF13        1    8000     0
+ozblank.obj     lowpage       8C8E     8C8E        1    8000     0
+		text          BC7A     BC7A       42    8000     0
+ozcpkset.obj    text          BCBC     BCBC       1A    8000     0
+ozlcd.obj       lowpage       8C8F     8C8F       14    8000     0
+ozcopy.obj      text          BCD6     BCD6       58    8000     0
+wrelop.obj      text          BD2E     BD2E       10    8000     0
+ozvline.obj     lowpage       8CA3     8CA3       85    8000     0
+ozhline.obj     lowpage       8D28     8D28       90    8000     0
+ozapage.obj     lowpage       8DB8     8DB8        2    8000     0
+ozindnum.obj    lowpage       8DBA     8DBA        8    8000     0
+restpage.obj    lowpage       8DC2     8DC2        9    8000     0
+setpage1.obj    lowpage       8DCB     8DCB        8    8000     0
+oz64hz.obj      text          BD3E     BD3E       19    8000     0
+oz64hz2.obj     text          BD57     BD57       17    8000     0
+settings.obj    lowpage       8DD3     8DD3        E    8000     0
+
+C:\PROGRA~1\WIZ\HITECH\compiler\libc0.lib
+asdiv.obj       text          BD6E     BD6E       1E    8000     0
+asladd.obj      text          BD8C     BD8C        9    8000     0
+ctype_.obj      data          C4C4     C4C4       81    8000     0
+iregset.obj     text          BD95     BD95       26    8000     0
+ladd.obj        text          BDBB     BDBB        E    8000     0
+ldiv.obj        text          BDC9     BDC9      120    8000     0
+alrsh.obj       text          BEE9     BEE9       14    8000     0
+lmul.obj        text          BEFD     BEFD       3F    8000     0
+shlr.obj        text          BF3C     BF3C       10    8000     0
+strcmp.obj      text          BF4C     BF4C       1A    8000     0
+strlen.obj      text          BF66     BF66        E    8000     0
+strncpy.obj     text          BF74     BF74       16    8000     0
+
+C:\PROGRA~1\WIZ\HITECH\compiler\liboz.lib
+
+TOTAL		Name          Link     Load   Length
+		lowpage       8000     8000      DE1
+		bss           C545     C545      9CF
+		data          BF8A     BF8A      5BB
+		midpage       8DE1     8DE1       8A
+		text          8E6B     8E6B     311F
+
+
+SEGMENTS	Name		Load	Length	 Top	Selector    Space Class
+
+		lowpage         008000	004F14	00CF14	    8000       0        
+
+
+                                  Symbol Table
+
+$32kintoff             lowpage 8158  $32kinton              lowpage 815C
+$64hz_hook             text    B328  $64hz_return           text    B32A
+$DoRun                 lowpage 84C6  $JumpToCompare         lowpage 85A2
+$MatchCFileName770     lowpage 8660  $MatchFileID770        lowpage 86AA
+$MatchFilename         lowpage 86A1  $TypeToCompare         lowpage 859E
+$blanked               lowpage 8C8E  $cdir_pages            lowpage 89AA
+$clearbacklighttimer   lowpage 8164  $copybuffer            lowpage 8B38
+$copytopage            lowpage 8AFE  $end$pointer           lowpage 818C
+$filenamelength        lowpage 84C3  $filetypetable         lowpage 8C75
+$findbuffer            lowpage 84AB  $init_unblank          lowpage 8112
+$ozcopy                text    BCED  $ozlcdstatus           lowpage 8023
+$ozsetlcdstate         lowpage 8C8F  $ozupdate64hztime      text    BD5C
+$pages                 lowpage 88AB  $rxxoff_hook           text    B32B
+$serial_check_hook     text    B239  $serial_hook           text    B2C2
+$settings              lowpage 8DD3  $sp$                   lowpage 8027
+$swapupperpages        lowpage 802B  $wipe_hook             lowpage 813F
+EnableKeyboard         bss     C545  HeapTop                (abs)   F980
+HigherFontPage1        lowpage 842B  HigherFontPage2        lowpage 8423
+KbdHit                 text    B2DA  KeyBufGetPos           lowpage 8171
+KeyBufPutPos           lowpage 8172  KeyboardBuffer         lowpage 8173
+LowerFontPage1         lowpage 841B  LowerFontPage2         lowpage 8413
+Model32k               (abs)   0001  ScrCharSet             data    BF8A
+__Hbss                 bss     CF14  __Hdata                data    C545
+__Hlowpage             lowpage 8DE1  __Hmidpage             midpage 8E6B
+__Htext                text    BF8A  __Lbss                 bss     C545
+__Ldata                data    BF8A  __Llowpage             lowpage 8000
+__Lmidpage             midpage 8DE1  __Ltext                text    8E6B
+___ozfileheaderdecode  text    A2C7  ___ozfilemyrand        text    9A37
+___ozfilemysrand       text    99E9  ___ozloadpart1         text    9B23
+___read1               text    9EAA  __ctype_               data    C4C4
+__exit                 lowpage 8111  __oz1hz                bss     CED8
+__oz4sec_word          bss     CEDB  __oz64hz_dword         bss     CEDA
+__oz64hz_word          bss     CEDA  __oz_the_file          bss     C6BC
+__ozactivepage         lowpage 8DB8  __ozautoblanktime      lowpage 8DD8
+__ozautolightofftime   lowpage 8DDA  __ozautoofftime        lowpage 8DD6
+__ozbacklight          lowpage 8022  __ozbox                text    B541
+__ozcallexitfunctions  text    BC5B  __ozcdirpages          lowpage 89AA
+__ozclick_setting      lowpage 8DD5  __ozclusterbuffer      lowpage 8AB9
+__ozcontrast           lowpage 8025  __ozcustomisr          text    B297
+__ozdisablepowerkey    bss     CED3  __ozfile1buffer        bss     C701
+__ozfilename           lowpage 8014  __ozfileowner          lowpage 8020
+__ozfilledbox          lowpage 86D9  __ozfontniceheight     data    C425
+__ozfontpointers       lowpage 8403  __ozfsdirty            bss     CF13
+__ozgetch              text    BBE0  __ozgetchhook          text    BB3C
+__ozgreycount          bss     CED6  __ozgreyscale          bss     CED5
+__ozhashpjw            text    A36C  __ozhline              lowpage 8D28
+__ozi64hzcount         bss     CED4  __ozi64hztime          text    B2DB
+__ozindexbycounts      lowpage 8DBA  __ozkeyrepeatdelay     lowpage 8DD4
+__ozkeyrepeatspeed     lowpage 8DD3  __ozkill               text    A11E
+__ozlastrecnum         lowpage 88A7  __ozmodel              lowpage 8C74
+__ozprogoptions        lowpage 8DDC  __ozreadfirstcluster1  text    9B73
+__ozspare1end          lowpage 8104  __ozspare1start        lowpage 8090
+__ozupdate64hztime     text    BD57  __ozvline              lowpage 8CA3
+__spnum                text    B977  _atexit                text    BC35
+_atoi                  text    9410  _bdos                  lowpage 8157
+_blanking              text    9223  _blanking_menu         data    BFB5
+_blkcpy                text    B63F  _buffer_blank          bss     C602
+_buffer_light          bss     C5B2  _buffer_off            bss     C652
+_close1                text    9A67  _editvalue             text    912F
+_exit                  lowpage 8106  _getch                 text    A813
+_kbhit                 text    A7D9  _keyspeed              text    8EE2
+_main                  text    92E0  _main_menu             data    BF8D
+_memcpy                text    B63F  _open1                 text    9CE3
+_oz64hztimeroff        text    BD5C  _oz64hztimeron         text    BD47
+_ozblankscreen         text    BC7A  _ozclick               text    B527
+_ozcls                 lowpage 86C0  _ozcopyfromcursettings text    BCC9
+_ozcopytocursettings   text    BCBC  _ozday                 text    B20A
+_ozdelay64hz           text    9545  _ozdetectmodel         lowpage 8C38
+_ozeditline            text    9603  _ozenterisreturn       text    A3BD
+_ozexitrestoreint      lowpage 8106  _ozexitto              text    BB02
+_ozfast                text    BC94  _ozfindfileid          text    B164
+_ozfindfilename        text    B181  _ozfindnext            text    B147
+_ozfont                text    B21C  _ozget64hztimerstate   text    BD3E
+_ozgetch               text    BB13  _ozgetchblank          text    BB13
+_ozgetfont             text    B230  _ozgetfontheight       text    B5B1
+_ozgetlastrecnum       lowpage 88A6  _ozgetowner            text    A2C3
+_ozgetrepeatdelay      text    B12C  _ozgetrepeatspeed      text    B125
+_ozhour                text    B200  _ozinclocation         lowpage 8A42
+_ozinitfs              lowpage 89BC  _ozintwait             text    B237
+_ozisroff              text    B122  _ozkeyclear            text    BBD9
+_ozkeyclick            text    B516  _ozkeyhit              text    BBC6
+_ozkeymapcrtolf        text    A3C9  _ozloadcluster         lowpage 8A79
+_ozmenu                text    A82E  _ozmin                 text    B1FC
+_ozmonth               text    B20E  _ozputch               lowpage 83F2
+_ozputs                lowpage 81B4  _ozputsgetend          lowpage 818B
+_ozrestorekeysettings  lowpage 8463  _ozrestorescreen       text    B065
+_ozsave_pagenum        lowpage 8486  _ozsavekeysettings     lowpage 8449
+_ozsavescreen          text    B04F  _ozsec                 text    B1E6
+_ozsetfont             text    B21C  _ozsetisr              text    B0AF
+_ozsetlight            text    B083  _ozsetowner            text    A2B4
+_ozsetrepeatdelay      text    B13C  _ozsetrepeatspeed      text    B131
+_ozslow                text    BC9D  _oztogglelight         text    B075
+_ozunblankscreen       text    BC9D  _ozungetch             text    BC08
+_ozunlink              midpage 8DE5  _ozunlinkallowned      text    A1C4
+_ozweekday             text    B204  _ozwritefile           lowpage 8785
+_ozyear                text    B212  _putline               text    8E6B
+_read1                 text    A006  _show                  text    8EAA
+_sprintf               text    B67F  _strchr                text    9458
+_strcmp                text    BF4C  _strcpy                text    9481
+_strlen                text    BF66  _strncpy               text    BF74
+_unlink                text    A221  _value                 text    9091
+_write1                text    A021  adiv                   text    94E9
+aladd                  text    BDBB  aldiv                  text    BE15
+almod                  text    BE3C  almul                  text    BEFD
+alrsh                  text    BEE9  amod                   text    94D9
+amul                   text    B5D4  asadiv                 text    BD6E
+asaladd                text    BD8C  asaldiv                text    BE00
+asalmod                text    BE4E  asamul                 text    9449
+asldiv                 text    BD7D  aslladd                text    BD8C
+aslldiv                text    BE34  asllmod                text    BE61
+aslmul                 text    9449  brelop                 text    946D
+cret                   text    949F  csv                    text    9493
+enable_click           text    B531  fs_init                lowpage 88AA
+indir                  text    94A6  iregset                text    BD95
+iregstore              text    BDAF  ldiv                   text    94E3
+lladd                  text    BDBB  lldiv                  text    BE28
+llmod                  text    BE56  llmul                  text    BEFD
+lmod                   text    94DE  lmul                   text    B5D4
+lmul$d0                text    B5CE  lmul$h0                text    B5C9
+ncsv                   text    94A7  putinbuf_noclick       text    BC0C
+rcsv                   text    94BB  restore_a000           lowpage 8DC2
+set_a000_400           lowpage 8DCB  set_save_pagenum       lowpage 8488
+shlr                   text    BF3C  wrelop                 text    BD2F
+wrelop_ex              text    BD2E  

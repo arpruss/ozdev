@@ -1,0 +1,79 @@
+all: edit.wzd memofix.wzd
+
+OBJS_EDIT = show.obj font.obj wrap.obj ozputsf.obj \
+misc.obj readidx.obj memo_io.obj getR.obj \
+memoedit.obj stricmp.obj put.obj scroll.obj warn.obj \
+clip.obj misc2.obj scr_nc.obj flash.obj ozgetl.obj \
+smallstr.obj ozt.obj serial.obj xlat.obj getch.obj editvars.obj
+
+init.aso: init.c
+        zcc -s -ox init.c
+
+editvars.obj: editvars.as init.aso
+        zxas -j editvars.as
+
+xlat.obj: xlat.c edit.h
+
+memoedit.obj: memoedit.c edit.h
+
+ozgetl.obj: ozgetl.c edit.h
+
+show.obj: show.c edit.h
+
+font.obj: font.c edit.h
+
+put.obj: put.c edit.h
+
+warn.obj: warn.c edit.h
+
+misc2.obj: misc2.c edit.h
+
+search.obj: search.c edit.h
+
+scroll.obj: scroll.c edit.h
+
+memo_io.obj: memo_io.c edit.h
+
+edit.obj: edit.c edit.h
+
+readidx.obj: readidx.c edit.h
+
+misc.obj: misc.as help.inc
+
+edit.lib: $(OBJS_EDIT)
+        zxecho libr.arg r edit.lib $(OBJS_EDIT)
+        xlibr libr.arg
+
+mail.lib: $(OBJS_SECURE)
+        zxecho libr.arg r mail.lib $(OBJS_SECURE)
+        xlibr libr.arg
+
+.as.obj:
+        zxas -x $*.as
+
+.c.obj:
+        zcc -c -ox   $*.c
+
+.bmp.xbm:
+        c:\progra~1\imagemagick\convert -monochrome $*.bmp $*.xbm
+
+helpdata.exe: helpdata.c help.xbm smain.xbm mailedit.xbm
+        bcc32 helpdata.c
+
+
+help.inc: helpdata.exe
+        helpdata.exe
+
+edit.inf: edit.in0 edit.in1
+        copy edit.in0+edit.in1 edit.inf
+
+editfix.inf: editfix.in0 edit.in1
+        copy editfix.in0+edit.in1 editfix.inf
+
+edit.wzd: edit.obj edit.lib edit.inf
+        ozlink48 edit edit.lib edit.lib
+        makewzd edit @edit.inf
+
+memofix.wzd: memofix.obj
+        ozlink memofix
+        makewzd memofix @memofix.inf

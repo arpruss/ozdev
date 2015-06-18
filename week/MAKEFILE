@@ -1,0 +1,35 @@
+all: viewweek.wzd
+
+OBJS2 = dumpday.obj scaldate.obj config.obj misc.obj functs.obj
+OBJS3 = scr_nc.obj putch_nc.obj bsort.obj
+
+CCOPTS = -o
+
+viewweek.lib: $(OBJS2) $(OBJS3)
+        zxecho libr.arg r viewweek.lib $(OBJS2)
+        xlibr libr.arg
+        zxecho libr.arg r viewweek.lib $(OBJS3)
+        xlibr libr.arg
+
+
+functs.obj: functs.c viewweek.h
+
+config.obj: config.c viewweek.h
+
+dumpday.obj: dumpday.c viewweek.h
+
+viewweek.obj: viewweek.c viewweek.h
+
+.as.obj:
+        zxas $*.as
+
+.c.obj:
+        zcc -ox -c $*.c
+
+
+viewweek.wzd: viewweek.obj viewweek.lib viewweek.inf
+        ozlink32 viewweek ..\..\ozsetaut.obj viewweek.lib viewweek.lib
+        makewzd viewweek @viewweek.inf
+
+viewweek.zip: viewweek.wzd vwconfig.wzd
+        zip -9 viewweek.zip viewweek.wzd vwconfig.wzd

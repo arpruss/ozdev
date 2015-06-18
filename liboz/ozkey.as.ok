@@ -1,0 +1,108 @@
+psect text
+
+global KeyBufGetPos,KeyBufPutPos,KeyboardBuffer,EnableKeyboard
+
+
+global _ozkeyhit
+_ozkeyhit:
+    ld  de,EnableKeyboard
+    ld  a,(de)
+    and 0ffh-7
+    ld  (de),a
+
+    ld  hl,KeyBufGetPos
+    ld  a,(hl)
+    inc hl      ;; KeyBufPutPos
+    cp  (hl)
+    ld  hl,1
+    ret nz
+    dec hl
+    ret
+
+global _ozkeyclear
+_ozkeyclear:
+        ld      hl,KeyBufPutPos
+        ld      a,(hl)
+        dec     hl    ;; KeyBufGetPos
+        ld      (hl),a
+	ret
+
+global __ozgetch
+__ozgetch:
+    ld	    hl,KeyBufGetPos
+    ld      de,EnableKeyboard
+    jr	    WaitForKey
+WaitForKey0:
+    dec     hl
+    halt
+WaitForKey:
+    ld     a,(de)
+    and    0ffh-7
+    ld      (de),a
+    ld	    a,(hl)   ;; KeyBufGetPos
+    inc     hl
+    cp	    (hl)     ;; KeyBufPutPos
+    jr      z,WaitForKey0
+    inc     a
+    cp	    0ch
+    jr	    c,dontzero
+    xor     a
+dontzero:
+    ld	    c,a
+    sla     c
+    ld	    b,0
+    inc     hl	     ;; KeyboardBuffer
+    add     hl,bc
+    ld	    c,(hl)
+    inc     hl
+    ld	    h,(hl)
+    ld	    l,c
+    ld	    (KeyBufGetPos),a
+    ret
+
+global _ozungetch
+_ozungetch:
+
+    pop    hl
+    pop    de
+    push   de
+    push   hl
+
+    di
+    ld	   hl,KeyBufGetPos
+    ld	   c,(hl)
+    ld	   b,0
+    inc    bc
+    add    hl,bc
+    add    hl,bc
+    ld     (hl),e
+    inc    hl
+    ld     (hl),d      ; key saved
+    ld	   hl,KeyBufGetPos
+    ld	   a,(hl)
+    or	   a
+    jr	   z,ldB
+    dec    a
+    ld	   c,a
+    jr	   ok1
+ldB:
+    ld	   c,0bh
+ok1:
+    ld	   (hl),c
+    inc    hl
+    ld	   a,(hl)      ; KeyBufPutPos
+    cp	   c	       ; overflowed buffer
+    jr	   nz,ok2
+    or	   a
+    jr	   z,ldB2
+    dec    a
+    jr	   ok3
+ldB2:
+    ld	   a,0bh
+ok3:
+    ld	   (hl),a
+ok2:
+    ei
+    ret
+
+

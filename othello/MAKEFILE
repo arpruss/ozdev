@@ -1,0 +1,18 @@
+all: othello.wzd
+
+worth1.obj: worth1.c othello.h
+        zcc -o2 -c $*.c
+
+worth2.obj: worth2.c othello.h
+        zcc -ox -c $*.c
+
+.c.obj:
+        zcc -ox -c $*.c
+
+.as.obj:
+        zxas $*.as
+                  
+othello.wzd: othello.obj printf.obj putch8x8.obj scr8x8.obj worth1.obj worth2.obj othello.wic othello.dsc
+        ozlink32 othello printf.obj putch8x8.obj scr8x8.obj worth1.obj worth2.obj
+        makewzd othello "Othello 1.71" @othello.dsc othello.wic
+        ozpack othello.wzd

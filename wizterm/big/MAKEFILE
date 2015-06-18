@@ -1,0 +1,24 @@
+all: bigterm.wzd
+
+OBJS1 = ozcustom.obj
+OBJS2 = putch.obj scr8x8.obj paste.obj config.obj ozread.obj size.obj \
+                copy.obj copyscr.obj ser.obj
+
+
+bigterm.lib: $(OBJS2)
+        zxlibr r bigterm.lib $(OBJS2)
+
+scr.obj: scr.as font.as
+
+.as.obj:
+        zxas $*.as
+
+.c.obj:
+        ccopt $*
+
+bigterm.wzd:  bigterm.obj $(OBJS1) bigterm.lib bigterm.lib
+        ozlink32 bigterm $(OBJS1) bigterm.lib bigterm.lib
+        makewzd bigterm "Bigterm1.0.15" @bigterm.dsc bigterm.wic
+
+bigterm.zip: readme bigterm.wzd wtconfig.wzd
+        zip -9 bigterm readme bigterm.wzd wtconfig.wzd

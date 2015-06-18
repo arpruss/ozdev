@@ -1,0 +1,11 @@
+1.29a9: Changed signature generator and fixed bug on Wizards with fewer
+        than 10 short memos.
+1.29a8: Fixed tilde-n handling.
+1.29a7: Disabled power key when saving.
+1.29a6: Fixed problem with adjust_lines() when adjustment is more than 255 lines.
+1.29a4: Fixed problem with downloading file >=16K long.
+1.29a3: Added a sanity check in case there are too many parts
+1.29a2: Fixed up delete() and added some safety to insert()
+1.28: Added support for some special characters
+1.26: Fixed some bugs
+1.25: Added emergency save function

@@ -1,0 +1,147 @@
+Linker command line:
+
+-w9 -X -C8000h -plowpage=8000h,midpage,text,data,bss -mmodel.map \
+  -omodel.bin C:\PROGRA~1\WIZ\HITECH\compiler\32k.obj model.obj \
+  C:\PROGRA~1\WIZ\HITECH\compiler\libc0.lib \
+  C:\PROGRA~1\WIZ\HITECH\compiler\liboz.lib \
+  C:\PROGRA~1\WIZ\HITECH\compiler\libc0.lib \
+  C:\PROGRA~1\WIZ\HITECH\compiler\liboz.lib 
+
+Machine type is Z80
+
+		Name          Link     Load   Length Selector Space Scale
+C:\PROGRA~1\WIZ\HITECH\compiler\32k.obj
+		lowpage       8000     8000      18B    8000     0
+		bss           9546     9546        1    8000     0
+		data          92F3     92F3        3    8000     0
+model.obj       data          92F6     92F6      1B6    8000     0
+		text          84F5     84F5       74    8000     0
+
+C:\PROGRA~1\WIZ\HITECH\compiler\libc0.lib
+csv.obj         text          8569     8569       28    8000     0
+
+C:\PROGRA~1\WIZ\HITECH\compiler\liboz.lib
+printf.obj      data          94AC     94AC        7    8000     0
+		text          8591     8591      308    8000     0
+spnum_p.obj     bss           9547     9547       1E    8000     0
+		data          94B3     94B3       11    8000     0
+		text          8899     8899      171    8000     0
+putchar.obj     text          8A0A     8A0A       CB    8000     0
+ozlight.obj     text          8AD5     8AD5       36    8000     0
+ozint.obj       text          8B0B     8B0B       5A    8000     0
+oz_int.obj      text          8B65     8B65       3D    8000     0
+ozscrn.obj      lowpage       818B     818B       52    8000     0
+ozfont.obj      data          94C4     94C4        1    8000     0
+		text          8BA2     8BA2       1B    8000     0
+ozcls.obj       lowpage       81DD     81DD       19    8000     0
+ozputsns.obj    lowpage       81F6     81F6      27F    8000     0
+		bss           9565     9565        1    8000     0
+ozcustom.obj    bss           9566     9566       1C    8000     0
+		text          8BBD     8BBD      369    8000     0
+ozclick.obj     text          8F26     8F26       1A    8000     0
+newmul.obj      text          8F40     8F40       76    8000     0
+ozexitto.obj    text          8FB6     8FB6       11    8000     0
+ozgetchb.obj    bss           9582     9582        3    8000     0
+		text          8FC7     8FC7       98    8000     0
+ozkey.obj       text          905F     905F       71    8000     0
+ozdetect.obj    lowpage       8475     8475       52    8000     0
+ozexitf.obj     text          90D0     90D0       1F    8000     0
+ozblank.obj     lowpage       84C7     84C7        1    8000     0
+		text          90EF     90EF       42    8000     0
+ozlcd.obj       lowpage       84C8     84C8       14    8000     0
+wrelop.obj      text          9131     9131       10    8000     0
+ozapage.obj     lowpage       84DC     84DC        2    8000     0
+restpage.obj    lowpage       84DE     84DE        9    8000     0
+oz64hz.obj      text          9141     9141       19    8000     0
+oz64hz2.obj     text          915A     915A       17    8000     0
+settings.obj    lowpage       84E7     84E7        E    8000     0
+
+C:\PROGRA~1\WIZ\HITECH\compiler\libc0.lib
+atoi.obj        text          9171     9171       40    8000     0
+ctype_.obj      data          94C5     94C5       81    8000     0
+brelop.obj      text          91B1     91B1       14    8000     0
+ldiv.obj        text          91C5     91C5      120    8000     0
+strlen.obj      text          92E5     92E5        E    8000     0
+
+C:\PROGRA~1\WIZ\HITECH\compiler\liboz.lib
+
+TOTAL		Name          Link     Load   Length
+		lowpage       8000     8000      4F5
+		bss           9546     9546       3F
+		data          92F3     92F3      253
+		text          84F5     84F5      DFE
+
+
+SEGMENTS	Name		Load	Length	 Top	Selector    Space Class
+
+		lowpage         008000	001585	009585	    8000       0        
+
+
+                                  Symbol Table
+
+$32kintoff            lowpage 8158  $32kinton             lowpage 815C
+$64hz_hook            text    8CA2  $64hz_return          text    8CA4
+$blanked              lowpage 84C7  $clearbacklighttimer  lowpage 8164
+$end$pointer          lowpage 81F7  $filetypetable        lowpage 84AE
+$init_unblank         lowpage 8112  $ozlcdstatus          lowpage 80BF
+$ozsetlcdstate        lowpage 84C8  $ozupdate64hztime     text    915F
+$rxxoff_hook          text    8CA5  $serial_check_hook    text    8BBF
+$serial_hook          text    8C3C  $settings             lowpage 84E7
+$sp$                  lowpage 8055  $swapupperpages       lowpage 8059
+$wipe_hook            lowpage 813F  EnableKeyboard        bss     9546
+HeapTop               (abs)   F980  KbdHit                text    8C54
+KeyBufGetPos          lowpage 8171  KeyBufPutPos          lowpage 8172
+KeyboardBuffer        lowpage 8173  Model32k              (abs)   0001
+ScrCharSet            data    92F3  __Hbss                bss     9585
+__Hdata               data    9546  __Hlowpage            lowpage 84F5
+__Hmidpage            midpage 84F5  __Htext               text    92F3
+__Lbss                bss     9546  __Ldata               data    92F3
+__Llowpage            lowpage 8000  __Lmidpage            midpage 84F5
+__Ltext               text    84F5  __ctype_              data    94C5
+__exit                lowpage 8111  __oz1hz               bss     956B
+__oz4sec_word         bss     956E  __oz64hz_dword        bss     956D
+__oz64hz_word         bss     956D  __ozactivepage        lowpage 84DC
+__ozautoblanktime     lowpage 84EC  __ozautolightofftime  lowpage 84EE
+__ozautoofftime       lowpage 84EA  __ozbacklight         lowpage 80BE
+__ozcallexitfunctions text    90D0  __ozclick_setting     lowpage 84E9
+__ozcontrast          lowpage 80C1  __ozcurx              text    8A5B
+__ozcury              text    8A15  __ozcustomisr         text    8C17
+__ozdisablepowerkey   bss     9566  __ozfilename          lowpage 8014
+__ozfileowner         lowpage 8020  __ozfontniceheight    data    94C4
+__ozgetch             text    9079  __ozgreycount         bss     9569
+__ozgreyscale         bss     9568  __ozi64hzcount        bss     9567
+__ozi64hztime         text    8C55  __ozkeyrepeatdelay    lowpage 84E8
+__ozkeyrepeatspeed    lowpage 84E7  __ozmodel             lowpage 84AD
+__ozprogoptions       lowpage 84F0  __ozsetisr            text    8B65
+__ozspare1end         lowpage 8104  __ozspare1start       lowpage 8022
+__ozupdate64hztime    text    915A  __spnum_p             text    8899
+_atoi                 text    9178  _bdos                 lowpage 8157
+_exit                 lowpage 8106  _main                 text    84F5
+_models               data    92F6  _oz64hztimeroff       text    915F
+_oz64hztimeron        text    914A  _ozblankscreen        text    90EF
+_ozclick              text    8F26  _ozcls                lowpage 81DD
+_ozdetectmodel        lowpage 8475  _ozexitrestoreint     lowpage 8106
+_ozexitto             text    8FB6  _ozfast               text    9109
+_ozfont               text    8BA2  _ozget64hztimerstate  text    9141
+_ozgetch              text    8FC7  _ozgetchblank         text    8FC7
+_ozgetfont            text    8BB6  _ozgotoxy             text    8A85
+_ozintwait            text    8BBD  _ozisroff             text    8B9F
+_ozkeyclear           text    9072  _ozkeyclick           text    8F15
+_ozkeyhit             text    905F  _ozputch              lowpage 8464
+_ozputs               lowpage 8246  _ozputsgetend         lowpage 81F6
+_ozscrolllinesclear   lowpage 818B  _ozsetfont            text    8BA2
+_ozsetisr             text    8B0B  _ozsetlight           text    8AE3
+_ozslow               text    9112  _oztogglelight        text    8AD5
+_ozunblankscreen      text    9112  _ozungetch            text    90A1
+_printf               text    85BD  _putchar              text    8A35
+_strlen               text    92E5  aldiv                 text    9211
+almod                 text    9238  amul                  text    8F4B
+asaldiv               text    91FC  asalmod               text    924A
+aslldiv               text    9230  asllmod               text    925D
+brelop                text    91B1  cret                  text    8575
+csv                   text    8569  indir                 text    857C
+lldiv                 text    9224  llmod                 text    9252
+lmul                  text    8F4B  lmul$d0               text    8F45
+lmul$h0               text    8F40  ncsv                  text    857D
+restore_a000          lowpage 84DE  wrelop                text    9132
+wrelop_ex             text    9131  

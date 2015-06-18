@@ -1,0 +1,39 @@
+Here is the start of a library.  32k.obj is the initialization code for
+programs.  It shouldn't be compiled into liboz.lib, but into 16k.obj,
+and it needs to be the first item listed on the link line.
+
+The library here is designed so that the only page swapping is of the
+page at a000, and this convention should be followed for consistency.
+That means that all page swapping routines MUST be put in 8000-9FFF.
+The way to do this is to ensure that all page swapping routines be
+declared with:
+        psect lowpage
+If you are linking with ozlink.bat this will load the routines as low as
+possible in memory.  If you have a lot of page swapping routines, you
+might want to double check in the linker map file to make sure they all
+fit in the low page between 8000 and 9FFF.  All library routines that do
+not use page swapping should be declared:
+        psect text
+If you declare them "psect lowpage", you are taking up the valuable
+space in the low page (it doesn't matter if your total program is <8k
+but for about 8k and up it is a problem).  Any data that the routines
+use will ideally be in "psect data" or "psect bss".
+
+Each routine should be in a module by itself if reasonably possible.
+This will let the linker link in only the modules that are needed.  Most
+library routines are in modules named oz*.as or oz*.c.  If you add a new
+module, name it oz(something-or-other).as.  The only exception to these
+naming rules are functions that are implementations, or pretty close
+thereto, of fairly standard C functions, e.g., getch(). Make sure
+filenames are 8 characters or under: we are working with CP/M so this
+might be significant.  My convention has all Wizard-specific library
+routine names start with "oz" (actually "_oz" in assembly, because C
+requires an underscore) or "_oz" (actually "__oz").  Remember to declare
+them as global in the assembly file, add appropriate entries to the
+Makefile, and put prototypes in oz.h.  Then run update.bat and once you
+debug the library routine, send it to ap85@georgetown.edu.
+
+An important rule is portability.  A library routine in liboz.lib will
+ideally avoid using memory locations that could change between OS
+versions.
+

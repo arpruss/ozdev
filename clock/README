@@ -1,0 +1,27 @@
+                Clockcal - analog clock with calendar
+                Copyright (C) 2000, billy ball
+                        bball@tux.org
+
+     Minor modifications copyright (c) 2000-1 Alexander R. Pruss
+
+This program is free software; you can redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the
+Free Software Foundation; either version 2 of the License, or (at your
+option) any later version.
+
+This program is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+General Public License for more details.
+
+You should have received a copy of the GNU General Public License along
+with this program; if not, write to the Free Software Foundation, Inc.,
+675 Mass Ave, Cambridge, MA 02139, USA. 
+
+
+Clockcal is a simple program displaying an analog clock with sweeping
+second hand and a scrolling calendar. Press 'i' to show a static display
+of day, date, month, year and time. Press 'c' to show the current month's
+calendar. Press the left or right cursor buttons to scroll the calendar
+view backwards or forwards one month at a time. Press 'h' for help. Press
+'q' to quit, or press "MyPrograms" to exit.

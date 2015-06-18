@@ -1,0 +1,2 @@
+ARMOV.obj AREVAL.obj ARGEN.obj ARLIB.obj ARVAR.obj IO.obj IOLIB.obj \
+IOSCREEN.obj IOSETHLP.obj SEARCH.obj SLIB.obj tc_port.obj

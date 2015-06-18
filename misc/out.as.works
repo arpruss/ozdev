@@ -1,0 +1,293 @@
+        global  $gint
+        psect text
+
+; void ozscroll(int numbytes);
+_ozscroll:
+        in      a,(1)
+        ld      c,a
+        in      a,(2)
+        ld      b,a
+        push    bc
+
+        ld      bc,03fch
+        ld      a,c
+        out     (1),a
+        ld      a,b
+        out     (2),a
+
+       ld      hl,4
+       add     hl,sp
+       call    $gint
+       push    hl
+       pop     bc
+       ld      de,2400
+       ex      de,hl
+;       scf
+;       ccf
+       cp      a
+       sbc     hl,bc
+       push    hl
+       ld      de,8000h
+       ex      de,hl
+       add     hl,bc
+       push    hl
+       pop     bc
+       ld      de,8000h
+       call    7f00h ;24c4h
+       pop     bc
+
+       pop     bc
+
+       ld      a,c
+       out     (1),a
+       ld      a,b
+       out     (2),a
+       ret
+
+
+; void ozdelay(int d)
+_ozdelay:
+        ld       hl,2
+        add      hl,sp
+        call     $gint
+delaylp:
+        dec     hl
+        ld      a,h
+        or      l
+        jr      nz,delaylp
+        ret
+
+
+; void kbdoff();
+_kbdoff:
+        in      a,(7)
+        or      1
+        out     (7),a
+        ret
+
+_kbdon:
+        in      a,(7)
+        and     0feh
+        out     (7),a
+        ret
+
+; void ozbox(int x, int y, int width, int height);
+_ozbox:
+        ld      iy,0
+        add     iy,sp
+        ld      l,(iy+8) ; height
+        ld      h,(iy+9)
+        push    hl
+        ld      l,(iy+6) ; width
+        ld      h,(iy+7)
+        push    hl
+        ld      c,(iy+4) ; y
+        ld      b,(iy+5)
+        ld      e,(iy+2) ; x
+        ld      d,(iy+3)
+        call    07f46h ; 0x617e
+        pop     bc
+        pop     bc
+        ret
+
+; void ozorbyte(int offset, char byte);
+;   or byte into the display at offset
+_ozorbyte:
+        ld      iy,0
+        add     iy,sp
+        in      a,(1)
+        ld      c,a
+        in      a,(2)
+        ld      b,a
+        push    bc
+
+        ld      bc,03fch
+        ld      a,c
+        out     (1),a
+        ld      a,b
+        out     (2),a
+
+        ld      l,(iy+2) ; offset
+        ld      h,(iy+3)
+        ld      bc,8000h
+        add     hl,bc
+        ld      a,(hl)
+        or      (iy+4)   ; byte
+        ld      (hl),a
+
+        pop     bc
+
+        ld      a,c
+        out     (1),a
+        ld      a,b
+        out     (2),a
+        ret
+
+; int ozibyte(int offset);
+;   get byte from the display at offset
+_ozibyte:
+        ld      iy,0
+        add     iy,sp
+        in      a,(1)
+        ld      c,a
+        in      a,(2)
+        ld      b,a
+        push    bc
+
+        ld      bc,03fch
+        ld      a,c
+        out     (1),a
+        ld      a,b
+        out     (2),a
+
+        ld      l,(iy+2) ; offset
+        ld      h,(iy+3)
+        ld      bc,8000h
+        add     hl,bc
+        ld      a,(hl)
+        ld      l,a
+        xor     a
+        ld      h,a
+
+        pop     bc
+
+        ld      a,c
+        out     (1),a
+        ld      a,b
+        out     (2),a
+        ret
+
+
+; void ozanbyte(int offset, char byte);
+;   or byte into the display at offset
+_ozanbyte:
+        ld      iy,0
+        add     iy,sp
+        in      a,(1)
+        ld      c,a
+        in      a,(2)
+        ld      b,a
+        push    bc
+
+        ld      bc,03fch
+        ld      a,c
+        out     (1),a
+        ld      a,b
+        out     (2),a
+
+        ld      l,(iy+2) ; offset
+        ld      h,(iy+3)
+        ld      bc,8000h
+        add     hl,bc
+        ld      a,(hl)
+        and     (iy+4)   ; byte
+        ld      (hl),a
+
+        pop     bc
+
+        ld      a,c
+        out     (1),a
+        ld      a,b
+        out     (2),a
+        ret
+
+; int ozput(int x, int y, char *string);
+;   returns location after string
+_ozput:
+        push    ix
+        ld      ix,2
+        add     ix,sp
+        ld      c,(ix+6)
+        ld      b,(ix+7)
+        push    bc
+        ld      c,(ix+4)
+        ld      b,(ix+5)
+        push    bc
+        ld      c,(ix+2)
+        ld      b,(ix+3)
+        push    bc
+
+        pop     de     ; x-pos
+        pop     bc     ; y-pos
+        call    int_ozput
+        pop     af
+        push    de
+        pop     hl
+        pop     ix
+        ret
+
+int_ozput:
+        call    08B5h
+        defw     0FFFEh
+        ld      (ix-2),0
+LOOP:   ld      c,(ix-2)
+        inc     (ix-2)
+        ld      b,0
+        ld      l,(ix+8)
+        ld      h,(ix+9)
+        add     hl,bc
+        ld      c,(hl)
+        ld      a,c
+        or      a
+        jr      Z,EXIT
+
+        push    bc
+        ld      hl,0
+        add     hl,sp
+        push    hl
+        ld      c,(ix+4)
+        ld      b,(ix+5)
+        ld      e,(ix+2)
+        ld      d,(ix+3)
+;        ld      a,0x01
+;        ld      hl,0x08BAE
+;        call    04ah
+        call    7f4ch
+        pop     af
+        pop     af
+
+        ld      (ix+2),l
+        ld      (ix+3),h
+        jr      LOOP
+EXIT:   ld      l,(ix+2)
+        ld      h,(ix+3)
+        jp      08c9h
+
+_ozcls:
+        in      a,(1)
+        ld      c,a
+        in      a,(2)
+        ld      b,a
+        push    bc
+
+        ld      bc,03fch
+        ld      a,c
+        out     (1),a
+        ld      a,b
+        out     (2),a
+
+        ld      de,8000h
+        ld      bc,2400
+        ld      l,0
+        call    7f12h
+
+       pop     bc
+
+       ld      a,c
+       out     (1),a
+       ld      a,b
+       out     (2),a
+       ret
+
+
+        global  _ozcls
+        global  _ozput
+        global  _ozorbyte
+        global  _ozanbyte
+        global  _ozibyte
+        global  _ozbox
+        global  _kbdoff
+        global  _kbdon
+        global  _ozdelay
+        global  _ozscroll
+

@@ -1,0 +1,2 @@
+ -C8000h -op:memofix.bin -plowpage=8000h,midpage,text,data,bss -mp:memofix.\
+map p:32k.obj p:memofix.obj p:libc0.lib p:liboz.lib p:libc0.lib p:liboz.lib

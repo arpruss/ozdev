@@ -1,0 +1,300 @@
+#include <string.h>
+#include <oz.h>
+#include "edit.h"
+
+/* #define THIN_CURSOR /* single-line cursor */
+#define FLASH_RATE 16 /* also change in ozcustom.as */
+#define EXTENDED_CURSOR /* extended cursor */
+
+byte special_keys[32];
+byte num_special_keys;
+extern char sstring[];
+
+void locate_found(void)
+{
+	refresh_off();
+	cursor_tof();
+	cur_offset=last_found;
+	locate_cursor();
+    refresh_on();
+/*    show_screen(screen_offset); */
+}
+
+
+void edit_search(void)
+{
+	static byte x; static byte l;
+	cleararea(0,line_height*30);
+    x=ozputs(0,0,sstring);
+    if(ozeditline1(x,0,search_string,SEARCH_STRING_MAX,238-x)
+	 <= 0 || (l=strlen(search_string))>file_length)
+	{
+		redraw();
+		return;
+	}
+	last_found=search(0,search_string,l);
+	redraw();
+	if(last_found==0xFFFF)
+	{
+		beep();
+		return;
+	}
+	locate_found();
+}
+
+void edit_search_again(void)
+{
+	static byte l;
+	if(last_found==0xFFFF || (l=strlen(search_string))==0
+	|| file_length<(l=strlen(search_string))) return;
+	if(last_found+1>=file_length) last_found=0; /* one less than 0 */
+	  else last_found++;
+	last_found=search(last_found,search_string,l);
+	if(last_found==0xFFFF)
+    {
+        beep();
+		last_found=search(0,search_string,l);
+    }
+	if(last_found==0xFFFF)
+		return;
+	refresh_off();
+	cursor_tof();
+	cur_offset=last_found;
+	locate_cursor();
+	refresh_on();
+}
+
+void _ozhline(byte x,byte y,byte len,byte color)
+{
+    _ozfilledbox(x,y,len,1,color);
+}
+
+void _ozvline(byte x,byte y,byte len,byte color)
+{
+    _ozfilledbox(x,y,1,len,color);
+}
+
+void cursor_on(void)
+{
+#ifndef FIXED
+    static byte x;
+#endif /* not FIXED */
+    extern byte cursor_byte1,cursor_byte2,cursor_active,cursor_count;
+    extern byte cursor_height,cursor_state;
+    extern unsigned cursor_pos;
+    if(!refresh) return;
+#ifndef FIXED
+    if(display_x>WIDTH-1) x=WIDTH-2;
+     else if(display_x==0) x=0;
+      else x=display_x-1;
+    ozdisableinterrupts();
+    cursor_height=line_height;
+    cursor_pos=0xA000+line_height*y*30+(x>>3);
+#ifdef EXTENDED_CURSOR
+    if(y>0)
+    {
+        cursor_pos-=30;
+        cursor_height++;
+    }
+    if(line_height<13 && y+line_height<79) cursor_height++;
+#endif
+    x&=7;
+#ifndef THIN_CURSOR
+    if(x<7)
+    {
+        cursor_byte1=3<<x;
+#else /* THIN_CURSOR */
+        cursor_byte1=1<<x;
+#endif /* THIN_CURSOR */
+        cursor_byte2=0;
+#ifndef THIN_CURSOR
+    }
+    else
+    {
+        cursor_byte1=0x80;
+        cursor_byte2=1;
+    }
+#endif /* THIN_CURSOR */
+#else /* FIXED */
+    ozdisableinterrupts();
+    cursor_height=line_height;
+    cursor_pos=0xA000+line_height*y*30+(display_x>>3);
+    if(display_x==236)
+        cursor_byte1=7;
+    else
+        cursor_byte1=0xF;
+    if(display_x&7) cursor_byte1<<=4;
+    cursor_byte2=0;
+#endif /* FIXED */
+    cursor_state=1;
+    cursor_active=1;
+    cursor_count=FLASH_RATE;
+    doxorcursor();
+    ozenableinterrupts();
+}
+
+void cursor_off(void)
+{
+    extern byte cursor_active,cursor_state;
+    if(!cursor_active || !refresh) return;
+    ozdisableinterrupts();
+    cursor_active=0;
+    if(cursor_state)
+    {
+        cursor_state=0;
+        doxorcursor();
+    }
+    ozenableinterrupts();
+}
+
+unsigned remap(unsigned k)
+{
+    switch(k) /* workaround for memory problem */
+    {
+        case '\n':
+            return 13;
+        case KEY_UPPER_MENU:
+            return KEY_LOWER_MENU;
+        case KEY_MYPROGRAMS:
+        case KEY_UPPER_ESC:
+        case KEY_MEMO:
+            return 27;
+        case KEY_UPPER_ENTER:
+        case KEY_UPPER_ENTER|MASK2ND:
+        case KEY_LOWER_ENTER|MASK2ND:
+            return KEY_LOWER_ENTER;
+        default:
+            return k;
+    }
+}
+
+#ifndef FIXED
+#define NUM_PER_LINE 16 /* must divide 128 */
+
+void rescan_special(void)
+{
+    static byte i;
+    static unsigned off;
+    for(i=0;i<31;i++)
+    {
+        special_keys[i]=~special_keys[i];
+    }
+    for(off=0;off<file_length;off++)
+    {
+        i=ozreadauxbyte(off)&0x7F;
+        if(i>=32 || i==13) break;
+        if(i>13) i--;
+        if(special_keys[i]<128) special_keys[i]=~special_keys[i];
+    }
+    num_special_keys=0;
+    for(i=0;i<31;i++)
+        if(special_keys[i]<128) special_keys[i]=0;
+          else num_special_keys++;
+}
+
+byte new_special(byte c)
+{
+    static byte i;
+    if(num_special_keys==31) rescan_special();
+    if(num_special_keys==31)
+    {
+        warn("Too many special characters",
+             "Press any key");
+        redraw();
+        return 0;
+    }
+    for(i=0;i<31;i++)
+    {
+        if(!special_keys[i])
+        {
+            special_keys[i]=c;
+            if(i>=13) return i+1;
+              else return i;
+        }
+    }
+    return 255;
+}
+
+unsigned get_special_key(void)
+{
+    static byte h;
+    static byte i,count,c;
+    static byte x;
+    static byte offset;
+    static byte old_font;
+    static unsigned k;
+    old_font=ozgetfont();
+    ozsetfont(FONT_PC_NORMAL);
+    cleararea(0,(h=2*9+4)*30);
+    _ozbox(0,0,239,h);
+    offset=0;
+    do
+    {
+        _ozfilledbox(1,1,236,h-2,WHITE);
+        for(i=0;i<NUM_PER_LINE;i++)
+        {
+            if(offset+i<num_special_keys)
+            {
+                for(count=c=0;count<i;c++) if(special_keys[c]) count++;
+            }
+            else
+            {
+                c=128+offset+i-num_special_keys;
+            }
+            x=14*i;
+            ozputch(x,2,'A'+i);
+            ozputch(x,9+2,c);
+        }
+        k=ozgetch();
+        switch(k)
+        {
+            case KEY_PAGEDOWN:
+            case KEY_DOWN:
+            case KEY_RIGHT:
+                if(offset<128-NUM_PER_LINE)
+                    offset+=NUM_PER_LINE;
+                break;
+            case KEY_UP:
+            case KEY_PAGEUP:
+            case KEY_LEFT:
+                if(offset) offset-=NUM_PER_LINE;
+                break;
+            case KEY_LOWER_ESC:
+            case KEY_UPPER_ESC:
+                redraw();
+                return 0;
+            default:
+                if(k<'a' || k>='a'+NUM_PER_LINE)
+                {
+                    k=0xFFFF;
+                    break;
+                }
+                c=k-'a';
+                if(offset+c<31)
+                {
+                    redraw();
+                    if(offset+c>=13) return offset+c+1;
+                      else return offset+c;
+                }
+                c=c+(128-31);
+                return new_special(c);
+         }
+     } while(1);
+}
+
+#endif
+
+void ins(unsigned k)
+{
+    switch(k)
+    {
+        case MASK2ND | 'z':
+            k=get_special_key();
+            break;
+    }
+    if((k>=128 || k<32) && k!=13) return;
+    if(selection_on) delete_selection();
+    insert_char(k);
+    modified=1;
+}
+

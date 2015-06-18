@@ -1,0 +1,171 @@
+.\"{{{}}}
+.\"{{{  Notes
+.\" This manual page was written by Michael Haardt.  It documents only the
+.\" ANSIfied version for Minix and is derived from the original documentation.
+.\"}}}
+.\"{{{  Title
+.TH CPP 1 "November 26, 1994" "" "User commands"
+.\"}}}
+.\"{{{  Name
+.SH NAME
+cpp \- C pre-processor
+.\"}}}
+.\"{{{  Synopsis
+.SH SYNOPSIS:
+.ad l
+.B cpp
+.RB [ \-C ]
+.RB [ \-D\fP\fIname\fP\fR[\fP=\fP\fP\fIvalue\fP\fR]\fP ]
+.RB [ \-E ]
+.RB [ \-I\fP\fIdirectory\fP ]
+.RB [ \-N ]
+.RB [ \-S\fP\fItext\fP ]
+.RB [ \-U\fP\fIname\fP ]
+.RB [ \-P ]
+.RB [ \-X\fP\fInumber\fP ]
+.RI [ infile [ outfile ]]
+.ad b
+.\"}}}
+.\"{{{  Description
+.SH DESCRIPTION:
+.B cpp
+reads a C source file, expands macros and include files, and writes an
+input file for the C compiler.  If no file arguments are given, cpp
+reads from stdin and writes to stdout.  If one file argument is given,
+it will define the input file, while two file arguments define both
+input and output files.  The file name "-" is a synonym for stdin or
+stdout as appropriate.
+.PP
+There are no target specific variables defined, they are expected to be
+provided using the \fB\-D\fP option from the compiler driver.  The
+following are always available unless \fB\-N\fP was specified
+twice: \fB__FILE__\fP, \fB__LINE__\fP, \fB__DATE__\fP and \fB__TIME__\fP.
+.PP
+.B cpp
+is mostly conforming to the ANSI C standard.
+.\"}}}
+.\"{{{  Options
+.SH OPTIONS
+.\"{{{  -C
+.IP \fB\-C\fP
+If set, source-file comments are written
+to the output file.  This allows the output of cpp to be
+used as the input to a program, such as lint, that expects
+commands embedded in specially-formatted comments.
+.\"}}}
+.\"{{{  -Dname=value
+.IP \fB\-D\fP\fIname\fP[\fB=\fP\fIvalue\fP]
+Define the name as if the programmer wrote \fB#define\fP \fIname
+value\fP at the start of the first file.  If \fB=\fP\fIvalue\fP is not
+given, a value of 1 will be used.
+.\"}}}
+.\"{{{  -E
+.IP \fB\-E\fP
+Always return "success" to the operating
+system, even if errors were detected.  Note that some fatal
+errors, such as a missing #include file, will terminate
+cpp, returning "failure" even if the -E option is given.
+.\"}}}
+.\"{{{  -Idirectory
+.IP \fB\-I\fP\fIdirectory\fP
+Add this directory to the list of
+directories searched for #include "..." and #include <...>
+commands.  Note that there is no space between the
+"-I" and the directory string.  More than one -I command
+is permitted.  On non-Unix systems "directory" is forced
+to upper-case.
+.\"}}}
+.\"{{{  -N
+.IP \fB\-N\fP
+cpp normally predefines some symbols defining
+the target computer and operating system.  If -N is specified,
+no symbols will be predefined.  If -N -N is specified, the
+"always present" symbols, __LINE__, __FILE__, and __DATE__
+are not defined.
+.\"}}}
+.\"{{{  -Stext
+.IP \fB\-S\fP\fItext\fP
+cpp normally assumes that the size of
+the target computer's basic variable types is the same as the size
+of these types of the host computer.  (This can be overridden
+when cpp is compiled, however.)  The -S option allows dynamic
+respecification of these values.  "text" is a string of
+numbers, separated by commas, that specifies correct sizes.
+The sizes must be specified in the exact order:
+.sp
+.in +.5i
+    char short int long float double
+.in -.5i
+.sp
+If you specify the option as "-S*text", pointers to these
+types will be specified.  -S* takes one additional argument
+for pointer to function (e.g. int (*)())
+.sp
+For example, to specify sizes appropriate for a PDP-11,
+you would write:
+.sp
+.in .5i
+   c s i l f d func
+ -S1,2,2,2,4,8,
+-S*2,2,2,2,2,2,2
+.in -.5i
+.sp
+Note that all values must be specified.
+.\"}}}
+.\"{{{  -Uname
+.IP \fB\-U\fP\fIname\fP
+Undefine the name as if \fB#undef\fP \fIname\fP
+were given.  On non-Unix systems, "name" will be forced to
+upper-case.
+.\"}}}
+.\"{{{  -Xnumber
+.IP \fB\-X\fP\fInumber\fP
+Enable debugging code.  If no value is
+given, a value of 1 will be used.  (For maintenence of
+cpp only.)
+.\"}}}
+.\"{{{  -P
+.IP \fB\-P\fP
+Don't output \fB#\fP\fIline\fP lines and keep heading white space
+in lines.  This option is useful if the
+output of cpp is fed to a program which would be confused by those
+lines.
+.\"}}}
+.\"}}}
+.\"{{{  Bugs
+.SH BUGS
+Many, and probably more than you want to know about.  Here are
+a few:
+The \fB#if\fP expression processor uses signed integers only.
+I.e, \fB#if 0xFFFFu < 0\fP may be true.
+.PP
+If you write
+.sp
+.in +.5i
+#define string(arg) "arg"
+.br
+\&... string("foo") ...
+.in -.5i
+.sp
+This implementation generates "foo", rather than the strictly
+correct ""foo"" (which will probably generate an error message).
+.PP
+.B cpp
+does not do inside-out expansion, but outside-in.  Unless you
+start to use quoting, you probably won't see the difference.
+.PP
+There are no trigraphs implemented.
+.\"}}}
+.\"{{{  Author
+.SH AUTHOR
+Martin Minow, modified by Michael Haardt.
+.\"}}}
+.\"{{{  History
+.SH HISTORY
+This cpp is/was also known as DECUS CPP.
+.\"}}}
+.\"{{{  See also
+.SH "SEE ALSO"
+cc(1), m4(1), ``Brian W.Kernighan and Dennis M. Ritchie: The C
+programming language''
+.\"}}}

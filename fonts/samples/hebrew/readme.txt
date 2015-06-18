@@ -1,0 +1,34 @@
+The font Hebrew.WRF is based on the BeerScheba Palm Pilot font by
+Michael Neuhold. The original font came with the Gnu Public License.
+However, since bitmapped fonts are not copyrightable in the U.S., the
+Gnu Public License may not be valid.  If it is, you must abide by it--
+see: http://www.gnu.org/copyleft/gpl.html
+
+Source code for the Hebrew.WRF font can be obtained by renaming it to
+hebrew.wzf, and running wzf2txt on it (get the Hi-Tech C SDK from
+www.ozdev.com), and is also included in the Hi-Tech C SDK itself.
+
+The HebrewSans.WRF font is based on a Hebrew block font for the Palm
+Pilot that I downloaded from www.zalman.org
+
+The characted mapping for the Hebrew fonts is:
+a - alef
+b - bet
+g - gimel
+d - dalet
+h - he
+w - vav
+z - zayin
+x - khet
+j - tet
+y - yod
+k - kaf
+l - lamed
+m - mem
+n - nun
+o - samekh
+e - `ayin
+q - qof
+r - resh
+s - shin/sin
+t - tav

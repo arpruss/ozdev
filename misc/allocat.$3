@@ -1,0 +1,169 @@
+psect	text
+global	_z
+_z:
+global	ncsv, cret, indir
+call	ncsv
+defw	f3
+global	___x_alloca_19828a_
+ld	hl,4
+push	hl
+call	___x_alloca_19828a_
+exx
+ld	hl,2
+add	hl,sp
+ld	sp,hl
+exx
+ld	l,l
+ld	h,h
+ld	(F5),hl
+global	_strcpy
+ld	hl,19f
+push	hl
+ld	hl,(F5)
+push	hl
+call	_strcpy
+ld	hl,2+2
+add	hl,sp
+ld	sp,hl
+global	_ozputs
+global	_i
+ld	hl,29f
+push	hl
+ld	hl,(_i)
+push	hl
+ld	hl,0
+push	hl
+call	_ozputs
+ld	hl,2+2+2
+add	hl,sp
+ld	sp,hl
+global	_stack
+call	_stack
+ld	hl,0
+add	hl,sp
+ld	sp,hl
+l1:
+psect	bss
+F5:
+	defs	2
+psect	text
+jp	cret
+f3	equ	0
+_stack:
+call	ncsv
+defw	f8
+global	_printf
+push	ix
+pop	hl
+dec	hl
+dec hl
+push	hl
+ld	hl,39f
+push	hl
+call	_printf
+ld	hl,2+2
+add	hl,sp
+ld	sp,hl
+l2:
+jp	cret
+f8	equ	-2
+global	_main
+_main:
+call	ncsv
+defw	f10
+ld	(ix+-2),.low.0
+ld	(ix+1+-2),.high.0
+ld	l,(ix+-2)
+ld	h,(ix+1+-2)
+ld	(_i),hl
+ld	de,10
+ld	l,(ix+-2)
+ld	h,(ix+1+-2)
+add	hl,de
+ld	(ix+-2),l
+ld	(ix+1+-2),h
+call	_z
+ld	hl,0
+add	hl,sp
+ld	sp,hl
+call	_stack
+ld	hl,0
+add	hl,sp
+ld	sp,hl
+ld	l,(ix+-2)
+ld	h,(ix+1+-2)
+ld	(_i),hl
+ld	de,10
+ld	l,(ix+-2)
+ld	h,(ix+1+-2)
+add	hl,de
+ld	(ix+-2),l
+ld	(ix+1+-2),h
+call	_z
+ld	hl,0
+add	hl,sp
+ld	sp,hl
+call	_stack
+ld	hl,0
+add	hl,sp
+ld	sp,hl
+ld	l,(ix+-2)
+ld	h,(ix+1+-2)
+ld	(_i),hl
+ld	de,10
+ld	l,(ix+-2)
+ld	h,(ix+1+-2)
+add	hl,de
+ld	(ix+-2),l
+ld	(ix+1+-2),h
+call	_z
+ld	hl,0
+add	hl,sp
+ld	sp,hl
+call	_stack
+ld	hl,0
+add	hl,sp
+ld	sp,hl
+ld	l,(ix+-2)
+ld	h,(ix+1+-2)
+ld	(_i),hl
+ld	de,10
+ld	l,(ix+-2)
+ld	h,(ix+1+-2)
+add	hl,de
+ld	(ix+-2),l
+ld	(ix+1+-2),h
+call	_z
+ld	hl,0
+add	hl,sp
+ld	sp,hl
+call	_stack
+ld	hl,0
+add	hl,sp
+ld	sp,hl
+global	_ozgetch
+call	_ozgetch
+ld	hl,0
+add	hl,sp
+ld	sp,hl
+l3:
+jp	cret
+f10	equ	-2
+psect	data
+19:
+defb	72,101,0
+29:
+defb	72,101,0
+39:
+defb	91,37,120,93,0
+psect	bss
+_i:
+	defs	2
+e
+ld	(ix+-2),l
+ld	(ix+1+-2),h
+call	_z
+ld	hl,0
+add	hl,sp
+ld	sp,hl
+call
