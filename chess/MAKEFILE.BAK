@@ -11,15 +11,6 @@ archess.lib: $(OBJS2)
 .c.obj:
         zcc -ox -c -DOZ7XX $*.c
 
-b2c.exe: b2c.c
-        cl b2c.c
-
-pieces.as: pieces b2c.exe
-        b2c < pieces > pieces.as
-
-scr8x8.obj: scr8x8.as pieces.as
-        zxas scr8x8.as
-
 .as.obj:
         zxas $*.as
 

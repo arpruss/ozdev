@@ -7,25 +7,16 @@
 
 void processmove(movetype *mv)
 {
-   register gametype *gp;
-   static gametype *gp1;
-   if (movenum>=MAXHIST)
-   {
-        movenum-=SHIFT_HIST_BY;
-        gameptr-=SHIFT_HIST_BY;
-        shifted_gamehist+=SHIFT_HIST_BY;
-        if(game50>SHIFT_HIST_BY) game50-=SHIFT_HIST_BY; else game50=0;
-        gp1=gamehist;
-        gp=gamehist+SHIFT_HIST_BY;
-        for(;gp<gamehist+MAXHIST;gp++,gp1++)
-        {
-            if(gp->game50>SHIFT_HIST_BY) gp->game50 -= SHIFT_HIST_BY;
-              else gp->game50=0;
-            memcpy(gp1,gp,sizeof *gp);
-        }
+if (movenum>=MAXHIST)
+   {strcpy(msg,"Too many moves!");
+    strcpy(status,msg);
+    draw=mate=TRUE;bothsides=FALSE;
+    Bell();
+    return;
    }
+
 if (mv->f >= 0) makemove(mv); /* make sure there is a move! */
-checkstatus(chngcolor(tomove));
+checkstatus();
 if (draw || mate) {bothsides=FALSE;}
 }
 
@@ -33,8 +24,7 @@ if (draw || mate) {bothsides=FALSE;}
    as easily be auto vars */
 static direct int f,fcol,t,tcol;
 static direct int c,oc;
-static direct uchar piece,captured;
-static direct uchar flags; /* only need lower 8 bits */
+static direct int piece,captured,flags;
 static direct int x,y;
 
 void makemove(movetype *_mv)
@@ -109,13 +99,11 @@ void unmakemove(void)
 /* this retracts a move and downdates the material balance, pawn count, king
    location and everything else that changes when you make a move */
 {
-register gametype *gameptr0;
-gameptr0=gameptr;
-game50=gameptr0->game50;epsquare=gameptr0->epsquare;
-piece =gameptr0->piece; captured=gameptr0->captured;
-f     =gameptr0->f;     t       =gameptr0->t;
-flags =gameptr0->flags;
-movenum--;gameptr=gameptr0-1;
+game50=gameptr->game50;epsquare=gameptr->epsquare;
+piece =gameptr->piece; captured=gameptr->captured;
+f     =gameptr->f;     t       =gameptr->t;
+flags =gameptr->flags;
+movenum--;gameptr--;
 
 c=brdcolor[t];fcol=getcol(f);tcol=getcol(t);
 oc=chngcolor(c);
@@ -164,7 +152,7 @@ if (flags & CASTLE)
 if ( (piece==PAWN) || (captured==PAWN)) scorepawns();
 }
 
-void sort(movetype *_first,movetype *_last) /* 20.0% */
+void sort(movetype *first,movetype *last)
 /* sort the moves in descending order the moves are from first+1 to last */
 /* This is a fairly simple sort.  We regularly only have 30 or so moves,
    so more complicated ones (such as quicksort) are often slower.        */
@@ -172,13 +160,10 @@ void sort(movetype *_first,movetype *_last) /* 20.0% */
   register movetype *p2;
   static direct movetype *p3;
   static movetype temp;
-  static movetype *first,*last;
-  first=_first;
-  last=_last;
 
 first++;
 while (first<last)
-   {p2=first+1;s=(p2-1)->score;p3=first;
+   {s=first->score;p2=first+1;p3=first;
     while (p2<=last)
       {if (p2->score > s) {p3=p2;s=p2->score;}
        p2++;
@@ -191,3 +176,4 @@ while (first<last)
     first++;
    }
 }
+

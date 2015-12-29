@@ -6,21 +6,16 @@
 #define HEADER
 #include "arvar.c"
 
-int setmate(movetype *move,uchar side,uchar depth)
+int setmate(movetype *move,int side,int depth)
 /* set the score for a mate to an extremely high value.  We adjust the value
    by subbing depth from BIGNUM so that if we find a mate during a capture
    the shorter mates will be better.               */
-{
-    static int score;
-    static uchar klw;
-    score=MATEVAL-depth;
-    if ((klw=(kingloc[WHITE]<0)) || kingloc[BLACK]<0)
-    {
-        if(klw) score=-score;
-        if(side==BLACK) score=-score;
-    }
-    move->flags|=CHECKMATE | EXACT;
-    return(score);
+{ static int score;
+score=MATEVAL-depth;
+if (kingloc[WHITE]<0) score=-score;
+if (side==BLACK) score=-score;
+move->flags|=CHECKMATE | EXACT;
+return(score);
 }
 
 int repetition(void)
@@ -28,13 +23,12 @@ int repetition(void)
 {static int i;
 static direct int rep,cnt;
 static tiny b[64];
-/* static direct tiny *bptr; */
+static direct tiny *bptr;
 register gametype *gp;
 
 if (movenum<=game50+3) return(0);
 rep=cnt=0;gp=&gamehist[movenum];
-/* for (bptr=&b[64];bptr>=&b[0];*(--bptr)=0); */
-memset(b,0,64);
+for (bptr=&b[64];bptr>=&b[0];*(--bptr)=0);
 
 for (i=movenum;i>game50;i--)
    {if ((++b[gp->f])==0) cnt--; else cnt++;
@@ -43,7 +37,7 @@ for (i=movenum;i>game50;i--)
     gp--;
    }
 
-if ((movenum-game50)>99) return 50; /* 50 move rule */
+if ((movenum-game50)>99) rep=50; /* 50 move rule */
 return(rep);
 }
 
@@ -99,29 +93,26 @@ else {worse=bstscore-avgscore;
 
 void selected(void)
 /*we've finally selected a move, now do it!*/
-{
+{ char s[9];
 
 elaptime();
 /*
 if (breakpress)
-   { strcpy(msg,"Searc\xE8""interupted");pvsmsg[0]=status[0]=0;
+   { strcpy(msg,"Search interupted");pvsmsg[0]=status[0]=0;
      bothsides=FALSE;Bell();return;
    } */
 
 findpieces();/* pvsenglish(pvs); */
-checkstatus(tomove);
-if (! mate)
-{
-    processmove(&pvs[1]);
-    if(!draw)
-        {strcpy(msg,"M\xF9""move\xBA");
-         mvenglish(&pvs[1],msg+7);}
-}
+checkstatus();
+if (! mate) processmove(&pvs[1]);
+
+if (! (mate || draw))
+   {strcpy(msg,"My move: ");mvenglish(&pvs[1],s);strcat(msg,s);}
+checkstatus();
 }
 
 void unflag(movetype *mvlist,movetype *last,bool reset)
-{ /* static int x,y;*/
-  register movetype *mv;
+{ static int x,y;register movetype *mv;
 for (mv=mvlist+1;mv<=last;mv++)
    if (reset)
      {mv->flags &= ~ (FULLSRCH | FULLEVAL | STANDPAT | EXACT);

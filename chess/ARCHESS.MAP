@@ -1,0 +1,217 @@
+Linker command line:
+
+-w9 -X -C8000h -plowpage=8000h,midpage,text,data,beforebss,bss \
+  -marchess.map -oarchess.bin C:\PROGRA~1\WIZ\HITECH\compiler\32k.obj \
+  archess.obj archess.lib archess.lib \
+  C:\PROGRA~1\WIZ\HITECH\compiler\libc0.lib \
+  C:\PROGRA~1\WIZ\HITECH\compiler\liboz.lib \
+  C:\PROGRA~1\WIZ\HITECH\compiler\libc0.lib \
+  C:\PROGRA~1\WIZ\HITECH\compiler\liboz.lib 
+
+Machine type is Z80
+
+		Name          Link     Load   Length Selector Space Scale
+C:\PROGRA~1\WIZ\HITECH\compiler\32k.obj
+		lowpage       8000     8000      183    8000     0
+		bss           CD79     CD79        1    8000     0
+		data          C7A5     C7A5        3    8000     0
+archess.obj     bss           CD7A     CD7A        2    8000     0
+		data          C7A8     C7A8       CD    8000     0
+		text          85C5     85C5       98    8000     0
+
+archess.lib
+ARMOV.obj       bss           CD7C     CD7C       1C    8000     0
+		data          C875     C875       10    8000     0
+		text          865D     865D      778    8000     0
+AREVAL.obj      bss           CD98     CD98       44    8000     0
+		data          C885     C885       C2    8000     0
+		text          8DD5     8DD5      A89    8000     0
+ARGEN.obj       bss           CDDC     CDDC       1A    8000     0
+		text          985E     985E      B90    8000     0
+ARLIB.obj       bss           CDF6     CDF6        A    8000     0
+		data          C947     C947       2D    8000     0
+		text          A3EE     A3EE      316    8000     0
+ARVAR.obj       bss           CE00     CE00      F79    8000     0
+		data          C974     C974      13D    8000     0
+IO.obj          bss           DD79     DD79        7    8000     0
+		data          CAB1     CAB1       C6    8000     0
+		text          A704     A704      32D    8000     0
+IOLIB.obj       data          CB77     CB77       A8    8000     0
+		text          AA31     AA31      4C2    8000     0
+IOSCREEN.obj    bss           DD80     DD80        2    8000     0
+		data          CC1F     CC1F       B5    8000     0
+		text          AEF3     AEF3      233    8000     0
+SEARCH.obj      bss           DD82     DD82      C7C    8000     0
+		data          CCD4     CCD4       4A    8000     0
+		text          B126     B126      AB9    8000     0
+SLIB.obj        bss           E9FE     E9FE       44    8000     0
+		data          CD1E     CD1E        A    8000     0
+		text          BBDF     BBDF      2C5    8000     0
+tc_port.obj     bss           EA42     EA42       14    8000     0
+		text          BEA4     BEA4      190    8000     0
+scr8x8.obj      lowpage       8183     8183      364    8000     0
+putch.obj       text          C034     C034       51    8000     0
+smallstr.obj    text          C085     C085       19    8000     0
+misc.obj        text          C09E     C09E       54    8000     0
+		beforebss     CD29     CD29       3D    8000     0
+
+archess.lib
+
+C:\PROGRA~1\WIZ\HITECH\compiler\libc0.lib
+abs.obj         text          C0F2     C0F2        F    8000     0
+asar.obj        text          C101     C101        F    8000     0
+asdiv.obj       text          C110     C110       1E    8000     0
+atoi.obj        text          C12E     C12E       40    8000     0
+brelop.obj      text          C16E     C16E       14    8000     0
+shar.obj        text          C182     C182       10    8000     0
+shll.obj        text          C192     C192        D    8000     0
+strcat.obj      text          C19F     C19F       1B    8000     0
+csv.obj         text          C1BA     C1BA       28    8000     0
+idiv.obj        text          C1E2     C1E2       6C    8000     0
+
+C:\PROGRA~1\WIZ\HITECH\compiler\liboz.lib
+ozdel64.obj     text          C24E     C24E       25    8000     0
+ozaux.obj       beforebss     CD66     CD66       11    8000     0
+ozint.obj       text          C273     C273       5A    8000     0
+oz_int.obj      text          C2CD     C2CD       3D    8000     0
+ozsingle.obj    text          C30A     C30A        8    8000     0
+		beforebss     CD77     CD77        2    8000     0
+ozcls.obj       lowpage       84E7     84E7       19    8000     0
+ozsound.obj     text          C312     C312       2C    8000     0
+ozcustom.obj    bss           EA56     EA56       19    8000     0
+		text          C33E     C33E      323    8000     0
+ozclick.obj     data          CD28     CD28        1    8000     0
+		text          C661     C661       1A    8000     0
+newmul.obj      text          C67B     C67B       76    8000     0
+memcpy.obj      text          C6F1     C6F1       14    8000     0
+ozkey.obj       text          C705     C705       71    8000     0
+ozexitf.obj     text          C776     C776       1F    8000     0
+wrelop.obj      text          C795     C795       10    8000     0
+ozapage.obj     lowpage       8500     8500        2    8000     0
+restpage.obj    lowpage       8502     8502        9    8000     0
+setpage1.obj    lowpage       850B     850B        8    8000     0
+ozsnap.obj      lowpage       8513     8513       B2    8000     0
+
+C:\PROGRA~1\WIZ\HITECH\compiler\libc0.lib
+
+C:\PROGRA~1\WIZ\HITECH\compiler\liboz.lib
+
+TOTAL		Name          Link     Load   Length
+		lowpage       8000     8000      5C5
+		bss           CD79     CD79     1CF6
+		data          C7A5     C7A5      584
+		text          85C5     85C5     41E0
+		beforebss     CD29     CD29       50
+
+
+SEGMENTS	Name		Load	Length	 Top	Selector    Space Class
+
+		lowpage         008000	006A6F	00EA6F	    8000       0        
+
+
+                                  Symbol Table
+
+$32kintoff            lowpage   814C  $32kinton             lowpage   8150
+$aux_pagein           beforebss CD66  $aux_pagein0          beforebss CD66
+$aux_pageout          beforebss CD6E  $clearbacklighttimer  lowpage   8158
+$init_unblank         lowpage   80A1  $ozlcdstatus          lowpage   8166
+$rxxoff_hook          text      C3E7  $serial_check_hook    text      C340
+$serial_hook          text      C3B3  $sp$                  lowpage   80E3
+$swapupperpages       lowpage   80E7  EnableKeyboard        bss       CD79
+HeapTop               (abs)     F980  KeyBufGetPos          lowpage   8169
+KeyBufPutPos          lowpage   816A  KeyboardBuffer        lowpage   816B
+Model32k              (abs)     0001  ScrCharSet            data      C7A5
+_Bell                 text      BFF5  _ElapClock            bss       DD49
+__Hbeforebss          beforebss CD79  __Hbss                bss       EA6F
+__Hdata               data      CD29  __Hlowpage            lowpage   85C5
+__Hmidpage            midpage   85C5  __Htext               text      C7A5
+__Lbeforebss          beforebss CD29  __Lbss                bss       CD79
+__Ldata               data      C7A5  __Llowpage            lowpage   8000
+__Lmidpage            midpage   85C5  __Ltext               text      85C5
+__exit                lowpage   80A0  __oz64hz_dword        bss       EA5A
+__oz64hz_word         bss       EA5A  __ozactivepage        lowpage   8500
+__ozauxstart          beforebss CD77  __ozbacklight         lowpage   8165
+__ozcallexitfunctions text      C776  __ozclick_setting     data      CD28
+__ozcontrast          lowpage   8168  __ozcustomisr         text      C398
+__ozdisablepowerkey   bss       EA56  __ozfilename          lowpage   8014
+__ozfileowner         lowpage   8020  __ozgreycount         bss       EA58
+__ozgreyscale         bss       EA57  __ozkeyrepeatdelay    text      C547
+__ozkeyrepeatspeed    text      C5C2  __ozsetisr            text      C2CD
+__ozspare1end         lowpage   8093  __ozspare1start       lowpage   8022
+_abs                  text      C0F2  _atoi                 text      C135
+_atright              text      AF6C  _bdos                 lowpage   80E2
+_blkcpy               text      C6F1  _board                bss       DC5B
+_bothsides            bss       DD70  _brdcolor             bss       DD09
+_capnodes             bss       DD66  _castled              bss       DC9B
+_checkstatus          text      A61B  _clearboard           text      AA31
+_clrscr               text      BFE4  _cmdis                text      ABC6
+_cmdline              bss       DB74  _computer             bss       DD6E
+_copymv               text      C09E  _crlf                 text      C034
+_curcol               lowpage   8183  _currow               lowpage   8184
+_distance             text      C0BE  _draw                 bss       DD6A
+_elaptime             text      C018  _endprg               text      BFEF
+_epsquare             bss       DD62  _estscore             bss       DD55
+_evals                bss       DD68  _evalu8               text      954A
+_exit                 lowpage   8095  _extcount             bss       DD4D
+_extratime            bss       DD5B  _findpieces           text      A3EE
+_game50               bss       DD5E  _gamehist             bss       CE50
+_gameptr              bss       DD64  _gencaps              text      9A6B
+_genlegal             text      A166  _genmoves             text      9D71
+_getline              text      ABE5  _gettime              text      C0AA
+_human                bss       DD57  _initgame             text      AB76
+_initprg              text      BFF0  _initselect           text      B81C
+_inputcommand         text      A74D  _itoa                 text      BEA4
+_kingloc              bss       DC58  _level                bss       DD75
+_main                 text      85C5  _makemove             text      86BE
+_map                  data      C9F7  _mate                 bss       DD6C
+_maxdepth             bss       DD4B  _memcpy               text      C6F1
+_movenum              bss       DD4F  _msg                  bss       CE00
+_mtl                  bss       DAEE  _mvboard              bss       DAF4
+_mvenglish            text      A516  _mveq                 text      A6B9
+_name                 data      C9D9  _nbp                  bss       DD73
+_newboard             text      AA7B  _newgame              text      AACD
+_nodes                bss       DD60  _ozclick              text      C661
+_ozcls                lowpage   84E7  _ozdelay64hz          text      C24E
+_ozexitrestoreint     lowpage   8095  _ozgetch              text      C71F
+_ozinitsound          text      C312  _ozintwait            text      C33E
+_ozisroff             text      C307  _ozkeyclear           text      C718
+_ozkeyclick           text      C650  _ozkeyhit             text      C705
+_ozquiet              text      C32D  _ozreadauxword2       beforebss CD3D
+_ozsetisr             text      C273  _ozsinglepage         text      C30A
+_ozsnap               lowpage   8513  _ozsound              text      C317
+_ozungetch            text      C747  _ozwriteauxword2      beforebss CD29
+_pawncnt              bss       DD06  _pawncol              bss       DCEE
+_pawnevals            bss       DD59  _pdir                 data      C9CB
+_pieceval             data      C9E7  _playlevel            bss       DD53
+_port                 data      CAAF  _printboard           text      AF72
+_printf               text      BF59  _processmove          text      865D
+_pvs                  bss       DBCE  _qsearch              bss       DD6B
+_quit                 bss       DD6D  _readcmd              text      ACA3
+_repetition           text      BC33  _resetclock           text      C007
+_responsetime         bss       DD77  _reverse              bss       DD52
+_reversevideo         lowpage   81C7  _scalehistory         beforebss CD50
+_scorepawns           text      8EEB  _search               text      B126
+_searchtime           text      BD06  _selected             text      BDCF
+_selectmove           text      B94F  _setmate              text      BBDF
+_sort                 text      8D0D  _sqatakd              text      A222
+_status               bss       DC9E  _strcat               text      C19F
+_strcmp               text      C095  _strcpy               text      C08C
+_strlen               text      C085  _sweep                data      C974
+_tcontrol             bss       DD51  _termputch            text      C04B
+_termputs             text      BF33  _timeout              bss       DD5D
+_tomove               bss       DD71  _ttyprint             lowpage   8185
+_undo                 text      A704  _unflag               text      BE2A
+_unmakemove           text      8A3A  _unmap                data      CA37
+_updateweights        text      96D5  _updatewindow         text      B917
+_verifymove           text      ACEA  adiv                  text      C1F2
+amod                  text      C1E2  amul                  text      C686
+asadiv                text      C110  asar                  text      C101
+asldiv                text      C11F  brelop                text      C16E
+cret                  text      C1C6  csv                   text      C1BA
+indir                 text      C1CD  ldiv                  text      C1EC
+lmod                  text      C1E7  lmul                  text      C686
+lmul$d0               text      C680  lmul$h0               text      C67B
+ncsv                  text      C1CE  restore_a000          lowpage   8502
+set_a000_400          lowpage   850B  shal                  text      C192
+shar                  text      C182  shll                  text      C192
+wrelop                text      C796  wrelop_ex             text      C795

@@ -2,7 +2,9 @@
   This file contains the search routine itself and associated time control
 */
 
-/* #define DEBUG /* */
+/*
+#define DEBUG
+*/
 #define HEADER
 #include "arvar.c"
 
@@ -16,9 +18,7 @@ static bool pawnthrt[MAXDEPTH]; /* stack of pawn threat flags for each dpth */
 static movetype mvlist[MAXMOVES]; /* the move list buffer for the search    */
 static bool chkflag[MAXDEPTH];  /* stack of in check flags */
 static int  posscore[MAXDEPTH]; /* stack of positional scores */
-#ifdef DEBUG
 unsigned minstack=0xFFFF;
-#endif
 
 /* Below are some debugging macros.  It slows the search down quite a bit
    because of all the printing.  Of course, if DEBUG isn't defined, then
@@ -113,9 +113,7 @@ movetype *bestmv;
 bool fullsearch;
 movetype nxtline[MAXDEPTH];
 
-#ifdef DEBUG
 if(minstack>(unsigned)&nxtline) minstack=(unsigned)&nxtline;
-#endif
 
 /* check to see if break key is pressed */
 /* if (breakpress) return(BIGNUM); */

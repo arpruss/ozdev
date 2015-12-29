@@ -1,0 +1,461 @@
+global	ncsv, cret, indir
+global	_board
+global	_printf
+global	_brdcolor
+global	_name
+global	_outchar
+psect	bss
+F100:
+defs	2
+F101:
+defs	2
+F102:
+defs	1
+F103:
+defs	1
+psect	text
+_printpiece:
+global csv
+call csv
+ld	e,(ix+8)
+ld	d,(ix+9)
+ld	l,(ix+6)
+ld	h,(ix+7)
+add	hl,hl
+add	hl,hl
+add	hl,hl
+add	hl,de
+ld	(F100),hl
+ld	de,_board
+add	hl,de ;; *miniopt0*
+ld	a,(hl)
+ld	l,a
+rla
+sbc	a,a
+ld	h,a
+ld	(F101),hl
+ld	l,e
+ld	h,d
+push	hl
+ld	hl,_brdcolor
+add	hl,de
+ld	a,(hl)
+ld	l,a
+rla
+sbc	a,a
+ld	h,a
+push	hl
+ld	hl,19f
+push	hl
+call	_printf
+pop	bc
+pop	bc
+pop	bc
+ld	hl,(F101)
+ld	a,l
+or	h
+jp	z,l5
+ld	de,(F100)
+ld	hl,_brdcolor
+add	hl,de
+ld	a,(hl)
+add	a,48
+ld	(F102),a
+ld	de,(F101)
+ld	hl,_name
+add	hl,de
+ld	a,(hl)
+ld	(F103),a
+jp	l6
+l5:
+ld	a,32
+ld	(F103),a
+ld	(F102),a
+ld	e,(ix+8)
+ld	d,(ix+9)
+ld	l,(ix+6)
+ld	h,(ix+7)
+add	hl,de
+bit	0,l
+jp	nz,L2
+ld	hl,0
+jp	L1
+L2:
+ld	hl,1
+L1:
+ld	a,l
+or	h
+jp	z,l6
+ld	a,35
+ld	(F103),a
+ld	(F102),a
+l6:
+ld	a,(F102)
+ld	l,a
+rla
+sbc	a,a
+ld	h,a
+push	hl
+call	_outchar
+ld	a,(F103)
+ld	l,a
+rla
+sbc	a,a
+ld	h,a
+ex	(sp),hl
+call	_outchar
+ld	hl,124
+ex	(sp),hl
+call	_outchar
+jp	cret
+global	_printboard
+global	_clrscrn
+global	_findpieces
+global	_tomove
+global	_movenum
+global	_estscore
+global	_mtl
+global	_tcontrol
+global	_responsetime
+global	_playlevel
+global	_ElapClock
+global	lmod
+global	ldiv
+global	lmod
+global	ldiv
+global	_reverse
+global	wrelop
+global	wrelop
+global	_termputch
+global	wrelop
+global	_ozgetch
+psect	bss
+F106:
+defs	2
+F107:
+defs	2
+psect	text
+_printboard:
+global csv
+call csv
+push hl
+call	_clrscrn
+ld	hl,29f
+push	hl
+call	_printf
+pop	bc
+call	_findpieces
+ld	hl,(_tomove)
+ld	a,l
+or	h
+jp	z,L4
+ld	hl,59f
+jp	L3
+L4:
+ld	hl,49f
+L3:
+push	hl
+ld	hl,39f
+push	hl
+call	_printf
+pop	bc
+ld	hl,(_movenum)
+ex	(sp),hl
+ld	hl,69f
+push	hl
+call	_printf
+pop	bc
+pop	bc
+ld	de,(_tomove)
+ld	hl,2
+or	a
+sbc	hl,de
+add	hl,hl
+ld	de,_mtl
+add	hl,de
+ld	c,(hl)
+inc	hl
+ld	b,(hl)
+ld	hl,(_tomove)
+add	hl,hl
+add	hl,de
+ld	a,(hl)
+inc	hl
+ld	h,(hl)
+ld	l,a
+or	a
+sbc	hl,bc
+push	hl
+ld	hl,(_estscore)
+push	hl
+ld	hl,79f
+push	hl
+call	_printf
+pop	bc
+pop	bc
+pop	bc
+ld	a,(_tcontrol)
+or	a
+jp	z,l9
+ld	hl,(_responsetime)
+push	hl
+ld	hl,89f
+push	hl
+call	_printf
+pop	bc
+pop	bc
+jp	l10
+l9:
+ld	hl,(_playlevel)
+push	hl
+ld	hl,99f
+push	hl
+call	_printf
+pop	bc
+pop	bc
+l10:
+ld	de,60
+ld	hl,(_ElapClock)
+call	lmod
+push	hl
+ld	de,60
+ld	hl,(_ElapClock)
+call	ldiv
+ld	de,60
+call	lmod
+push	hl
+ld	de,3600
+ld	hl,(_ElapClock)
+call	ldiv
+push	hl
+ld	hl,109f
+push	hl
+call	_printf
+pop	bc
+pop	bc
+pop	bc
+ld	hl,119f
+ex	(sp),hl
+call	_printf
+pop	bc
+ld	a,(_reverse)
+or	a
+jp	z,l11
+ld	hl,129f
+push	hl
+call	_printf
+ld	hl,139f
+ex	(sp),hl
+call	_printf
+pop	bc
+ld	hl,0
+ld	(F106),hl
+jp	l15
+l12:
+ld	hl,(F106)
+inc	hl
+push	hl
+ld	hl,149f
+push	hl
+call	_printf
+pop	bc
+pop	bc
+ld	hl,7
+ld	(F107),hl
+jp	l19
+l16:
+ld	hl,(F107)
+push	hl
+ld	hl,(F106)
+push	hl
+call	_printpiece
+pop	bc
+pop	bc
+ld	hl,(F107)
+dec	hl
+ld	(F107),hl
+l19:
+ld	hl,(F107)
+bit	7,h
+jp	z,l16
+ld	hl,(F106)
+inc	hl
+push	hl
+ld	hl,159f
+push	hl
+call	_printf
+pop	bc
+pop	bc
+ld	hl,(F106)
+inc	hl
+ld	(F106),hl
+l15:
+ld	de,(F106)
+ld	hl,7
+call	wrelop
+jp	p,l12
+ld	hl,169f
+push	hl
+call	_printf
+ld	hl,179f
+ex	(sp),hl
+call	_printf
+pop	bc
+jp	l20
+l11:
+ld	hl,189f
+push	hl
+call	_printf
+ld	hl,199f
+ex	(sp),hl
+call	_printf
+pop	bc
+ld	hl,7
+ld	(F106),hl
+jp	l24
+l21:
+ld	hl,(F106)
+inc	hl
+push	hl
+ld	hl,209f
+push	hl
+call	_printf
+pop	bc
+pop	bc
+ld	hl,0
+ld	(F107),hl
+jp	l28
+l25:
+ld	hl,(F107)
+push	hl
+ld	hl,(F106)
+push	hl
+call	_printpiece
+pop	bc
+pop	bc
+ld	hl,(F107)
+inc	hl
+ld	(F107),hl
+l28:
+ld	de,(F107)
+ld	hl,7
+call	wrelop
+jp	p,l25
+ld	hl,(F106)
+inc	hl
+push	hl
+ld	hl,219f
+push	hl
+call	_printf
+pop	bc
+pop	bc
+ld	hl,(F106)
+dec	hl
+ld	(F106),hl
+l24:
+ld	hl,(F106)
+bit	7,h
+jp	z,l21
+ld	hl,229f
+push	hl
+call	_printf
+ld	hl,239f
+ex	(sp),hl
+call	_printf
+pop	bc
+l20:
+ld	(ix+-2),0
+ld	(ix+-1),0
+jp	l32
+l29:
+ld	e,(ix+-2)
+ld	d,(ix+-1)
+ld	hl,_brdcolor
+add	hl,de
+ld	a,(hl)
+ld	e,a
+rla
+sbc	a,a
+ld	d,a
+ld	hl,48
+add	hl,de
+push	hl
+call	_termputch
+pop	bc
+ld	l,(ix+-2)
+ld	h,(ix+-1)
+inc	hl
+ld	(ix+-2),l
+ld	(ix+-1),h
+l32:
+ld	de,63
+ld	l,(ix+-2)
+ld	h,(ix+-1)
+call	wrelop
+jp	m,l29
+call	_ozgetch
+jp	cret
+psect	data
+19:
+defb	60,37,100,44,37,100,62,0
+29:
+defb	32,32,32,32,32,32,66,101,116,97,32,84,101,115,116,32
+defb	65,82,45,67,104,101,115,115,32,86,32,49,46,48,10,0
+39:
+defb	84,111,32,77,111,118,101,32,32,58,32,32,37,115,32,32
+defb	32,0
+49:
+defb	87,72,73,84,69,0
+59:
+defb	66,76,65,67,75,0
+69:
+defb	77,111,118,101,110,117,109,32,32,58,32,32,37,55,100,10
+defb	0
+79:
+defb	69,115,116,32,83,99,111,114,101,58,37,55,100,32,32,32
+defb	77,97,116,101,114,105,97,108,32,58,32,32,37,55,100,10
+defb	0
+89:
+defb	83,101,97,114,99,104,32,84,77,58,37,55,117,32,32,32
+defb	0
+99:
+defb	76,101,118,101,108,32,32,32,32,58,37,55,100,32,32,32
+defb	0
+109:
+defb	84,105,109,101,32,85,115,101,100,58,32,37,48,50,100,58
+defb	37,48,50,100,58,37,48,50,100,10,0
+119:
+defb	10,0
+129:
+defb	32,32,32,32,72,32,32,71,32,32,70,32,32,69,32,32
+defb	68,32,32,67,32,32,66,32,32,65,10,0
+139:
+defb	32,32,32,45,45,45,45,45,45,45,45,45,45,45,45,45
+defb	45,45,45,45,45,45,45,45,45,45,10,0
+149:
+defb	37,100,32,124,0
+159:
+defb	37,50,100,10,0
+169:
+defb	32,32,32,45,45,45,45,45,45,45,45,45,45,45,45,45
+defb	45,45,45,45,45,45,45,45,45,45,10,0
+179:
+defb	32,32,32,32,72,32,32,71,32,32,70,32,32,69,32,32
+defb	68,32,32,67,32,32,66,32,32,65,10,0
+189:
+defb	32,32,32,32,65,32,32,66,32,32,67,32,32,68,32,32
+defb	69,32,32,70,32,32,71,32,32,72,10,0
+199:
+defb	32,32,32,45,45,45,45,45,45,45,45,45,45,45,45,45
+defb	45,45,45,45,45,45,45,45,45,45,10,0
+209:
+defb	37,100,32,124,0
+219:
+defb	37,50,100,10,0
+229:
+defb	32,32,32,45,45,45,45,45,45,45,45,45,45,45,45,45
+defb	45,45,45,45,45,45,45,45,45,45,10,0
+239:
+defb	32,32,32,32,65,32,32,66,32,32,67,32,32,68,32,32
+defb	69,32,32,70,32,32,71,32,32,72,10,0
+psect	text

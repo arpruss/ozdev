@@ -2,11 +2,8 @@
   These routines are just misc routines used by IO.C
 */
 
-#include <ozinput.h>
-
 #define HEADER
 #include "arvar.c"
-/* #define BENCHMARK */
 
 /* The boards at the start of a game */
 static tiny sboard[64]=
@@ -52,7 +49,7 @@ gameptr=&gamehist[movenum];
 epsquare=-1;
 findpieces();
 mate=draw=FALSE;
-/* pvsmsg[0]=*/ msg[0]=status[0]=0;
+pvsmsg[0]=msg[0]=status[0]=0;
 timeout=FALSE;extratime=0;resetclock();
 for (x=63;x>=0;x--)
    if ((board[x]==sboard[x]) && (brdcolor[x]==scolor[x])) mvboard[x]=0;
@@ -63,10 +60,10 @@ castled[WHITE]=castled[BLACK]=FALSE;
 void initgame(void)
 {
 newboard();responsetime=30;extratime=0;playlevel=3;tcontrol=TRUE;
-msg[0]=/* pvsmsg[0]=*/ status[0]=0;
+msg[0]=pvsmsg[0]=status[0]=0;
 epsquare=-1;
 estscore=0;
-/* breakpress=*/ quit=mate=bothsides=reverse=/* pvsflag=*/FALSE;
+breakpress=quit=mate=bothsides=reverse=pvsflag=FALSE;
 qsearch=TRUE;
 computer=BLACK;human=WHITE;tomove=human;
 resetclock();elaptime();
@@ -76,53 +73,21 @@ int cmdis(char *str)
 /* this is just an eaiser way to check if str is the cmdline */
 { return(strcmp(cmdline,str)==0); }
 
-void getline(char *s,int len)
-{
-    register char *p=s;
-    static unsigned c;
-    while(1)
-    {
-        switch(c=ozgetch())
-        {
-            case KEY_MYPROGRAMS:
-            case KEY_UPPER_ESC:
-            case KEY_LOWER_ESC:
-                strcpy(s,"QUIT");
-                return;
-            case KEY_BACKSPACE:
-                if(p>s)
-                {
-                    *--p=0;
-                    termputs("\8 \8");
-                }
-                break;
-            case KEY_LOWER_ENTER:
-            case KEY_UPPER_ENTER:
-            case '\r':
-                *p=0;
-                return;
-            default:
-                if(c>='a') c&=0xff-0x20;
-                if(p+1<s+len)
-                {
-                    *p++=c;
-                    termputch(c);
-                }
-                break;
-        }
-    }
-}
-
 void readcmd(void)
 /* Read a string from the keyboard.  Maximum of 70 characters long.
    Also, convert all lowercase to UPPER case so we can compare commands */
 { int len,x;char c;
+ FlushIO();          /* just to make sure */
 /* len=readln(cmdline,70);*/   /* read max 70 chars */
- cmdline[0]=0;
- getline(cmdline,70);
+ fgets(cmdline,70,stdin);
  len=strlen(cmdline);
  if (len)
    if (cmdline[len-1]=='\n') {cmdline[len-1]='\0';len--;}
+ for (x=len;x>=0;x--)     /* convert lower case to upper */
+   {c=cmdline[x];
+    if ( (c>='a') && (c<='z') ) c=c-32;
+    cmdline[x]=c;
+   }
 }
 
 
@@ -138,7 +103,7 @@ bool verifymove(void)
 
 findpieces();
 valid=FALSE;prom=0;
-strcpy(msg,"INVALID CMD");
+strcpy(msg,"INVALID MOVE/CMDS");
 f=kingloc[tomove];
 if (cmdis("O-O")) t=f+2;
 else if (cmdis("O-O-O")) t=f-2;
@@ -162,15 +127,13 @@ while (tmv < last)
 
 if (mv)
   {processmove(mv);valid=TRUE;tomove=chngcolor(tomove);
-   mvenglish(mv,m);strcpy(msg,"You did:");
+   mvenglish(mv,m);strcpy(msg,"Your move was ");
    strcat(msg,m);
   }
 
 checkstatus();
 return(valid);
 }
-
-#ifdef BENCHMARK
 
 void gentime(void)
 {int x;
@@ -217,4 +180,4 @@ elaptime();
 itoa(1000/ElapClock,msg);
 strcat(msg," evalu8/sec");
 }
-#endif
+

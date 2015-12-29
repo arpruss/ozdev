@@ -98,33 +98,7 @@ _distance:
         ld      a,e
         and     7
         sub     h
-        jp      p,DontNeg
+        jp      ns,DontNeg
         neg
 DontNeg:
-        ld      d,a  ;; h=difference in columns
-
-        ld      a,l
-        srl     a
-        srl     a
-        srl     a
-
-        ld      h,a
-        ld      a,e
-        srl     a
-        srl     a
-        srl     a
-        sub     h
-        jp      p,DontNeg2
-        neg
-DontNeg2:
-        cp      d
-        jr      c,RetD
-        ld      l,a
-        ld      h,0
-        ret
-RetD:
-        ld      l,d
-        ld      h,0
-        ret
-
 

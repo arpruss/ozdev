@@ -1,20 +1,7 @@
-defb 000h,018h,024h,042h,024h,024h,042h,03Ch ;pawn_outline
-defb 020h,05Ch,042h,081h,08Eh,042h,081h,07Eh ;knight_outline
-defb 008h,034h,052h,052h,042h,066h,081h,07Eh ;bishop_outline
-defb 000h,07Eh,0A5h,081h,042h,042h,081h,07Eh ;rook_outline
-defb 018h,066h,0A5h,0A5h,0A5h,081h,042h,03Ch ;queen_outline
-defb 018h,024h,042h,066h,081h,0A5h,042h,03Ch ;king_outline
-defb 000h,000h,018h,03Ch,018h,018h,03Ch,000h ;pawn_solid
-defb 000h,020h,03Ch,07Eh,070h,03Ch,07Eh,000h ;knight_solid
-defb 000h,008h,02Ch,02Ch,03Ch,018h,07Eh,000h ;bishop_solid
-defb 000h,000h,05Ah,07Eh,03Ch,03Ch,07Eh,000h ;rook_solid
-defb 000h,018h,05Ah,05Ah,05Ah,07Eh,03Ch,000h ;queen_solid
-defb 000h,018h,03Ch,018h,07Eh,05Ah,03Ch,000h ;king_solid
-defb 0C3h,081h,081h,000h,000h,081h,081h,0C3h ;selector
-defb 0AAh,055h,0AAh,055h,0AAh,055h,0AAh,055h ;grey_square
-defb 000h,000h,018h,03Ch,018h,018h,03Ch,000h ;pawn2
-defb 030h,078h,07Ch,05Eh,01Ch,03Ch,07Eh,000h ;knight2
-defb 018h,02Ch,034h,03Ch,018h,018h,03Ch,000h ;bishop2
-defb 000h,05Ah,05Ah,07Eh,03Ch,03Ch,07Eh,000h ;rook2
-defb 018h,05Ah,05Ah,07Eh,07Eh,07Eh,07Eh,000h ;queen2
-defb 018h,07Eh,018h,07Eh,07Eh,03Ch,07Eh,000h ;king2
+defb 0AAh,055h,0AAh,055h,0AAh,055h,0AAh,055h
+defb 000h,000h,018h,03Ch,018h,018h,03Ch,000h
+defb 030h,078h,07Ch,05Eh,01Ch,03Ch,07Eh,000h
+defb 018h,02Ch,034h,03Ch,018h,018h,03Ch,000h
+defb 000h,05Ah,05Ah,07Eh,03Ch,03Ch,07Eh,000h
+defb 018h,05Ah,05Ah,07Eh,07Eh,07Eh,07Eh,000h
+defb 018h,07Eh,018h,07Eh,07Eh,03Ch,07Eh,000h

@@ -31,7 +31,7 @@ printf("Alpha test AR-Chess V 1.0\n"
 "original author.\n"
 "Sharp 7xx port: A.R. Pruss");
 ozdelay64hz(200);
-/* ozsendscreen(); */
+ozsendscreen();
 
 while (! quit)
   {

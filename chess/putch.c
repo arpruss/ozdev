@@ -8,16 +8,17 @@
 #define WIDTH 30
 #define HEIGHT 10
 
-void ttyprint(byte c);
+int ttyprint(byte c);
+void ttyscroll(void);
 
-extern byte currow;
-extern byte curcol;
+extern char currow;
+extern char curcol;
 
 void crlf(void)
 {
     curcol=0;
     currow++;
-    if(currow>=HEIGHT) currow=HEIGHT-1; /* no scrolling! */
+    if(currow>=HEIGHT) currow=HEIGHT-1;
 }
 
 void termputch(byte c)
@@ -25,22 +26,14 @@ void termputch(byte c)
     switch(c)
     {
         case 8:
-            if(curcol) curcol--;
+            if(curcol>0) curcol--;
+             else curcol=0;
             return;
         case '\n':
             crlf();
             return;
         default:
-            if(c<8)
-            {
-                while(c--) ttyprint(' ');
-            }
-            else if(c & 0x80)
-            {
-                ttyprint(c&(byte)0x7F);
-                ttyprint(' ');
-            }
-            else ttyprint(c);
+            ttyprint(c);
             return;
     }
 }

@@ -6,10 +6,8 @@
 extern int port;
 #define EXTERN extern
 #else
-#ifdef DEBUG
 int port=1;  /* used for debuging.  Where to send output.*/
              /* 1=stdout,  2=stderr                      */
-#endif
 #define EXTERN
 #endif
 
@@ -21,7 +19,7 @@ int port=1;  /* used for debuging.  Where to send output.*/
 */
 #define direct
 
-#define MAXDEPTH      20    /* 32    /* maximum search depth                */
+#define MAXDEPTH      23    /* 32    /* maximum search depth                */
 #define MAXLEVEL      16    /* maximum user set search level                */
 #define BIGNUM        15000 /* BIGNUM is just a very large number.  It MUST */                             /* NOT be the absolute maximum or it will over  */
                             /* flow                                         */
@@ -30,12 +28,10 @@ int port=1;  /* used for debuging.  Where to send output.*/
 #define MAXMOVES       512  /* maximum number of moves stored during game   */
                             /* (MAXLEVEL * 32) + (MAXDEPTH-MAXLEVEL)*8      */
                             /* should be enough for search & cap search     */
-#define MAXHIST        106  /* maximum number of moves in a game : cannot exceed 255 */
-#define SHIFT_HIST_BY  4    /* amount to shift the game history by: */
-                            /* MAXHIST-SHIFT_HIST_BY should be at least 100 */
-#define MAXPLYMVS      250  /* max num of moves per ply.  used in vermove   */
+#define MAXHIST        300  /* maximum number of moves in a game            */
+#define MAXPLYMVS      100  /* max num of moves per ply.  used in vermove   */
 
-/* a few useful defines */
+/* a few of usefull defines */
 #define TRUE  1
 #define YES   1
 #define FALSE 0
@@ -85,10 +81,10 @@ int port=1;  /* used for debuging.  Where to send output.*/
 #define EXACT      32768     /* the score is exact */
 
 /* a few 'routines' */
-#define getrow(s)    ((uchar)((uchar)(s)>>3))
-#define getcol(s)    ((uchar)((uchar)(s)&7))
+#define getrow(s)    ((uchar)(s)>>3)
+#define getcol(s)    ((uchar)(s)&7)
 #define chngcolor(c) (2-(c))
-#define odd(v)       (uchar)((uchar)(v)&(uchar)1)
+#define odd(v)       (((v)&1)?TRUE:FALSE)
 /* #define copymv(t,f)  memcpy((void*)(t),(void*)(f),sizeof(movetype)) */
 void copymv(void *t,void *f);
 
@@ -97,39 +93,34 @@ typedef unsigned char uchar;
 #define bool   uchar   /* boolean */
 #define tiny   char   /* a small signed int */
 
-typedef struct {
-                tiny f,t;
-                int score;
+typedef struct {tiny f,t;
                 unsigned flags;
+                int score;
                 } movetype;
 
 typedef struct {tiny f,t;
-                uchar /* unsigned */ flags; /* only need lower 8 bits of flags */
-                uchar /* int */ game50;
-                uchar piece,captured;
+                unsigned flags;
+                int game50;
+                tiny piece,captured;
                 uchar color;
-/*
-                unsigned piece:3;
-                unsigned captured:3;
-                unsigned color:2;
-*/
                 tiny epsquare;} gametype;
 
 typedef struct {unsigned char year,month,day,hour,minute,second;} timetype;
 
 
 void      scorepawns(void);
-int       evalu8(movetype *move,int prevpscr,uchar side,
-                 int lowbound,int hibound,uchar depth,bool *incheck,uchar qsearch);
-void      updateweights(uchar depth);
-movetype *gencaps(movetype *buffer,uchar color);
-movetype *genmoves(movetype *buffer,uchar color);
-movetype *genlegal(movetype *buffer,uchar color);
-bool      sqatakd(uchar sq,uchar side);
+int       evalu8(movetype *move,int prevpscr,int side,
+                 int lowbound,int hibound,int depth,bool *incheck,int qsearch);
+void      updateweights(int depth);
+movetype *gencaps(movetype *buffer,int color);
+movetype *genmoves(movetype *buffer,int color);
+movetype *genlegal(movetype *buffer,int color);
+bool      sqatakd(int sq,int side);
 void      findpieces(void);
 void      mvenglish(movetype *mv,char *st);
-void      checkstatus(uchar player);
+void      checkstatus(void);
 bool      mveq(movetype *mv1,movetype *mv2);
+int       distance(int x,int y);
 void      processmove(movetype *mv);
 void      makemove(movetype *mvmv);
 void      unmakemove(void);
@@ -151,12 +142,12 @@ void      printboard(void);
 void      setboard(void);
 void      help(void);
 int       search(movetype *prevmove,movetype *buffer,
-                 int lowbound,int hibound,uchar color,
-                 uchar depth,uchar ext,uchar qlevel,movetype *bstline);
+                 int lowbound,int hibound,int color,
+                 int depth,int ext,int qlevel,movetype *bstline);
 void      initselect(void);
 void      updatewindow(void);
 void      selectmove(int player);
-int       setmate(movetype *move,uchar side,uchar depth);
+int       setmate(movetype *move,int side,int depth);
 int       repetition(void);
 void      pvsenglish(movetype *pvs);
 void      scalehistory(void);
@@ -164,6 +155,7 @@ void      searchtime(int research,int depth,int bstscore,
                      int lowbound,int avgscore,int zwindow);
 void      selected(void);
 void      unflag(movetype *mvlist,movetype *last,bool reset);
+void      endprg(void);
 void      initprg(void);
 void      clrscrn(void);
 void      clreoln(void);
@@ -191,6 +183,7 @@ int       toupper(int c);
 int       tolower(int c);
 void      revstr(char *s);
 char     *strcpy(char *dest, char *source);
+int       strcmp(char *first, char *second);
 char     *strcat(char *first, char *second);
 int       strlen(char *str);
 int       readln(char *str,int size);
@@ -203,35 +196,33 @@ void      printf(char *fmt,...);
 
 
 /* The following vars are the 'position representation' vars */
-EXTERN uchar /* tiny */   board[64];      /* the board */
-EXTERN uchar /* tiny */  brdcolor[64];   /* the color of the squares */
+EXTERN tiny   board[64];      /* the board */
+EXTERN tiny   brdcolor[64];   /* the color of the squares */
 EXTERN bool   castled[3];     /* castled flags */
-EXTERN uchar  computer;       /* the color the computer is playing */
+EXTERN int    computer;       /* the color the computer is playing */
 EXTERN int    epsquare;       /* the enpassant square */
-EXTERN uchar  human;          /* the color the human is playing */
+EXTERN int    human;          /* the color the human is playing */
 EXTERN tiny   kingloc[3];     /* location of kings */
 EXTERN int    mtl[3];         /* material for each side */
 EXTERN int    mvboard[64];    /* the move count board */
-EXTERN uchar /* tiny */   pawncnt[3];     /* pawn count for each side */
-EXTERN uchar /* tiny */   pawncol[3][8];  /* num of pawns on each column */
-EXTERN uchar tomove;         /* color of the side to move */
+EXTERN tiny   pawncnt[3];     /* pawn count for each side */
+EXTERN tiny   pawncol[3][8];  /* num of pawns on each column */
+EXTERN int    tomove;         /* color of the side to move */
 
 /* The following are various statistics gathered during search */
-#ifdef DEBUG
 EXTERN unsigned capnodes;     /* the num of capture nodes searched */
 EXTERN unsigned evals;        /* the number of full evalu8s done */
-EXTERN unsigned pawnevals;    /* the num of pawn evaluations */
-EXTERN unsigned nodes;        /* the num of nodes search */
-EXTERN unsigned nbp;          /* the number of bottom pos reached */
 EXTERN unsigned extcount;     /* number of search extensions done */
 EXTERN unsigned maxdepth;     /* max depth reached during search */
-#endif
+EXTERN unsigned nbp;          /* the number of bottom pos reached */
+EXTERN unsigned nodes;        /* the num of nodes search */
+EXTERN unsigned pawnevals;    /* the num of pawn evaluations */
 
 /* The following are concerned about search time control / level */
 EXTERN unsigned    ElapClock;  /* elapsed time in seconds */
 EXTERN direct int  extratime;  /* extra time for search */
-EXTERN direct uchar level;      /* iterative level of search */
-EXTERN uchar playlevel;  /* the level to search (not time control) */
+EXTERN direct int  level;      /* iterative level of search */
+EXTERN int         playlevel;  /* the level to search (not time control) */
 EXTERN direct unsigned responsetime;/* time level of search wanted */
 EXTERN direct bool tcontrol;   /* time control flag (or ply cntrl search) */
 EXTERN direct bool timeout;    /* out of search time? */
@@ -240,21 +231,22 @@ EXTERN direct bool timeout;    /* out of search time? */
 EXTERN bool     bothsides;      /* computer plays both sides */
 /* EXTERN bool     pvsflag;        /* print the pvs? */
 #define pvsflag 0
+EXTERN bool     quit;           /* quit the game flag */
 EXTERN bool     qsearch;        /* toggle the quiscience (capture) search*/
 EXTERN bool     reverse;        /* reverse board display */
 
 /* The following are various game status vars */
 /* EXTERN bool     breakpress;     /* break pressed flag */
+#define breakpress 0
 EXTERN bool     draw;           /* drawn game flag */
-EXTERN uchar /* int */      game50;         /* starting movenum for the 50 move rule */
+EXTERN int      game50;         /* starting movenum for the 50 move rule */
 EXTERN gametype gamehist[MAXHIST+MAXDEPTH]; /* the move history */
 EXTERN direct gametype *gameptr;/* a pointer to next gamehist[]. */
 EXTERN bool     mate;           /* mate flag */
-EXTERN uchar /* int */     movenum;        /* the move number of the game */
-EXTERN int      shifted_gamehist; /* number of times gamehist was shifted */
+EXTERN int      movenum;        /* the move number of the game */
 
 /* The following are misc. vars used mainly in the I/O routines */
-EXTERN char     cmdline[20];    /* the cmd line read from the keyboard */
+EXTERN char     cmdline[90];    /* the cmd line read from the keyboard */
 EXTERN int      estscore;       /* the estimated score after the search */
 /* EXTERN unsigned history[4096];  /* the history heuristic */
 EXTERN char     msg[80];        /* a message from the computer */
@@ -268,23 +260,17 @@ EXTERN char     status[80];     /* a status message (mate etc) */
 #ifdef HEADER
 
 EXTERN int   *pdir[];         /* the pointer to the move offsets */
-EXTERN /* tiny */ uchar   map[64];        /* map 8x8 to 10x12 board */
+EXTERN tiny   map[64];        /* map 8x8 to 10x12 board */
 EXTERN char   name[14];       /* name of the pieces */
 EXTERN int    pieceval[8];    /* piece val */
-#if 0
 EXTERN bool   sweep[7];       /* sweep piece? */
-#endif
 EXTERN tiny   unmap[120];     /* map 10x12 to 8x8 board */
-EXTERN char archess_version[];
 
 
 #else
-char archess_version[]="AR-Ches\xF3""v1.1\n";
 
 /* move generation data */
-#if 0
 bool   sweep[7]={FALSE,FALSE,FALSE,TRUE,TRUE,TRUE,FALSE}; /* sweep piece? */
-#endif
 static int qmvs[]={1,10,-1,-10,9,11,-9,-11,0,0};   /* queen move offsets  */
 static int rmvs[]={1,10,-1,-10,0,0};               /* rook move offsets   */
 static int bmvs[]={9,11,-9,-11,0,0};               /* bishop move offsets */
@@ -293,12 +279,12 @@ static int wpmvs[]={9,11,8,16};                /* white pawn move offsets */
 static int bpmvs[]={-9,-11,-8,-16};            /* black pawn move offsets */
 int *pdir[]={bpmvs,wpmvs,nmvs,bmvs,rmvs,qmvs,qmvs};
 
-char name[]=" PNBRQK";    /* name of the pieces */
+char name[14]=" PNBRQKpnbrqk";    /* name of the pieces */
     /* piece val */
 int  pieceval[8]={0,PAWNVAL,KNIGHTVAL,BISHOPVAL,ROOKVAL,QUEENVAL,KINGVAL,0};
 
 /* map our 8x8 board onto a 10x12 so we can check for border */
-uchar /* tiny */ map[64]=
+tiny map[64]=
    { 21, 22, 23, 24, 25, 26, 27, 28,
      31, 32, 33, 34, 35, 36, 37, 38,
      41, 42, 43, 44, 45, 46, 47, 48,
@@ -329,39 +315,19 @@ tiny unmap[120]=
    If you want to add save/load game functions you'll need to save:
    board, brdcolor, castled, computer, draw, epsquare, game50, gamehist,
    human, kingloc, level, mate, movenum, mvboard, playlevel, pvsflag,
-   qsarch, responsetime, reverse, tcontrol, tomove, font.
+   qsarch, responsetime, reverse, tcontrol, tomove.
 
 */
 #define HISTORY
 
 #ifdef HISTORY
 #define readhistory ozreadauxword2
+#define writehistory ozwriteauxword2
 unsigned readhistory(unsigned x);
-uchar addhistory(unsigned x,unsigned y);
+void writehistory(unsigned x,unsigned v);
 #else
 #define scalehistory()
 #endif
 
 extern uchar reversevideo;
 unsigned gettime(void);
-uchar taxicab(uchar x,uchar y);
-uchar distance(uchar x,uchar y);
-extern uchar doxor;
-extern uchar curcol,currow;
-EXTERN bool movepieces;
-EXTERN bool font;
-void termputch(char c);
-void putbitmap(uchar x,uchar y,uchar h, uchar *bitmap);
-extern uchar font8x8[];
-EXTERN uchar smallboard;
-EXTERN uchar doblank;
-#define XORHL 0xAE
-#define ORHL 0xB6
-#define NOP  0
-#define SCREENX(col) (10+(col)*10)
-#define SCREENY(row) ((row)*10)
-#define SCREENROW(row) (reverse?(row):7-(row))
-#define SCREENCOL(col) (reverse?7-(col):(col))
-EXTERN uchar breakctrl;
-EXTERN uchar doenter;
-#define ozgetch ozgetchblank

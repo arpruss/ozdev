@@ -23,7 +23,7 @@ main()
         }
         if(*word1=='-')
         {
-            printf(" ;%s\n",word1+1);
+            putchar('\n');
             new=1;
             continue;
         }

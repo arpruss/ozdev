@@ -3,7 +3,7 @@
 ;;
 
 psect text
-global _strlen,_strcpy ;;,_strcmp
+global _strlen,_strcpy,_strcmp
 _strlen:
         pop     de
         pop     hl
@@ -20,11 +20,11 @@ _strcpy:
         push    bc
         jp      7f09h
 
-;_strcmp:
-;        pop     bc
-;        pop     de
-;        pop     hl
-;        push    hl
-;        push    de
-;        push    bc
-;        jp      7f15h
+_strcmp:
+        pop     bc
+        pop     de
+        pop     hl
+        push    hl
+        push    de
+        push    bc
+        jp      7f15h

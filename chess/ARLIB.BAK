@@ -78,7 +78,6 @@ if ((mv1->flags & 0xff) != (mv2->flags & 0xff)) return(FALSE);
 return(TRUE);
 }
 
-#if 0
 int distance(int x,int y)
 /* The distance between two squares.  Only the greatest of the distances
    of the rows or the columns is the 'distance'.  */
@@ -87,4 +86,4 @@ int distance(int x,int y)
   b=abs(getrow(x)-getrow(y));
   if (a > b) return(a); else return(b);
 }
-#endif
+

@@ -1,0 +1,23 @@
+#include <stdio.h>
+
+unsigned char b2i(char *s)
+{
+    unsigned char mask=1;
+    unsigned char ret=0;
+    unsigned int i;
+    for(i=0;i<8;i++,mask<<=1)
+        if(s[i]!='.') ret|=mask;
+    return ret;
+}
+
+main()
+{
+    char word1[128];
+    while(1==scanf("%s",word1))
+    {
+        if(*word1=='!') return 0;
+        if(*word1=='-') continue;
+        printf(" defb 0%02Xh",b2i(word1));
+    }
+    return 0;
+}

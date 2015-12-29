@@ -6,145 +6,91 @@
 #define HEADER
 #include "arvar.c"
 
-#include <ozinput.h>
-
-#define SETUP /* */
-#define HELP /* */
-
+#ifndef OZ7XX
 void setboard(void)
 /*this allows the user to set up their own board*/
-{
-#ifdef SETUP
- extern uchar currow;
- static uchar row,col,piece,color;
- static bool done,changed;
+{int row,col,piece,color;
+ bool done,changed;
+ movetype fakemv;bool check;
 
-status[0]=0;changed=FALSE;
+status[0]=0;changed=FALSE;fakemv.flags=0;
 do {
-   printboard();
-   currow=6; atright();
-   if (status[0])
-   {
-      termputs(status);
-      *status=0;
-   }
-   currow=7; atright();
-   printf("Clea\xF2""Ne\xF7""Done\n");
-   atright();
-   printf("XYC\xD0""XYE\n");
-   atright();
-   printf("Cmd\xBA""");
-   movepieces=doenter=1;
+   printboard();printf("%s\n",status);status[0]=0;
+   printf("Enter pieces like a4wk a4e\n");
+   printf("Cmds are clear, new, done\n");
+   printf("Done to return: ");
    readcmd();
-   movepieces=doenter=0;
-   if (cmdis("CL")) {clearboard();changed=TRUE;}
+   if (cmdis("CLEAR")) {clearboard();changed=TRUE;}
+   else if (cmdis("EVAL"))
+           {findpieces();
+            estscore=evalu8(&fakemv,0,tomove,-BIGNUM,BIGNUM,1,&check,FALSE);}
    else if (cmdis("NEW")) {newboard();changed=TRUE;}
    else if ((strlen(cmdline)==4) || (strlen(cmdline)==3))
-		 {col=(cmdline[0])-'A';row=(cmdline[1])-'1';
-		  color=NONE;piece=EMPTY;
-          switch(cmdline[2])
-          {
-            case 'W': color=WHITE; break;
-            case 'B': color=BLACK; break;
-          }
-          switch(cmdline[3])
-          {
-            case 'P': piece=PAWN; break;
-            case 'N': piece=KNIGHT; break;
-            case 'B': piece=BISHOP; break;
-            case 'R': piece=ROOK; break;
-            case 'Q': piece=QUEEN; break;
-            case 'K': piece=KING; break;
-          }
-		  if ((color==NONE) && (piece!=EMPTY)) piece=EMPTY;
-		  if ((color!=NONE) && (piece==EMPTY)) color=NONE;
-          if ( (row<=7) && (col<=7) )
-			{board[row*8+col]=piece;brdcolor[row*8+col]=color;
-			 changed=TRUE;};
-		};
+         {col=(cmdline[0])-'A';row=(cmdline[1])-'1';
+          color=NONE;piece=EMPTY;
+          if (cmdline[2]=='W') color=WHITE;
+          if (cmdline[2]=='B') color=BLACK;
+          if (cmdline[3]=='P') piece=PAWN;
+          if (cmdline[3]=='N') piece=KNIGHT;
+          if (cmdline[3]=='B') piece=BISHOP;
+          if (cmdline[3]=='R') piece=ROOK;
+          if (cmdline[3]=='Q') piece=QUEEN;
+          if (cmdline[3]=='K') piece=KING;
+          if ((color==NONE) && (piece!=EMPTY)) piece=EMPTY;
+          if ((color!=NONE) && (piece==EMPTY)) color=NONE;
+          if ( (row>=0) && (row<=7) && (col>=0) && (col<=7) )
+            {board[row*8+col]=piece;brdcolor[row*8+col]=color;
+             changed=TRUE;};
+        };
    findpieces();
-   done=cmdis("DO") || cmdis("QUIT");
+   done=cmdis("DONE") || cmdis("END") || cmdis("EXIT") ||
+        cmdis("QUIT") || cmdis("STOP");
    if ( (kingloc[WHITE] < 0) || (kingloc[BLACK] < 0) )
-      {strcpy(status,"Nee\xE4""tw\xEF""kings!");Bell();done=FALSE;}
+      {strcpy(status,"You need both kings!");Bell();done=FALSE;}
 } while (! done);
 if (changed) newgame();
-#endif
 }
 
-#ifdef HELP
 static char * helpmsg[]=
-/*	  12345678901234567890123456789 */
-    {"BLACK\3blac\xEB""t\xEF""play*",
-     "BLANK\3toggl\xE5""blanking",
-     "BOARD\3boar\xE4""size",
-     "BOTH\4O\xDA""play\xF3""bot\xE8""sides",
-     "FONT\4ches\xF3""font",
-     "GO/PLA\xD9""O\xDA""make\xF3""thi\xF3""move",
-     "HELP\4Thi\xF3""hel\xF0""screen",
-     "LEVEL\3se\xF4""pla\xF9""leve\xEC""depth",
-     "LOAD\4loa\xE4""fro\xED""memory",
-     "MOVE\4O\xDA""play\xF3""thi\xF3""side",
-     "NEW\5ne\xF7""game",
-     "PLAY\4pla\xF9""curren\xF4""sid\xE5""now",
-     "QUIT\4exit",
-     "QSEARCHY/QSEARCHN",
-     "\5quiescenc\xE5""searc\xE8""ON/OFF",
-     "REVERS\xC5""revers\xE5""boar\xE4""display",
-     "SAVE\4sav\xE5""t\xEF""memory",
-     "SETUP\3setu\xF0""board*",
-     "SIDE\4chang\xE5""sid\xE5""t\xEF""move*",
-     "SKIP\4ski\xF0""move*",
-     "SNAP\4sen\xE4""imag\xE5""t\xEF""PC",
-     "SWAP\4chang\xE5""side\xF3""wit\xE8""OZ",
-     "TIME\4se\xF4""O\xDA""thinkin\xE7""time",
-     "UNDO\4tak\xE5""bac\xEB""\xE1""move",
-     "UNDRAW/UNMATE\2unfla\xE7""game*",
-     "WHITE\3se\xF4""whit\xE5""t\xEF""play*",
-     "*Ma\xF9""resul\xF4""i\xEE""illega\xEC""game.",
-	 "Ente\xF2""move\xF3""a\xF3""E2E4\xAC""H7H8Q,",
-     "O-O-O\xAC""o\xF2""us\xE5""`$%\xA6""an\xE4""ENTER."
-	};
-/*	  12345678901234567890123456789 */
-#define HELP_ENTRIES (sizeof helpmsg / sizeof (helpmsg[0]))
+/*    1234567890123456789012345678901234567890*/
+    {"black    : set black to play\n",
+     "both     : computer plays both sides\n",
+     "enter    : enter a sequence of moves\n",
+     "eval     : evaluate current position\n",
+     "go       : play current side\n",
+     "level    : set play level depth\n",
+     "move     : computer moves for side\n",
+     "new      : new game\n",
+     "play     : play current side\n",
+     "reverse  : reverse board display\n",
+     "setup    : setup new board position\n",
+     "side     : change side to move\n",
+     "skip     : change sides and play\n",
+     "swap     : change sides of board\n",
+     "time     : set play level time in sec\n",
+     "undo     : take back a move\n",
+     "undraw   : unflag a drawn game\n",
+     "unmate   : unflag a mate game\n",
+     "white    : set white to play\n",
+     "enter moves as e2e4, b1c3, h7h8q\n",
+     "press enter to continue:",
+     ""};
 
 void help(void)
 /* print out the help message */
-{
-	extern uchar curcol,currow;
-    static uchar pos;
-    static uchar i;
-    static uchar z;
-	pos=0;
-	while(1)
-	{
-		ozcls();
-		curcol=currow=0;
-        for(z=pos,i=0;i<9 && z<HELP_ENTRIES;i++,z++)
-		{
-            termputs(helpmsg[z]);
-            crlf();
-		}
-        reversevideo=0xFF;
-        termputs("ESC:exit\xAC""`$:browse");
-        reversevideo=0;
-		switch(ozgetch())
-		{
-			case KEY_LOWER_ESC:
-			case KEY_UPPER_ESC:
-				return;
-			case KEY_UP:
-			case KEY_PAGEUP:
-				if(pos>0) pos-=9;
-				break;
-			case KEY_DOWN:
-			case KEY_PAGEDOWN:
-                if(z<HELP_ENTRIES) pos+=9;
-				break;
-		}
-	}
+{int x;
+
+clrscrn();
+x=0;
+while ((*helpmsg[x])!=0)
+  {printf("%s",helpmsg[x]);
+   x++;
+  };
+
+/* wait until enter is pressed */
+readcmd();
 }
-
 #else
-
+void setboard(void){}
 void help(void){}
 #endif

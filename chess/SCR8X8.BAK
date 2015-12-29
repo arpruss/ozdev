@@ -73,9 +73,9 @@ cursor:
         jp      restore_a000
 
 
-font equ $-25*8
+font equ $-20*8
 
-;; character 25
+;; character 20
 
 *include pieces.as
 

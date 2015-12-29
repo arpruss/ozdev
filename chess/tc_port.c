@@ -37,15 +37,9 @@ char *itoa(int u, char *s)
     return s;
 }
 
-void termputs(char *_s)
+void termputs(char *s)
 {
-    register char *s=_s;
-    static uchar i;
-    while(*s)
-    {
-        termputch(*s);
-        s++;
-    }
+    while(*s) termputch(*s++);
 }
 
 void printf(char *fmt, int n)
@@ -77,6 +71,22 @@ void clrscr(void)
     ozcls();
     curcol=currow=0;
 }
+
+void endprg(void)
+/*clean up after the program is finished */
+/* this includes turning terminal echo back on, terminal page pause
+   back on, etc.  */
+{
+}
+
+/* perform a premature program exit back to the operating system,
+   returning with an error code */
+/*
+exit(err)
+int err;
+{
+}
+*/
 
 void initprg(void)
 /* just do what you need to do to get the program running.  This is in
@@ -114,11 +124,8 @@ void elaptime(void)
 /* This routine allows for you to NOT have a free interupt that you
    can use for a clock interupt call to irqclock().  */
 {
-static unsigned k;
 ElapClock=gettime();
 if (ElapClock>=(responsetime+extratime)) timeout=TRUE;
-if(breakctrl && ozkeyhit() && ( (k=ozgetch())==KEY_UPPER_ESC || k==KEY_LOWER_ESC) )
-    timeout=tcontrol=1;
 }
 
 

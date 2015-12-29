@@ -115,7 +115,7 @@ while (! (done || quit))
    else if (cmdis("UNDRAW"))   draw=FALSE;
    else if (cmdis("UNMATE"))   mate=FALSE;
    else if (cmdis("WHITE"))    tomove=WHITE;
-   else if (cmdis("SNAP"))     { ozsnap(); ozsnap(); }
+   else if (cmdis("SNAP"))     ozsnap();
    else  done=verifymove();
   };
 checkstatus();

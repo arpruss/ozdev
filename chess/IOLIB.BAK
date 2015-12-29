@@ -6,7 +6,7 @@
 
 #define HEADER
 #include "arvar.c"
-/* #define BENCHMARK */
+#define BENCHMARK
 
 /* The boards at the start of a game */
 static tiny sboard[64]=

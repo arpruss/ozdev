@@ -15,12 +15,9 @@ static void printpiece(int row,int col)
  static int pos,piece;
  static char c1;
 
-#ifdef TWOPIECETYPES
  static bool parity;
-#endif
 
 pos=row*8+col;piece=board[pos];
-#ifdef TWOPIECETYPES
 parity=odd(row+col);
 if(piece)
 {
@@ -49,7 +46,9 @@ else
     c1=' ';
     if(parity) reversevideo=0xFF;
 }
-#else
+
+
+/*
 if (piece)
  {
     c1=piece+25;
@@ -59,7 +58,7 @@ else
   {
     if(odd(row+col)) c1=25; else c1=' ';
   }
-#endif
+*/
 outchar(c1);
 reversevideo=0;
 }
