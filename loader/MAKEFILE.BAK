@@ -1,0 +1,17 @@
+all: loader.wzd
+
+OBJS2 = misc.obj part2.obj ozsetaut.obj findbsic.obj mygetch.obj smallstr.obj
+
+.as.obj:
+        zxas $*.as
+
+.c.obj:
+        zcc -ox $*.c
+
+16k.obj: 16krun.as
+        zxas 16krun.as
+        copy 16krun.obj 16k.obj
+
+loader.wzd: loader.obj $(OBJS2) 16k.obj loader.inf
+        ozlink16 loader $(OBJS2)
+        makewzd loader @loader.inf
