@@ -1,0 +1,208 @@
+<SHARP WZD DATA>
+<DATA TYPE>
+MY PROGRAMS
+</DATA TYPE>
+<TITLE>
+WizBook 1.9P
+</TITLE>
+<CATEGORY>
+PROGRAM
+</CATEGORY>
+<DESCRIPTION>
+(The instructions are below the license here: read both.)
+BY DOWNLOADING YOU SIGNIFY YOU HAVE READ AND AGREED TO ALL OF THE CONDITIONS LISTED HERE.  This is a C/assembly program.  It is possible for a C/assembly program to damage data and even to make your organizer inoperable.  USE AT YOUR OWN RISK.  NO GUARANTEES ARE MADE. By downloading this program to your organizer you agree not to hold the author(s) responsible for any damage to data, hardware or anything else.
+IF ANY OF THESE CONDITIONS ARE NOT PERMITTED BY APPLICABLE LAW, YOU ARE NOT LEGALLY PERMITTED TO DOWNLOAD OR USE THE PROGRAM. This program may be freely distributed but only provided that this description is unmodified.  This program is copyright (c) 2001-2002 Alexander R Pruss.
+
+It is strongly recommended you back up your Wizard before running C/assembler programs.
+
+NOTE: If a C/assembly program hangs due to a bug, you may need to flip the battery switch on the bottom of the Wizard back and forth.  If the Wizard does not respond to this, taking the batteries out for half a minute should help.  If this doesn't help, you've read the WARNING above.  None of this should be necessary, but no guarantees are made.
+This program may not have been sufficiently tested.  Report bugs and suggestions to: ap85@georgetown.edu.
+NOTE: Any alarms going off while program is running will be missed.
+ This is a simple e-book reader.  The converter for it needs as input is standard ASCII text with a blank line between paragraphs, and compresses the text down by about 49% by the time the data gets into the computer. To use it, double click on the WizBookConverter program and then click on the red book to open a book text.  When prompted for the name of the Wizard file, enter the name without any extension.  Any file by that name (with no extension) in the directory in which the book text is found will be overwritten, as will also be that file with extension .wzd. The filename will be shown on the Wizard, and cannot exceed 20 characters. Longer names will cause errors in transmission.
+When it's done, WizBookConverter will launch the Wizard downloader if the Wizard downloader is installed.  If the Wizard downloader is not installed, you will have to upload the .wzd file manually.  You must then run WizBook immediately before downloading any further e-books.  Downloading more than one e-book at a time can cause a bunch of junk memo entries and an incomplete file.
+ The converter first compresses your file, and then converts to a sequence of memos dated in the year 2020.  If there is trouble somewhere in the process, you may need to delete all these memos.
+ In WizBook, use PageUp/PageDown and the up and down arrow keys to view the file.  You can also use the space bar, the enter keys, the return key, the A and Z keys, and the - key for navigation.  Press 2nd-pageup to go to the top and 2nd-pagedown to go to the bottom. Press M to set a bookmark (you can have up to 50 of them). Press B to go to the last set bookmark (then B to go to the previous bookmark--and so on for a couple of bookmarks). Press V to view bookmarks (ESC to exit viewing, ENTER to select, DEL to delete, C to clear all, PageUp/PageDown/Up/Down to browse).  When you exit WizBook, your current viewing position and bookmark will be saved. Press C to clear all bookmarks. Press L to change line spacing (this will be saved in the bookmark file).  Press the MENU key or H for a bit of help.  Press I for some information on where you are in the ebook. Press shift-PageUp (or shift-up) / shift-PageDown (or shift-down) to move by 10% of the file. Press shift-minus or 2nd-minus to control the key click.  Press R to toggle the progress bar.
+Press N/P to move forward/backwards a chapter at a time (assuming a table of contents has been created).
+There is a word search feature.  Press S or D and enter a sequence of up to six words and/or numbers (using only the characters a-z and 0-9), separated by spaces to search from the beginning (if you press S) or from the current position (if you press D). All extended characters are treated as "xx" when searching. This searches for the first paragraph that contains all of the words. To search for any word beginning with a given sequence of characters, put a period after the sequence.  Thus, the search string "bit. have" searches for all paragraphs containing the word "have" and any word like "bit", "bits", "bitten", "bite", "bitter", etc.  All searches are case insensitive, so "have" also matches "hAve" and "Have". Press G to search again with the same search string.  The S key searches from the beginning.  If pressing S or D gives you a highlighted search string, press enter or return to search with this string, right arrow to edit this string, or any other key to enter a new string, replacing the old.  Press ESC to clear the currently entered search string, and ESC again to abort searching.  If you prefix all of the search string with -, only the first line of each paragraph is search.  This is handy if your file, say, contains some header line at the front of each paragraph.
+If you press shift-S or shift-D, your search results are not shown on screen but are saved to the bookmarks list, where they can be viewed with a V. Only one search result per paragraph is stored. It is recommended that you clear the bookmarks list before doing this so you do not run out of space.    You can press ESC to stop searching.  This does not react instantly.  Do NOT press ESC more than once, or you'll get out of WizBook.
+WizBookConverter can generate a table of contents.  If it has too many entries, file compression will suffer.  This is done by going to the OPTIONS page and entering the initial characters in those paragraphs that are supposed to form the headers of table of contents entries. For instance, one can enter "CHAPTER" (this is case sensitive) to put in the table of contents all paragraphs starting with the word CHAPTER. Or one can use a special character like ~ for this purpose.  Currently, this is incompatible with the Cyrillic option.  To view the table of contents of a file, press T in WizBook.  Press ESC to exit the table of contents, ENTER to go to an entry, PageUp/PageDown/Up/Down to browse.
+WizBookConverter has a special "dictionary" option.  What this does is it pairs of neighboring paragraphs into one, but keeping a line break between them.  This is useful so that you can produce a dictionary.  For instance:
+aardvark
+Definition of an aardvark goes right here.
+abacus
+And here comes the defintion of an abacus.
+WizBookConverter then produces an output where "aardvark" and its definition are one paragraph, but aardvark is still on a line by itself.  Likewise, "abacus" and its definition are one paragraph, but abacus is still on a line by itself.  Why would you want to do this?  Well, you can then use the - prefix to search just the first line of each paragraph, which is handy for dictionary lookups.  You can search for "-aardvark" and it will search only the paragraph headings, not the rest of the paragraphs.  This is faster than searching the whole of the paragraph, and won't find paragraphs where "aardvark" is part of the definiens rather than of the definiendum.
+Press F to toggle the full-screen scrolling option (whether the bottom line becomes the first line of the next screen or not when scrolling forward, and whether the top line becomes the bottom line of the next screen when scrolling backwards).
+ WizBook is KeyTune compatible.  You can get KeyTune from home.att.net/~apruss and adjust keyboard repeat rates and power saving options with it.
+ Instead of using WizBookConverter, the advanced user can use prepare.bat.  The usage is: prepare inputname.ext outputname (with no extension on outputname).
+
+You may need to download the Visual Basic runtime files from http://download.microsoft.com/download/vb60pro/Redist/sp4/win98/EN-US/VBRun60sp4.exe if WizBookConverter reports a missing DLL file.
+ WizBookConverter by default assumes you are inputting ASCII files where paragraphs are separated by completely blank lines.  The other possible format is that paragraphs start with a space or tab at the beginning of the line, and you can select this format from the File | Properties dialog. In that dialog, you can also choose to indent output paragraphs. This will increase the size of the file in proportion to how much you output paragraphs.  Some other options are settable there.  For instance, you can choose to use the pretty "Alpha-BK" font.  You can also load in an alternate font in .wzf or .wrf format--you can download more fonts on home.att.net/~apruss .  The .wrf format fonts are for right-to-left scripts, such as Hebrew.  Right-to-left texts are fully supported by WizBook.  There is no difference between a .wzf and a .wrf font--the extension is just a signal to the converter whether to set the right-to-left flag on or not.
+The "Alpha-BK" font is by Rainer Zenz (www.rainerzenz.de/palm). You can also load in Cyrillic texts in Windows CP1251 or KOI8-R encoding.  Any Roman characters in those texts will be transliterated to Cyrillic.  This requires a Wizard Cyrillic font.  This package includes two of them--vprus.wzf and malij.wzf--and you can make more with the Font Package at home.att.net/~apruss.
+A Polish font based on Alpha-BK is in alpha_pl.wzf.  It is compatible with texts in ISO Central European and Windows Central European encodings but supports only the Polish subset.  Just turn on extended characters in WizBookConverter and set it to prompt for a font.
+ Do NOT put the same output filename as the input filename in WizBookConverter, or it may destroy your input file and create a junk output file.
+
+NOTE 1: Ideally, your e-books should be stored in the "wb/" directory on the Organizer if you use tomemo manually.  The bookmarks are normally stored in the "bm/" directory, with the same filename as the e-book's, but no bookmarks will stored for e-books not in the "wb/" directory.
+ NOTE 2: Data is stored in special schedule entries dated January 1, 1901.  Do not modify these schedule entries yourself, but if you want to delete a file, feel free to delete all the schedule entries with that filename in the description--generally, because of certain limits, a given program is stored in more than one schedule entry.  You may occasionally experience problems synchronizing these schedule entries with DayTimer.  The program data inside these entries is NOT synchronized with DayTimer;  only the labels are.  If you delete WizBook, you will need to delete these schedule entries manually.  (Or, you can use the DELETE ALL option in WizBook before getting rid of WizBook.)
+ NOTE 3: While Wizbook integrates FromMemo capabilities, it only supports FromMemo version 2 files, which is what the WizBookConverter creates.  If you use FromMemo version 1 files, you will need to run a different FromMemo importer, such as the original FromMemo on mywizard.com, or the one integrated into the Font Package.
+TECHNICAL INFORMATION: This program is written in Hi-Tech C, with some assembly bits for i/o.
+
+</DESCRIPTION>
+<CONTENT>
+BIN_PROG_1
+</CONTENT>
+<DATA>
+PFILE:BR83KTLS.BAS
+</DATA>
+<BIN>
+  ß!­!­!­!­!ß e	ş1&HA012u1şZ|BR83KTLSBAS í    ÿ ş  ÁíCT€>Ó>ÓÀÍV€>	ÓàÍV€!  9í['€"'€ëùÃ  ÁíC€!  9"†€!  ù]ë|Æ Á^q,Vp,ÕÑÁ^q,Vp,ÕÑÂk€$¼Âk€!  ù>ÓÃ  ÛõÛõ>Ó>ÓÃ¡€:hÀ2"€*$À"#€:&À2%€óÛ2&€>nÓÍ+€Ã°Ê ¯tpã€„o@ #x O§SCÿƒğ P¼ğ8x8ÿÄøşü°?À#?1áÀ I`ğX%fØ¤U€>á½YP–ÀàC4 Ä"ğƒ<„@ƒ(Òäæ"`Àv4B*8Âwğ	A€Ô s`Åo4@]¡‚yå”¬BøP¶8€=7ú
+ĞC 0z€"à2Î<0óAšøƒ€$<§•=´ €a 0Šø$¶u©àÂ÷ »pğ SdÀR!xÌyppkhÀ	Š¬ô?äÀ ğqpH€ÂÈ@©•4ú@RÀüÂgDàÿ[x‚`´Ü7zú´”‰;7‚è®éÁ? µ 2@€4Ì
+	($<
+Ê`ğÀŞa14IÀ=4H´–kb@Àh$õ³xš4€"=ˆtÂ<0x€DçöÜNd<ßÄ1$šPz.‘VÙ=şH²Î0ğÿ‡
+ÈY’B–§Ò‚>Ÿ¸½ĞÄ=("ß(14æ `QƒÙF…8Ôë@´„è$f2<BäcÈ<|ò €…A"ú¬,	$PğH1ô<ÇúŸ¯„ñ< 	Â,!
+h(œìètş$ŒŸ¤92<A 609P 9•fã	Úæƒ
+şçúÃiüøş@ÙüŸ÷Vp¿…œ#bàÏ»d]V{ü#ÒB’=m´1h!´Df	‚¬ç¡MÅ–<F"ß!È	¼!€ ‹Ãõ-<€ˆNGú¤c£ÀA(tçtœHh8Å‘0íˆI’ú‚td`A"‘$“L¢#˜DãIz€?<HäB$
+A¡	"Q‡·D€,ˆB!fEu$=L"!&#Ä¿*H‡À(‰K"ŠÀ%AQ„sHuI‰ ¡PPƒ	"„BÆ$<8€"D	Éa‘H”È‰˜ôñF™S(´`<‹'}±ÀÀ G”ˆ@q˜¡İÈ’z€-Ğ	‘pÑH¦İZx#&›¡|ª,7$ïÉoËZBó7“&©Â½e{ğÈô+€
+Ôà	­–Õ6 wõoFRÿ
+Ç€ôævd *4 >@HRş\3fp?z™„˜ ¢@¬¶Ì*ÀÊÈÔŞ èò7üNÏ³·v$|.?8B3LVù`™0jt™B~$ˆ’3œ$¦?°™ºÄ™*Î`Ø™âìšö›
+Y(2<çFóP20Zdn$x?‚™Œ–™ ª™´¾™$ÈÒŸZÜÈæğ$ú±N²ï²†í"@,6Ê@­JT^3$hr |†36š2¤®†Í¸fÂÌfÖàfêô@ş|s;& 0: DdNXblÈv€3Š”?¨ ²f¼$ÆfĞ`ÚäúîÍ6øôs; wy*}ø	>2R\†°f0fp$„g6˜ó
+¢ ¶@ÊŞÌZòüÇ6	73<$.?8™
+BVŸ`Èjt?~ŸˆÈ’œ¦™°$ºÄÎr@ØâÌìöÜ$
+ùsşíı’(r2<ÌFPşdZdnäx‚ŒÈ– Tª´3¾ÈùÒÜ æ@ğú€9¤h2,6@çJóT3^hùr|†š3¤`®3H¸Â2lÌÖàêô ş$h2&0:$D-NÌXbÈlv?€Š&”Å¨™²¼ÆĞÚä?îŸøähÿd *4>Hşcw„†IõÃ†óxô£
+Ï¼=V
+hQ
+´Qd&(9Î4Ê¨Rà!#%)1º-22"Ï;f%‡’
+³dç¨S×¨S×¨SfLˆÇÎ!ÇŸX#<¸BÜ!n´;<ŠƒšA,ƒ(«7>ŸF¢åÂ†D&çMÁór`è¢´Ô¼ê£ğA[ÂœBBó7ç(~?
+ãT´Ó¼ßÅæ "%*TRíAX>•ï&;C1nÄ;h
+P?Q¾Ü¿ô¬ øĞt¢‘8[ˆi	*“U¦Û‚ÃÉFÒ2	@³
+([4>
+6©#FHò“J2)²®u™¡yt¡n–¢c…—J’Æ›˜åR'’¡*,†‡YU)È){Ê\H ¦íTPÇRÁÑ
+Ÿâi<P_"mšM	”‰Mª„e“!tFAcUI5	¤¦í="ÑŒšF`6)H*œi–cšEM¢
+q
+©IÅUÅ"¢Ü$´
+4
+!2$í»´Å% Zÿ¶»µm)"’ië¿L…¤äíƒ"~™¼ÉM8Ü,*Q“ª-¶<S<IÚz™ÒJ§HƒÈ(Aré©7^Ì7EI&‰L²–‚ƒ¥P*‚Ò6bŠŒ<Éä›B…7Œ¸e	-ªJ@d¨ARFmn–6>‹Gõ-¡0›*‹&2fÅ.¬ˆr¢<`<P´«Ceôl&’±¡êØh
+OÑ),I%Ë*ÔÒËå4“Ã)E2rS|q. ˜Bp(pDU‚ĞÓ|Ù!8³>ºÿÖ©ÆÁ)ùTñ9(Ò¥ş=(5œú´×³Ï¸Ò×óHhäc„ePHÃ²“R§x‘ÖÊ¼Óh6Iy	v@ šğn>­
+#Cî3ÖmÊXÃ(¢ç×X=Q­¬NBI6Ã–¦‘’™Yğ¨İ£s¢‘¡ÑÊë]EP‡	(YGò.‘“‡W°iPˆeMU–9c%Ös‹ÑJ) îû(™ö”ôxâªóYêŒR‰.G%DŠ”!¸»
+$2y 
+CtBûpvÛ$Hdr@’ŒD:–:G£Gy÷\
+…4–g
+ieë7ši
+ÿ>ª%yx²—å9lÚ:
+YOŠOkZ;$W¶oêÈ	Ë J"'åÒ¤ªò´KvÆà
+–ÛSFNkdœ˜£#8G\áQIEÑMúvyhŒ
+Ï(
+SÌv‹´Íl·#éÛ„ãî“‹Êy÷<päç>'”èœrqıiäH~Ï)ç4§–8Ó šŞN-¬
+R¹nOõ
+Õ7Ò$Äg
+8Ù„8„¶Èºry8m(<µË–gh0o,ÎZ9 <Bô5
+@)xËœ§Ü+
+0 ÇøÀN<èE @Bà8wgÄğ– }ÿïz^™EQ„g´8«3ìÎs…ˆŠLdù„<µä(ª ö·m…€D Š’‚RJÇ´Œ¸PÖtë¶m™@<ŸáRzØ„d T´ï€B D‘9‚’R
+	p°4ÏÀğ<ğ9Î‘Lä’3°wB€|üÿyŞp§^‚D=Û ‰ämû Hîgbà$åÌp=ˆ€Ê )
+aß•S 4l¨œ¢ ìâ#¬¤Š’<€§‘8ßv N%"â|{Ìs8*€á´§”“š‚@Û ^cmx ‡ ƒ`#¤#D”±@|³ğñhµ?Aû<•´àBÏ7à)wæD¼AÛ0	© )Æ €'Û3È/#étÁx	)$ËÄ:pÏ÷©#&#bì@P x=äĞpïï3g 0á™BÔ‹ÀŒI‘9)DN€m´ÃGA@™	’ĞH!&¤]ˆ`*[J%Aˆ€Ÿ?<2‰0O<@Há½ Ò«pRÕ;"#F €Yl±C@An=šy@ÖQØİy`ûY<á8Oğb0ï¥<QÑxŠ<)G´U¸r ÷Ì1	„(c¢’:q¦IJà6˜Á˜À<”¢B
+t©¸G6ù óŞ	‚”ªÁK¯¤x,¶Øyy”;„@«©Za'pĞóRm2<ğ‘<rô{ oÛ÷€Gà
+9&á˜(01)>2'PZaÛ`À@›BBÿ€!¥hAP‡eRKd çÛc#`
+Ş;áA2<ª NJ£z!glx€›€‰!Ö-%¡¾ €gƒµp^ù&!FñBAeP*³À€8sÂƒy0&İKçJÀC”B@
+HiIX ãºLBé™"Ë$ wÂC:©ÉkbR&ÈÒBv+
+´%)-<ïnIh‚Âœdà|Cí¤S=)5<tŞƒ	„ğÉKr7›Œ’<Bm)„xÊ—ˆ&Ës’ğ)f˜<Éğ€¥wŒù9OÒƒA­¤Á…jN˜xµs^¨%Ôp¥˜S*Çÿ?à8`x¥‡)’xäà áş$ÿ^~c0hÃ‚<)=&œ èR|~ÛBxh<ûEÛ„V1<²L¤Á<œ—LŞZ9…vàd<ÁP”yRÌyê¬ğæ=„äIİ½Yxü€$P¶8§´à†@<Êz0x@Ç¸óœCédÌ‹4¸³@ÄxpD€MÛ… â+•’¤(&Ãü8
+
+`<@'¥óŒA-¤(ÁP–àTM ´¥°ëK<TD}Dà€yÉ¸ôÎAğ’˜)·ˆ=àãJ·tÀÿx‡h@Ïsh6 ƒçqœÇ™yÀ!‹:¸$"G‚@‡˜„ØèçmÛ†Ìû&BPÓ`Ààà8«a ÇäçäçÙs¾
+û9À#œ@>M4¤ƒÛbÆCÅ¶m›­2<`AFQ¡€ïqAsœ=Dğ á&¿)´ÚîÿÏ9‘Ò9Ìzu™·hŞ+±ş4Ì$™ î<œgƒÍÙà9O8¤Û³È›ÇpùäI‡ÿ ÛÙ†°mƒÀl}›£º =è3õ¯<ø¼"ãr0‰}Ø´'ü†<æ02¶yØ9¸96Ç	~ÏğxÍˆğó€‚Ûæy›òÙÀ^ÕS?fàLWxôÊ°  ö·!ÿøíR (
+MDkbp6ø°!qrêPu ÌåÍdÊÁ}´q øá‡Ïáƒ+ÒÄ1ˆóè>Óttåô@Ñæ[ó:&€ÁíVù+ß~lú"ú2hÀ*#$¾3%&æ¹>1µ†)><ÃM¡ñÓ¯"ûÉót~:>ş»G³^!J"Bßp(c)Prus',Ggeng&ğ v0.s1ä*¾÷ÍŠÁÉä‹ ~ö€wùÃ(#Š#æ†! CÏS>û$£8<	|P_ ©âÿçáÙí[”{“(z’Àğ ÁÅ	ëî`èíHBxh±ÍVÙé§%¶rJh·B'S~"U¸'ÔƒêÁîÑcá@åÕ÷Of{·„(¤(Ÿ €±|ş¿0è 8qÿ2£‚BØ[Ty4x	~ó+ŸİÕFÜNãş >oì89åİdáTy°µú^àü#Ã‚(Ñ¼ 
+u½!.~·úp>2C‚x2É¯HA¤£ˆƒŒ±‹l˜K!k^a#ú™ áÉQ!4 :Â‚"ğ¿ò$°©N65"Ô5h6ùR ëS aÅÃÊÑ½¶
+Kƒœ  Í®‰}îægİ
+Üy4@xí`C<É1234567890O
+pÀ: ‡·ÌöˆîÛ`ø‹ËİnsfN#F¯¢	ıö9ƒ 3ÅÕ§n2~#	o
+.TÀ ÚÄƒı,É}ä8x
+p.ö$¡0$Íåü\pú8ˆĞ4´Êä„ı]É²áf•ñ ^#V{²Êk„ê¢;şÿ‡—ƒíS#)Ó6+ñÃ„Èÿ¡åÅÕJÀP!¢µƒ²Æ€&™ˆ ^cúËJ¡ê şMÂr„Ã0…’%ÑÁıy+DÚqÉpá$ï·É>Ó²%	…DK‚ë!‘îÉşåÃ‘ƒ¾vïª¡²Š(ò±zå+VÉ^A <\
+2…(²BÈ
+z›à„Ê áá lñBÈe’‚©ı€J¶Å€:Rƒ<Gn$Ô¼»Ã½…Lk‚îã#ƒE	FïE¾È÷2Ã4,O,!h:ˆİ¾áFE¤?}=Í×,9:_(I`F>±	©Äô¡2ë…İ~
+ÙéØÙÀ<^bk)Ò…¿0 ._ËP;²áÙ$V• æO(!ó…	‚Öà~8#ÍzäzW&ø¤‘É(	CÿG|H)ô7zRáO>p gy‚|25®3‰×4«ÙåO˜~±ºB~ú}# ÉşüøğàÀ€:ê‰îÿÌbá´`¼"ÃŠ°çøÚáÏ†½€•2YÇ{·ÊÁÏ*'qÁßä—çlàÀºYæMå+Ít‰áóQ3ƒÛ2ÈjÿÓä‡9"Å¹@K›†ó}2É@:Àæøñ·
+Q½F®B*¨~£Ê8o«&„Ç8}àÔşøHÉL§Sôÿ ù¯wR#hì	ng5Kì‰	šx˜µg*ÄåJ:!ÜÉg:‡@oã	Nû
+ëÍsÑ.oH-1_(7W!%¿I‚ÄBBI‚B¦MŸLÖ‡ Í|Á.Êìù.¸ºp¥_ç!‡àZ"êEş"DŸ\ˆ.†Ë §~·(Gş JÎÎ"Úa–=e—.7V¿ fëÅi`.€1GÁ°s"şXÉB&!—uå’9™x‡”8ŸyW€TšÖ„”ğ¤²9 »NÕÅÍ
+s‰sÀèÁÑÂáˆLkA.º™n“a\S*¤<ÂcÿãJ7B5/¸'@­²7ìBQGzèÉfj·”S„ Éliboz f¼:eúz/òrúu|t|n}szaÒ"ÅØƒ¦0‰1- ¥`AFxandêrôR}.œğNû„ ÙáÑ¸êr‰Õå*xî
+ÅLGÍ‘àÁöy°fƒ‡øÕ’Pô”ÑÁå:FŠ­s
+DU&¿:	Í”2 t>!O«üÅ=íŸ _x(£aŠ(Ë¦^ÂB~³wà>ˆ¸nõ$¢oÙšyÿíÀ™¯šÊãĞĞ#0ùÉ"MP9C_ğÑáåÕ4aŸË$<"À(³n€_ßÜznöœÉS¯ 0*ğÁx3–iKÂÀÌ2B¹=šDÁEAXvMÔÈø¦€0<ÅëÕd:To„±ÛÒÑ!ÁS³ÄQvŒ2CúæZ\û—:o»(,'eá£Í½„	å³~aH+ÆÁÇã^&V	Á¢Ñò½Øû hÃ(™
+KĞ.ï£,b¡O…PRö?@‘œ¥¨l5È";‹-¢KÈR##ÔBf)*8Á'Ñs#rÉÁ5¿½g_>_Æ]œm8Æ:eÂÖ¸´R™1ÒŠÂ:z4
+!l!G“CxÒ£Å0%Í<Ïù”ä¨ÉõÔr1í[8*zÏ`Y¡·È!_İT|Íşa88€’¥ÀCÆŒ¯ÕÉÍøÏ"í|`? :}8(?.;6«fg„,p ÿ??%>³éêããëâäşØ	¨6Á*~<çÏ|òÊ±!3Xt€¡ÂO`~ò>ËÁŠ.å¢·ğ;HŒPŸÏ»Õú>@İ.| ':[jŒ
+iréšùàDŒ¬ë‰©ÂîN²Ì4¡B‹< ÁQÒã”ÑÑ…|Š¹(ŞFlÆ)ÏÀÉ	È14öÉt"Ê¼aîÀåŒÌ!‘À!3Ÿ>b2ß:5Ë6m¥ã)ÍÃHË|BÆs(-ÒOÂ :*ø„¶^ö÷¹Ø¥;¸"ºŒ ,Ûd.fÕ”‚Yt»M£yÑ<|j€§­ŒşÈÈ¿P !’Š>—ˆ=–b[™ ”Q;“Ÿ¨L—:<…¸0
+VÌô	2ƒv:cŒG¦¸8K-!ob#2FÜ0ƒ"ş	 î›0vmn“R.A„ ¨R½}Ğ%Î(I»Ğ(X±¥$XÓÂÉeÛšå'¦°o>1Š·t"s©¥!³a}„;"§ÌĞn.?d	ÉÑá6„?€ŒÁÀkQf|<£14L:Ä¨ˆ±öƒ>š†Ë  -ÑiÚsõ;Øjæ˜ ‡5ÛqĞM&4ÙÄW SZ7LŸÕˆw£ÿ~”Œš"ŒÚ7†]Ñ.Ñ$„oa8ßº2et;0"­‹ëê8&k)2"]—eİãõ}ƒÒ»²şH¦X‘+^VsiÕÍ.¾Á‘»Ê -!S?ĞI–„(Ë7˜]/¯‡—!Ôî†¿æ1ë×h­Ï²*#ãÆµ"© bµ<·ãõ7“H¬L•Ø7m¯'¾êŠF
+fX,ñ*/mmIºĞáöÍ™ºFfdÂ¸zPLŒNŠ•Š–%½ØJeÉ•m`™•Ë5¡*Paé¨Š×
+Hw½z… –a!wHdhî£Ø!åÌŠ)F¡–Ö+8—¯ùyåı!%Ô3„ºVä‘g,’gE?oşo~#+ú1O‘t3ƒ0ı(hK
+~2MŸú}ığ Ñ#2©~Óc@’ë¯Ì*V~À…·Âê’Ãsò:Õ„ö¦¤Ì;#¨wş:(PÊ™ÔêÆÏ
+GX’ñ(Vù€ù¥Ÿ™´
+‚éaŸ&ƒÙn
+„ı{…ûˆø‚:Ã²¸Ú•ôÖä™<>~ÿ¦ôÃãçR“,™ÈŠBÃ.ë?µ‚“¨éâÃ)š¨Øö5@ ä!pxÚ“¹9¦+hëP `HŒŠ\I“L"Z#î"|§óöVMIãŒàuÿEËV¸­\®ñwòCişˆ¢sÆ”thHıË®	¢,2taÿ`ıP
+HzŒEº”W“³!vµ"ÛÌ‡­qÉŒÊg"tíqrõàpPÓ±nôÆI $Í»Ù¦0î–½¬8?Æ]8wH,¶Õi·1‰l@‹”®&á
+t_oÖ»©7LeiÒÂJYš'QO‰Pá¥¸8~J™BÙU!PD™ök óôŠ¤"‘Ş‘­(Páøxs“s€;ÃšJA¥™ô á±‹ÍWƒòeÚ9Ò0EÍ¨6Áye'(ôk(f@oA' DL0^:Æ´_<¿º¬ù›ÆƒÏÛnóGH/œ6’#Mxü¡€iş©•¨sè”²É–e€3ë^%¹å8è.İÉIŠ¡9 *Ã"”fM#a…-ë*²ä_ÆÎƒ8úk-%‚Ğœ!¦™Ğ‡)ì”ÌR!Í¡ÑØ:À©·ÀHÃ	U42××=,Šo8bë†º	ôUJÎU,0
+ÚHís5Ê…‚ÍR”ĞS ö"<é®í æw;\_½!
+Úì•‡Yqæ£
+ì!#EMÃ¼:}iqL³Ü!X ÏĞjÏuĞ~ÒãÕãĞx%13Ïæéà¢Î Ã8¢÷–"„FdMãf³\u%åI»:ùrjÒ•s+hºµ ¶©‰S$Ãs”L³_&¶,œîå$ô&s"öÙW.OŒ-–!(l#L8*‚¨9¾&Ÿ—+Eˆ#§(:=–áı­ÓgjMSµ!X·?Ñ–ÏBi`<iP'A8SÆl,©+2[™j½B„Ç°ôàbHjÑå)W"q€zŸog‘Û
+©»óÒY­¤X™ã´ÚH.Ngå¬±ûR|¶Š v¾÷ÚxÃ—Íïé'õšw1}"`êA #Û´öHMC1*0„~•‹ÁÊçĞÓ+Áá E<	°}-¸ŸG_ıÊ É“t¸;*º‹{²µôİ¦i~Êå¢Id[‚ƒ'‹!»À¬Ñ¸S=ŠËG¢E 	îu$1±¼±›"¸0Ì–Í“Ô¤Á)—¯{ÍúŞGıd02uùYobÍ7Ïñ#œØä‹ì¼_÷SÂv˜}Ø2Ê=ošº7@œïAìX
+BÏ™ïCìZ
+Dş°›E@õXş~ÍFh[†rˆ p{6òœÄgL
+D¡
+E|·Â7	™>êC9( P-Ha¡b³ÌàcûM?d³iffûs?
+g¿İÕ\ıiı±Ÿ
+jĞ?l³ã(mûŠ?Œn ‰p@SrÙ
+2sıÎtÿ,vşÖ¡ƒz ¿“ÂÚ—}·&Ã’^J_c"ÒIo„ÆÿÔ`ŸãW|d=·„€†íC¬HÓ‡”[–¶“®H9T‘¶&ûÇ¡Ë0&Û@™èÃwË•O†2&æ,i:>—&±*1¦5&Ç·biPO¢É„¿*t_<Ê)k94‰9<3ÒD±Í9ı·©Dº5sk€·š0AC+!¯ª_Ò4?{$·:Ÿ(Ó+m)^2d d¥õš=*]š}´Ã›˜ù…¨"œš°â„õD#âzE18!ÑÀµÁÓ	(šÃ©š	VHDô¡ÊQ¸HMk‘1(1±ïDŒ´Î÷dvLE*5úÉ»ú—*¡#´¨XˆË v?ÛŸ%c¾Ú¶‡š‹œçª#Š¥:ä4ß 
+*Æ	.‰kb8PÃKHš­¨"i#É(É\—[Ï÷åwJ5®Uğ„l
+·4 ì‹,ÇÍ?—³¨¬vÄŠj·ûõ‰ŞLêÖ%F`BØä"]}dª¹Ñõ×ÁSK-&ü­9ã<ä8.vÈ½\SRéš[‘DHÛó²iäl\*=fxĞ‘(5	|æğgx˜AcáÚ— -(²èXø§<s¨6âÉ}u`íÉcæØ‚C-ú„õ³Ò ed¸û2¿P¹)ù“-C ”z‘¥è0bÎú¾öÖ–Ã…›·ıôN›!Pˆ`Š(š¼Âİ©ÀÊ½œ+hÃˆr­ØJ¹)îq„ÃÕ›¡™úC{
+'ÂœL`ôxõØ„¥ì‰Äš½èM	İnÙ%äJ)¹ ¶"C
+ˆr,^
+Ob¶:W7…^èBiIuÌûÿ¡Ì |ŸNDŠ…kJf÷ Š·¼2ıY°”ãö7£¡~ı|3o_^wqÆ¤'‚Ë;!xòJÎFüb6ûÀp.æÆNşÃ~ê<„üS§	.’2ı	û&ü¸)»e¡ü]4Õ5A†Fú#;ÂĞÊ¢ ò×(ÿT*.x…¸-7Bş}:tÖí5.ŸfùL. –8$/¢û3†„	.ulŠşS;š3I'Gıÿk÷êo‡üÎ‚*ĞqÄ‚I.0åQØ%æi&Ü·”c|Ÿeá+Ä)â¯‘3Íê‚£0+@]ısáˆ;i`!8ÍÈR»VÔ> Â:vŸfôÒ–òÀª—'ôÑ•cã¼i0úÑJş‡"şò/\!¼$(1^e|LnåE…œš*ZÃŠ¥ğ‘Ê¨ªın¡f1\sC._ÌÌ^FVO"­ÎÊ™ZâåI|)C ,šÁáÑÕåÅÃ	›ZÏ3²™HàHı©?tª™ü´2@*8.UİğjmàåPRÕÈÉ!KHÚäErâoæ  QËF(	Ñ‚ØÒÍÖÏÉî÷!Ñ·¸.cXÚLÊ[‚"@¡TdÌïˆÁ*1‰+`ÎƒN(!ağpÍìÈ,œ& >kU‰f‹+‹ñÚsÔ¬ŞÖi&QJR+)aF6ÿ0L}­$u"©‡M½Ä0ıu	è5¡‡º!ç0²5æ·•‚ƒ ĞA"µ+­Ó|ò†(CÒ?Kæ/½Ò1>
+¡+Q¬Ê&Ïëâï ~2BÕ¬³"Ë¢›ÌœÑı.”>â;ÆÌ$(”õyd˜}™'OF.%§ép85*F´M$ªÍ*™%#Ş–D©Ì‡ÛHŸqf›:˜1Æ£	D8©¯4¦¸äˆQk§&Ì‘Ueèœ¢m
+J{L›£k¼³–kÚBpvµ4”´×0!¹­ÉiH @ÊÅK¤ë
+XôÔ,£|É±ş&¼
+za?Ü£¨cfu*¨6D%¥‡BiS1†-„°CiXIÍ#ë$ÚT¼ §¶¡Êó¢q(ÚTò¼)QÒŠ!Ïì*M$ÍBJi•ª§ÜBº¬4*(\§±)Ç`Ãe£Í+éÇ;*ùÔ§ R ÚTÆÜøc®? ’“¬¼–0ˆ¿3Ÿ]p&\ãÛçÏD¬l W>5Ht…ÍF„ŒtCÒÊ Âu%‰A3bŠm-H±û8XÂ>¤Le4Ãg¢“Ê£Tç°/d(	Á‘ÚEĞ¬ÚEÙØD€’ÔŠßE6*¦hfq#i‘&›Êa„0E€WÎG(8¾4îÿ‰e^6	F¥”ÔÍ#!³²H*@6æ¦¶)ÃxT´Qj4Â£¯ÖÍ¿3ò‚°§ğ!eíÅÙó¯È36¢·’ĞfHÃAxYZ$6© ‹{ÚGÜ®Ê—ÍÑxÂ2§-ç¬jÂŞqÂ§Ñ;­x¡k xü^¦¡-LM.n)ñ
+)"‚ˆDÈPCö×‘Q(|%‘/’4ï4ˆ¾)…(ñ:}vÓ6ˆ/=–®#J<…™¹ÍÅ8/D[™,h:çt D÷( %	¯æ 5$·JÒ;L!­qğ/@;¬$>w<åb)ıó#WWMÂÄû —‹¨Ñm
+DELö(ÄRˆ8äD	­›w G/V!nLY‹;z¿ùÁ@ .
+MÆ"Ò~~B­~_ŸWá¿1]`ºëşqJ‘†èóÊ_0ºŒJñ^B.?"ù–4*|CŠK›j‹ü¬Ù@7¨Dky4¿rı>12Nví¶G¦k*Yû<lh ®¿›¸f&·“ˆBÉ$°ÉbÖLù‘½0’4<Œ:Ë(ÆÃQ©wÊŠÜ‰nìa/÷¡o{	+nåâÀ‚Ùıß#š?dyØŒP3­h“„š¢%D%1•)©]‰(hkLúAMeÏ5¡ìÆ şÿ(ÍéÉÛhÁÏh=c
+>’c×,ÄŠ Äo(3!­,DÂR÷j1:ş]5G§¨]Õ‚Á|2oÖ>[y}æ‰Á÷‰ò Ô²>6øÉëCî
+!Ê€øË_È­Ã0:ËGÈö&H¾ÕwI¸ôR¿<¸ÉVê¥¢¡: Can„t»~ßdpr¦ŒYßuŞmŸyŸhve.tÙrßg>sÃofÿY$rÇuplï…d.&E~nÌ@kgo.ÿtueX?q LIBOZ_UPñØADıM+ÌpemnSÂ¿¨g~V41»4ø#ƒsqªŞD>æ¯F)namÿoÇ¦ÔÑ³?´£tZ3C$PB;w(i„€4DeĞ
+AæÁC İ:b”¤kÏ{éf“ÿ‚AŞJyò·üêµ™RLlÆ…ûd90{ô-¡2s6Në4uò¦+[L™]h·tl½ØicĞè³f.y|W7zBI(àe)8¨rŞGÙx0Gbm/ÂÚ¨n Œ›à|R$dú\^À2õ­
+~·Èşå a8æßw#Ãñ­>Xõøçy·øéU® «X¬úŒ~Ô~2>İÃèBúàlUş08œ:Aï[¬ë’ m(³¦Ø
+G>¸#ÃD®ÏZ‚Ç‚üYø‰ğ&ìƒB>¶¾Y¢óD®ª7ÃiX ÉÁáå6Å}‘<bØdĞ#¸ö £¦!${M¬ı G¼l-íG+ññ·À?	Â^Âaå:c(rkNk¾ÙÚÒ¥E0X;Œ!;€ô¢ÑyQ2Bã] £]İsÿJ:G {2¥`Ñ‘FıWèË'Jš˜-!1ÛÒb3Ÿ(\wZı5’ÁÉ»¯œ¼eß°_*”âkÍãÑÕˆ‘‚2<ƒû`à~¯C¼»$•C(+u} B€*2mŸ	‚ßvíĞÁ[ W5­Æ+ò³Ò*¯“„gÆoôl—’xB(>åXÑ^/‚òZø«E	õ-õ‰"9Tó´:RR.¦U#A(§_Écâ…ˆ<$Œ¸Á’ë(Ñ”„·'0‡bDì1CÖ©EÃºy!·+¶êº„Á$äsgÊØn8"é{­sè‘  §k:$~ú-”c
+²JìZâZÈ>´°4U .(Äw‚jó]øŠ9)§Ú¬CnÊ¡¶»B ò«-S|ú÷*7†#ÃwA3>	¶d5Z³J¢§äOËş’±)U_}o6K½(Q@’ëó[^”!ƒ¹­Â¢3QkïDÕÜ¦Íx±Ü-É1v‘øN¦)›>ÖG„™Ğ™ŒÔ†¥f²{
+à_a<Ÿ{æ ¸FšÜ†gË/IÂ#úi ï>wğr«ĞIÂ;L¼çœX•òágâ\a ¯QoÉjt¸ÃÜô®^¤idh±aÍ²¯§ïOÍ0£.%QÊ6B%ªÄ0ÓÃÀS²ÔÑ»^Şı6[x(H!ˆO‡¸E +”z‚i	dÍ½n!JjZWª«5H´¼8×áUaa]3`4Ú@²µ¸uÂô]±WN¢QÒ'çsÉ­–Úò÷"ôÌckê³7=»0‡š@†7ß+ôsZxöİ60õƒÙÉéJ±ø äÛ²ë(A$ê"x&,
+°²Û4 *µ²øŒ`LÉµ³dBh"õA:ÒKÁÍ|´ÈÎ¨œI¦ƒ³­ôä@IL³T²LJ:!¬0Ã€D6ÈÚió2+¸ÈÃÓh£T8ş[Œ'")(øl^†ŞZ‡ëeÌ-â$ÆW‡£Á82tò8Ï 1 
+½›)ë“µé©p®ºˆ	'–°Íêœ”$Â©Ã1å9hÂÔN­Â“~ËûıIV¥-L—Æ„%+ÆL¥—Ä‰”_ƒ– J
+"+µå>çN»²GŸßÈÓë# MÃ´š*LÚ<v×A!>Z!v,o:l¢A·“ó¹¶?"p¢uÿi`Ü·àÍ½ã•nYŠc…8š"*šµÎ•áMôF¡•fºŠj{w‘[ÿ."p¶š¢¤ƒ–&])*¶–
+0ü<Ò™"hù>A8P9ü’Á**×¡Ä±2Ñ¦!~ÜLšİ"|¶ÍºêZ@Q$	:bôê¶&å
+zDş·†È2
+UXğoMµ(#vş](c ™ÿÌ¶	ı‹ÍÁúŠ‚"W²Í2³ìbIÁ<$+v©Œ ˆõóı„Î‰-\.şšÊy‘¢§ß¨ÊÍm‘Í)/ZS:DÕ'6+Š>å(âÑÊaÒ"‘#CAhµşjØb·©_}^P§¡­'<Å0
+aÛ»Á½h‚!û°›Ó*´Áº­ş´ATg"²DµdŠœ(ÍXşPkX¬&]Ö“ådšã»%ìãÉÕ.‘Ï>Ö§2Æi¯[Ó${4}ÅW¹©–élÓ!åµ¼n·£Ì÷ÿ™Å¦ö¤N³øù³<)øˆ¹ÊÌ²Š’Ë$6œølù1÷Â+:€q–-alo	*¸ãv§sjU6û§[»‘„‘È”ÆF—æEú21ğ¸È4ºT!°à <(÷Š"“¹@^Ö>‚‹o›ÓîP¹Øğ×˜7üé½,èzÚÿ||y{JïümĞ]Tİ4C:ï×GX5Ò2Ê_!» c 	jo¹VFP¡›:F™bû›"W†doúHİœ5èƒX¡Ù*+T‘ –¾(äİFZúMhBãBƒoCm²¦ÔƒB©ºê7ÖoM{Dhı*„64Â¤^Àlnbœı‹P UëA•Æü@?ßyáu´ÛûëSÈF<ó¼f*
+„éUI”I)4E1FÎ~šHJ†ä¸Q?>KXıVIôjâ¤µd:‰™EıªeŒÙ·oÆÿĞÃ2tº¥òGMÙ~NPà<XtÑr+sëÉ‘R
+z'âºƒÃü²Öø
+?ÉÁÑÕÅ$M:ú:	ö¬>¿+·, Í¢º8)MD¡Ê	kĞ9íJÀP²Û'É,À¹ãÃºÁÙáAŒòõóÉp+rqßİŸá76/Çë	)‡±J§åÏÀÕ_¨ú »{˜Ñ]æ€W=z<R"9ã|ªò®»§öâK9² ı5‡>ÑÙéW#"ºBmâàãgiØá]áğÍ]H»I½‹üØÙ@LÍ6¼JÚ‡!ïGl»×¬;ğïærÉDu†Øt`ƒ¡gyögƒnŒÅÎY&Pú ç¢\ùC4¿ùÊD'&üÑëğ·«& 5ÓR°.AíÛfKëPQ²ÉË|ÈÙBB/´	š+üy{²Ù³È]†¨„å¾ihî98…<ë)_¸İjÂËz(ã”Gß?†3?ËŸ¨ò:öÌ= ÓÉU$	‡ç	yHÍ¥¼¬_}¡x	±ÉË?0®}Z¬mø/ìÉâ0 ;·È#Oğ"*_½´Nş¾t ş#˜c_ò™¢»Ú/+ÄKA*#wİ@Ùõhò~]&Û-Ó·éWù¼ª)i?ëÙùÍé!¹sD^Í¬øN
+°8ıéUÈX1R¯äÃcû!¬S‡¨c	èµÈå)8z¼À£Âw½r{öñÃhôë¤¿&ã|º	ÂëX³H8~Q?İI%àè’Á2ü«„·ŠœBDML›ùBr.øß‘¼á%ØS+û;Æ³Ø>´½LŠ2-ÑÏÉ*®(;óP:N" Énbå{ş@HC0l*0}¤<6(O¸ˆÑ";‰Í:#¥2[•Z£¥*Ÿ²—wP†X?!œ^¡ß¥ékbÙ„”îÂ8	¡¾ëôÏVK¼à•©l¾RÖH”rG)‚ÒÒéÂù 8:@1e2ÏÄjÕn¨Ù…(è2pÃYZm|klŒ0"‚7?eM»ÕWJN¼Ã$À±‰ŒÀÜHÀKPğ†0JR¢>$}ÎÁw
+YG#w¨¬ğ"H¿¤ò™ò¯Iı
+t˜IÃ<…³N`Û_,î^ ×dñ’zZ©9!#¶.õ¢íT+uQdh™†A
+æËB8%!d
+(<„!WFÛ.½,vªê 4}Â€HQaÕÍàËlõ”wTN2áÖ”ù!Ã¥—®ûĞÑëŸE9(¦îÓ,"
+ß mN!ÆA•,Ş *ƒkë90şd)0%Í˜Á{ozæge^¥X]qÿ„dJËæh.bNÊşà@"ğÀ*LŒtK À]$¿Á¦Â6.jã¶.%û…[è6›_“
+¥yÂD>J1‰+K\êişM’‰¹|›ø 6áêÒC@D"j4Ù~Ñšİw¿in¼l"’ÄkìÈÜ–û.Ê|d»>¹ ûë{	€*ŠÉW÷^9gshq*¥q9$ÂÍĞy ÆQõÀ0¾Ú§£ZŒ”,"ˆ97f”Pm»Š‚³¬|˜ª¯­Hx	®Û]TgSEÃ2İÈoÅ v—fpŒ"Áv¿ÊÃë½o	pBgJÉåõò–4Â%dKú]ƒ‡ÀÍ\2MD‘jë(mK…” u4S¾xñÂÍ+mÑÅ 1m(“\œï,H¡-qö•RÆ ¥ÑâÇÅ:˜CÚ¾úõ”j÷İøx|Ü½=…86*†æXìsİËVãB()è¡Ä[” Ì|ÜĞ=‹($øJ3!É;Ç"	Å€RË™¶şUU²$.œV«*×"QHœ«¤ˆ,*ÎRãë˜¦ÛÚY™BáÃ·W	 )Y£•?‘É"Ä–æó²7FâÃr;Ğ½eQšT”=&+D1CÇâº*¤M¡—FÊ\“>è§@{2VÄ%l²fJƒ»<>%°:
+¸8è!Óbˆ‹ ³´‰c«_}<ãt=ÿĞ	 !Óã:#¢Í„G$q›çÃW¬Ë±ıá-ªµŠTE¹G*“ÆL‚'X,HÚ…8!•@ ™²VÂ *„Ù#·©W‘1À*R,L¢%(
+¦3Ê	Ş*–ÄBšXwãwï±¤òeÊh‡M¢)V‹‘Öû>Ø«™mh’…0)©Ö€›C FkAãæ˜¶ 5*4dR¬¼²CkA3á‹ğt¦wŞwYutäıH*m0jÉ:…^ÓüÄN5ßª0ÀúùÄÃ Ål#iSIæÏ6°;œóôšn¬ÆA1ÇÀ'mH‹k¾¸á/»¸M7³VİL¥w4tÆŒ6j©—å6(…4E¼uµbŒ*SS<ä#0w‚³¼=UÀ[ŠgÜ«ïÙ–€"xÇ}2»èıÃ5d¯oe"ÍƒËŸä3ëv%ìøá’¦&U³5…:"K¤^F½Æ#Çz!‡?İ6~Ô€j´¦FeÇ/¬ZÁ¾XMzo˜…‹i:n¾(0”²Ò\2È“ Ó@Ñ)îÏşãgª•‰öf9!Ğ…ÓƒÆlg¾¢ÇJº”Ê½KYºÀq×Õ¡Ê%ÚMb¼–Q3K]4f³R*[[¿Ô^éèË8ÀaÈ‚Ô½8ph*HœC¯:8Ã&J¨‹ò#W’ì×§â+¦oOgŒÑãğı¥8%"£ÛIrB¦
+!H‰4¼-Ğƒ«ÉûPşàH´ Z„ŸòrhR¤ñC£%2•W¥RG,GRIJ0GGd/K)<¯¤Göò¤2CMš7224¸—Ìg	«É1q«-F¤À!¯o|æÀygXÙp“±î"ÍõÑ÷Æ.ªæ?gC/3	 Ã*İQ:6«—0ÙtJC‚ˆ¤;²{ÍDÛõùrÕèÊì€|±dº*7˜tƒñ‡G˜°oÉÌŒÄlUÕóî_@æ@rî^8Êøv—py·!( 	~æ¿wwˆİ•ş¼å@¶ögP_Š2E: şó õ¿!µ"½Êè!›è»ÿ<à¾>h2@•şÜùpéC£w%&=ô4IUõÅÕÛ_fW@>íÓ¼Htí/¢®8	Ñw›Å ~ÁñûíMóÃ¥¼Ş~/™Ã‰2-„o»1¶È"~…ÃUƒ(>PcÃ‹ÿÅ…k<ïE.¡GåIR}ÍõRƒi„%Q0BíM¡kDLiA7f˜'NU!ğ±ÂÀn+y<6 9#=¨úC˜p%ÛøtJìæY~ "uƒ5¥_Êp¡„Ëœ;3H‡øÉ1	íxæ©€w‘é3è£5 äÛ6Ş"ŸîŸ8ŸÚŸ:Ö <Í¾ËĞ¸ÚJÉù~2*Òæ@L(
+ìÓ¢Ğ;[C™CöüBÌ`ntOtr¹ ûv)€¡¸ÌÃ˜À(Üø·Â'ô<h2Ä €"s>÷ NÓÇNÃÃ:Ş:ÊnÌå*ßà+"Ó¨/>m¼Û¤î¨>¨!ü())áz˜+0 œÛWì;Ó/¢ ËrÂJÌêBhÄÂ¦Í€…ÛFæÂ-tİ€1'˜°¢8b tjÂÈvp¸áø#"Ú€Ø>!2İÌàÈ†æLßl;ÓPÂçÃÀ=2ûÃÚÌ¯ÉÅğİœ¬=w Röf¡0R*ãø½ió"½=å_'‰¼Ã9Í¹Ñz1Qê%çšŒ‘ôç	Ã~Î-šüÓšzP÷üğæÛ Fw°¨§(=(ËG³>8.ÃÁÍíO~A9clÓW=:==b"_z;zzXDg<ôôNôw‰=é@éD¡°Pñ²<Œd<?È@‘o=A= 3ÒB_	§ómò…q¢!èã…—ZQ` #;Ë"1î¯{Š¬A¥JÆ¦‘6eH§+·ŒÙ ‹wÈÛ·üİ
+€Ê£fÎ0á7}!Øë…¯]¹0ßFËpšFvHh¦~~îú^Çö–ëDvU+äG!-Ó÷#~O#›¨&ôæ5Š†oíÍÎi	B¸áÀ»ÃÕHÌ|–®·ÄôÎôñĞÍºóÑÈŞI:"`N±(ÔıÿËõêF°ã‡>€¦`xş6öØè3Ş25_Ğ7Ì›6ycÔ¤¦#(»45ÀÂÎ4:4áàOÍÌ®ÃÛ§ÀJ{”¯zı7eõÈ	K$í¼1„jÕ&ù¼&ÒŸ	eU}l¨Ï{Pë¯º(öMo|e0i1‡ÒTÆkb)wYd_2ekq†Cw"}ey„JŠÈ–dœ2¢¨Ğ°»á"¿¥Ğ¨NÕÂÅàKãåâÃ9ğBù—ĞfKëéŒ‰°}mûÆ+ùÃŒ§Thÿ¡¾Ğ(Jå8ÿM	®P¿ùsøsúšëòû¿†•á=¹ÌúóXÜ~#¾Â‚ĞÂöbmz±mÕlÄÃÜ‡¡ƒK7Š1õÜ8eÿšçÏ¦ãˆ· 6;„D	8Õ.K$#©:ù9@­9„D¥¡(ÕÍÀç÷œ^<I€¿ú
+û'(&Í~‚÷öÔˆ·Ìº='ŠæTvÃÅĞÍv'øÏ\èæê¢ÉÀÛÀ+¹nrÎwû';Ôv!`=(õ<ş8¯OËK±ú	@¹fiº©”µK(ÔEoĞâ½ÊWÑYÇ^Õñ„Ö»ˆ{É(>–0=2Ñµ‘|@ŞÖY‚ó6Í#p”¡IBÜu¿>4FÔ"W$ÉŠà}ö@æoãuI_9 6$F6—`”<w4>’ (æ¿öÖ:Ôqú–Ñ±Èàæ€Î<òT¨aXë<,Üû¤¸ºXéA¤é–O^]èÏ2y<1ÃÁQx*ş!åƒÙ,’Ôz…öÉâ÷ù<’úÉñ¼‘F ×‡*˜»D·Ò¢sBî	€Ô!MriA~ª¥ú<€‰seã:ÉMÁr/Ä¹L	Psâ ûíyÑkç§Y:[ENT1R]/ÙoSC<	wbÔIi~éI~ºI~Q?ÁSİv:šü7.Fê¨`†biÅo[êÆupñ:×zŒH	30$Ã:Ñ^/È=|T%^ïDScNh²<pÉøtÖhÊT‘A´ 
+cEŞÁ’	1ú¹
+9×Å
+X€
+p2p3p4p5p6p7Qq¹ÁeGét8‡s0càu¸ş8o8p8P€gàhàjàkàlàÇ`ˆ,a‡dfB€AÉCÑ@Û8`z8x8c8v8b8n0m¤2€3‚5„ -=%prétêvëx~;rhtgvfxDzEB¶BˆbËü šA‚~o©	“&¨m±ÓÕİ!êÔÑ	<ã*˜ï¿+Øš¢ÆU,>ï/·æÜ)*Éó‚Œ·]TÀEË08È­~äèwL#õÉ«¸GÿC‰ÊéêÁvÕ~É†Ñ³€« ®ÿƒ Ñ£áMâ:¢®ª×Ùá(p2ÜrôŒÆØˆõ†’:Fÿ:ĞÀÄ¡Ó9ıåKÆ“9)ÀÌş8œ“‡Í_!jÕ.×ÁY‰#"ÓX
+1%˜'"†NÖ¹ñÀ?	a×ò—Ø©|ht{tÔîx ×!üíis^aÂ¬}w@Q ×p&¿`H;L.%€âWDÕë:bao®Áë¯w×Ö°ÈOM×·æ‚
+äÕÅ˜¼Â…ÖÁÑ%	M!º	n:“æ¥[˜æ¼ô ~o`ÁÅYøÀèğÒP×"Ş~¼ıòTò{æ_‡ƒ¤ òKÖƒİÛ­—ffÇ€5ÁËQ9 ˆÿø	Up•	`ËR¢¶bë_àµø!ÂÕÖ ‡‘<Ãf	İáıõšóf=te*úÉ]½ì>2²£êOİÜ’5	¦Nğˆ¢0Åt(×õ§uSîÓ(ä
+áÑ¶¬2zU¡¹»\.mş|Ø@­x@·ÿ*(šä+ù2±„¢ İ-ÂHyáÃ¼,€İÚ=ü•½;Ğô}­ÂCQ7ˆÀ@ôàG!¢µüà|ìÀQØQîÜbşç,µÿGô#õ}ĞEU‡áøÿÄ@AÇ·TÎ‡#YŸˆ´$|ÆrƒŸySTóß!ğøÿ$‚Ï£
+ğIÖ8ÄGF¢ÂDE$„õUk ÇV–±âÇš<ÒW5	âÃ,U5ã¼ó€ÇáÂğ}5“Á|k0ÔGûçH8#|Ò7–9e=@kğ(‡<Â~%€>xğIv¨ÊÁÔµsÃ=CDäM­Æ<3ó8+	ÌğZ6Øš,†€dğy1;"ğ+8ığY™„@NÙæ€…BxğÚ8‹à­ë@‹?ÒØIğà©CJ¸GÅøÿ#ó¥:<X¬*€‘?x?ı$á‰~3<;pISY·`€?€hÔ ö‡J(	àgç ğ­CøCâHfü§Æøü‚»SSdè<k1à6Á?-Ë­Öá-é¸?'ó7_%6[­£¸ZBï[ÜœôV~ò0%Œn^pd<€ ‰Cà xü½„@Ó9ÉP¿LÉ ÁF"Ø!`ÀŒAD™uc`3xÁVÆ8 ˜90©œ´irÀp3SŒál¤”RH‚… )%˜ı}0@j RZ	 A JTì·9„”>’y…¹GÉ%#¤:<(QÊ€àAzWÌ0x
+ğ{…‹}ñ€C*ÃxJA0º
+Ò€™dÌq „öS(Æ:´ >9—À‘)œT|J0“s	[¯‘½C­FÈ:²q‡Ò÷7Ô1ÃqôAcñ>X:Óş“Â+/H	I!zFë%xŠ%V‰öÇ["/ ¬G\›’4&cçşT*½ğãáÂÖ)ĞÜ~—üÖ„¬$úaÙCñ* ÙÙ¡#­ü*}'?Ì-}
+2áóı¿‰4Õ˜ÿ%×¡•;–¦Ÿş†!¾«7úW¯›ğ¯:jñº&{ƒi"Wˆõ,½?mçN ğÛ(PáAlbñI¡
+Ñòİñ[ƒA¬Ã04˜6êúÒ0æN<­É¥^ZY< l;£¹DöãşF®‚şˆ^µ ‰!f"©º@	ÙÈ—Ù¦4k¾‰è\
+†QTkHöPòòkTß;Â+óÄş’* ò,&ë!İû£}œ"}á×ş£ÚªĞwkbo#]ÊËø6
+8ÉXk“)¯lˆuBI33
+¸8D˜§t~2ı”Ê_ù­;Vƒm€şª®kÑÿÆƒş! ©ÿI:rÕ<( ÿX,“û‘7}¸¨
+~­±É$(:	ó!ƒ­~7S$¤~KfÁfĞòk$õÈ×dj‰B’!>Ìiµ®ºŒ ÑÂ©òºó±0y'rz'.ñ«¤a“®!îê«-ÂÒdşLÊeôK•#,2:¡ã Ær›â8ÒÊLOMUy6»óvŞâ™ HøƒÓE*J3}Â¥«-)2{O¤¤àã±K%|!œ-,O(È¨:ÂÛLÊBlñ.M?ÊQD*¶±%s€÷È“x!;Xç	/ V¬`	îÈ³!?h©—õKä‹ß zÆ€W½ó“€x±ÈÍöÎI¸7á|€gÑ€ÕåˆãÓ5¿0SíKô	|ş@ÒLšCs[(Í)ká/±-Ü>oô#JÉçK¦«` ÿÿ!‚ÌÅí¸Ãrşc Ã€  ac„ ¤bc„ ¤c {‹h©C¯Êö 9# â¼Ã€ İùÃÃ€!  9åİá!;şùÍÑş(>2ĞşáË](|‚í¡êş= öîËe Ğ:Ğş¥ DáıŞË}(ÁxÓyÓËu(ÁxÓyÓ}áÑËo Áí¸¼Í
+ÿ·Í”·È>!O«ÿÍêşÀ>! £ÿÓ¯Ó¾ #ø>Ó>ÓÉ‰ÀMPC_P@ÕÙÑÙË ÌûÿÒñÿË ÌûÿÒsÿË ÌûÿÒTÿ¯OË ÌûÿË ÌûÿË ÌûÿË ÌûÿÙ(
+íD&ÿoí ÀÃÿËÁ~#ËÈÙ Ë2æÿíD&ÿo¯2çÿí°Ãÿ>Ë ÌûÿË ÌûÿÚuÿWî± % KË ÌûÿËËË ÌûÿÚÿÕÙíKæÿbkíBÁí°ÃÿzÖW^#íSæÿ KË ÌûÿËËË ÌûÿÚ½ÿ:çÿş0· 	:æÿË ÕÙbkæÿ¯íBÁí°Ãÿ ~#ÙÃÿF#ËÉ

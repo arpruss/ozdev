@@ -1,0 +1,3 @@
+r wizbook.lib ozputsf.obj warn.obj putform.obj help.obj smallstr.obj \
+misc.obj ozauxme0.obj vars2.obj search.obj dosearch.obj toc.obj ozputs.obj \
+goto.obj

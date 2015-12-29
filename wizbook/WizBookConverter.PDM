@@ -1,0 +1,129 @@
+[Root]
+Most Recent Package=WizBookConverter Script
+
+
+[Package|WizBookConverter Script|Root]
+SubWizProgID=PDWizard.SetupPkgSubWiz
+BuildFolder=C:\Program Files\wiz\wizbook\Package
+
+[Package|WizBookConverter Script|Configure DAO ISAMs]
+Applicable=No
+
+[Package|WizBookConverter Script|Configure DAO ODBC]
+JetWorkspace=
+ODBCDirect=
+
+[Package|WizBookConverter Script|Files Found]
+
+[Package|WizBookConverter Script|Files Released]
+
+[Package|WizBookConverter Script|Missing Dependency Information]
+
+[Package|WizBookConverter Script|Out-of-Date Dependency Information]
+C:\WINDOWS\SYSTEM\Mscomctl.ocx=
+C:\WINDOWS\SYSTEM\COMDLG32.OCX=
+
+[Package|WizBookConverter Script|Files Added]
+C:\Program Files\wiz\wizbook\alpha_pl.wzf=
+C:\Program Files\wiz\wizbook\wizbook.wzd=
+C:\Program Files\wiz\wizbook\malij.wzf=
+C:\Program Files\wiz\wizbook\vprus.wzf=
+C:\Program Files\wiz\wizbook\wizbook.txt=
+C:\Program Files\wiz\wizbook\fontreadme.txt=
+
+[Package|WizBookConverter Script|Files Removed]
+
+[Package|WizBookConverter Script|Files In Project]
+C:\Program Files\wiz\wizbook\WizBookConverter.exe=Yes
+C:\WINDOWS\SYSTEM\Msvbvm60.dll=Yes
+C:\WINDOWS\SYSTEM\OLEAUT32.DLL=Yes
+C:\WINDOWS\SYSTEM\OLEPRO32.DLL=Yes
+C:\WINDOWS\SYSTEM\ASYCFILT.DLL=Yes
+C:\WINDOWS\SYSTEM\STDOLE2.TLB=Yes
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\Redist\COMCAT.DLL=Yes
+C:\Program Files\wiz\wizbook\wizcomp.dll=Yes
+C:\WINDOWS\SYSTEM\COMDLG32.OCX=Yes
+C:\WINDOWS\SYSTEM\Mscomctl.ocx=Yes
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\SETUP.EXE=Yes
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\SETUP1.EXE=Yes
+C:\WINDOWS\SYSTEM\VB6STKIT.DLL=Yes
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\ST6UNST.EXE=Yes
+C:\Program Files\wiz\wizbook\alpha_pl.wzf=Yes
+C:\Program Files\wiz\wizbook\wizbook.wzd=Yes
+C:\Program Files\wiz\wizbook\malij.wzf=Yes
+C:\Program Files\wiz\wizbook\vprus.wzf=Yes
+C:\Program Files\wiz\wizbook\wizbook.txt=Yes
+C:\Program Files\wiz\wizbook\fontreadme.txt=Yes
+
+[Package|WizBookConverter Script|Configure Registry Files]
+Applicable=No
+
+[Package|WizBookConverter Script|Configure Remote Servers]
+Applicable=No
+
+[Package|WizBookConverter Script|Install Locations]
+C:\Program Files\wiz\wizbook\WizBookConverter.exe=$(AppPath)
+C:\WINDOWS\SYSTEM\Msvbvm60.dll=$(WinSysPathSysFile)
+C:\WINDOWS\SYSTEM\OLEAUT32.DLL=$(WinSysPathSysFile)
+C:\WINDOWS\SYSTEM\OLEPRO32.DLL=$(WinSysPathSysFile)
+C:\WINDOWS\SYSTEM\ASYCFILT.DLL=$(WinSysPathSysFile)
+C:\WINDOWS\SYSTEM\STDOLE2.TLB=$(WinSysPathSysFile)
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\Redist\COMCAT.DLL=$(WinSysPathSysFile)
+C:\Program Files\wiz\wizbook\wizcomp.dll=$(AppPath)
+C:\WINDOWS\SYSTEM\COMDLG32.OCX=$(WinSysPath)
+C:\WINDOWS\SYSTEM\Mscomctl.ocx=$(WinSysPath)
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\SETUP.EXE=$(AppPath)
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\SETUP1.EXE=$(WinPath)
+C:\WINDOWS\SYSTEM\VB6STKIT.DLL=$(WinSysPathSysFile)
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\ST6UNST.EXE=$(WinPath)
+C:\Program Files\wiz\wizbook\alpha_pl.wzf=$(AppPath)
+C:\Program Files\wiz\wizbook\wizbook.wzd=$(AppPath)
+C:\Program Files\wiz\wizbook\malij.wzf=$(AppPath)
+C:\Program Files\wiz\wizbook\vprus.wzf=$(AppPath)
+C:\Program Files\wiz\wizbook\wizbook.txt=$(AppPath)
+C:\Program Files\wiz\wizbook\fontreadme.txt=$(AppPath)
+
+[Package|WizBookConverter Script|Configure Shared Files]
+Applicable=Yes
+C:\Program Files\wiz\wizbook\WizBookConverter.exe=No
+C:\Program Files\wiz\wizbook\wizcomp.dll=No
+C:\Program Files\wiz\wizbook\alpha_pl.wzf=No
+C:\Program Files\wiz\wizbook\wizbook.wzd=No
+C:\Program Files\wiz\wizbook\malij.wzf=No
+C:\Program Files\wiz\wizbook\vprus.wzf=No
+C:\Program Files\wiz\wizbook\wizbook.txt=No
+C:\Program Files\wiz\wizbook\fontreadme.txt=No
+
+[Package|WizBookConverter Script|Distribution]
+Type=single
+Size=
+Title=WizBookConverter
+
+[Package|WizBookConverter Script|IconGroups]
+Group0=WizBookConverter
+PrivateGroup0=False
+Parent0=$(Programs)
+
+[Package|WizBookConverter Script|WizBookConverter]
+Icon1=WizBookConverter.exe
+Title1=WizBookConverter
+StartIn1=$(AppPath)
+Key1=Icon3
+Icon2=wizbook.txt
+Title2=WizBook Documentation
+StartIn2=$(AppPath)
+Key2=Icon4
+Icon3=wizbook.wzd
+Title3=Send WizBook viewer to Wizard
+StartIn3=$(AppPath)
+Key3=Icon5
+
+[Package|WizBookConverter Script|Package]
+PackageFolder=C:\Program Files\wiz\wizbook\Package
+ProjectFolder=C:\Program Files\wiz\wizbook
+ServerSideCab=
+File1=C:\Program Files\wiz\wizbook\Package\setup.exe
+File2=C:\Program Files\wiz\wizbook\Package\Setup.Lst
+File3=C:\Program Files\wiz\wizbook\Package\WizBookConverter.CAB
+Handler1=PDWizard.FolderDplySubWiz
+Handler2=PDWizard.WebPostDplySubWiz

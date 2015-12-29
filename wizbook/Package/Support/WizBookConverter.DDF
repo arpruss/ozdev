@@ -1,0 +1,33 @@
+.OPTION EXPLICIT
+.Set Cabinet=off
+.Set Compress=off
+.Set MaxDiskSize=CDROM
+.Set ReservePerCabinetSize=6144
+.Set DiskDirectoryTemplate=".."
+.Set CompressionType=MSZIP
+.Set CompressionLevel=7
+.Set CompressionMemory=21
+.Set CabinetNameTemplate="WizBookConverter.CAB"
+"Setup.Lst"
+"setup.exe"
+.Set Cabinet=on
+.Set Compress=on
+"WizBookConverter.exe"
+"Msvbvm60.dll"
+"OLEAUT32.DLL"
+"OLEPRO32.DLL"
+"ASYCFILT.DLL"
+"STDOLE2.TLB"
+"COMCAT.DLL"
+"wizcomp.dll"
+"COMDLG32.OCX"
+"Mscomctl.ocx"
+"SETUP1.EXE"
+"VB6STKIT.DLL"
+"ST6UNST.EXE"
+"alpha_pl.wzf"
+"wizbook.wzd"
+"malij.wzf"
+"vprus.wzf"
+"wizbook.txt"
+"fontreadme.txt"

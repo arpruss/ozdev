@@ -1,0 +1,8 @@
+0: newline
+1: indexer
+2: , + space
+3: . + space
+4-29: a-z + space
+30: first dictionary introducer
+31: second dictionary introducer
+127: ? + space

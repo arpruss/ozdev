@@ -1,0 +1,965 @@
+/* compresses a text into wizbook format */
+
+
+/* #define DEBUG /* */
+
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdarg.h>
+#include <ctype.h>
+#include <setjmp.h>
+#include "table.c"
+#include "mytable.c"
+#include "cyrxlat.c"
+
+unsigned char font[8192];
+
+static jmp_buf ExitJump;
+
+#define KOI8R 2
+#define CP1251 1
+
+unsigned char fromkoi8r[128];
+unsigned char fromcp1251[128];
+
+int fsize=128;
+int specialfont=0;
+int cyrillic=0;
+int eachCR=0;
+int ext=0;
+
+#define EXT_MAX   126
+#define EXT_NUM   93
+unsigned char exttable[EXT_NUM];
+unsigned char chartable[94]
+   ="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    "|01234567890@#$%^&*()_+=`~[]{}\\;:'\",./<>?-";
+unsigned char chartable2[94];
+
+
+int numext;
+
+int isalpha0(char c)
+{
+    if(!ext || c!='|') return isalpha(c);
+        else return 1;
+}
+
+int cyrxlat(int c)
+{
+    if(c<128 || !cyrillic) return c;
+    if(cyrillic==KOI8R) return fromkoi8r[c-128];
+        else return fromcp1251[c-128];
+}
+
+int charsize0(unsigned char c)
+{
+    if(specialfont)
+        return myfont_table[(unsigned int)c];
+    else
+        return table_pc_normal[(unsigned int)c];
+}
+
+/* requires a 32-bit compiler */
+
+#define NUM_SINGLES 126
+#define SINGLE_START (256-NUM_SINGLES)
+
+#define WIDTH 239
+#define WORD_MAX 21
+#define MAX_WORDS 500000
+#define LINE_MAX 4096
+#define MAX_DICTLEN (NUM_SINGLES+254+254)
+#define MAX_DICT_AREA MAX_DICTLEN*WORD_MAX
+
+char dictionary[MAX_DICT_AREA];
+
+int numwords=0;
+int indentnum;
+int checkforindent;
+int newpara;
+
+struct word_s
+{
+    char word[WORD_MAX];
+    int length;
+    int count;
+} word_list[MAX_WORDS];
+
+char *endings[]=
+{
+    "ings",
+    "ing",
+    "tion",
+    "tions",
+    "ssion",
+    "ssions",
+    "nion",
+    "nions",
+    "ers",
+    "ors",
+    "ere",
+    "res",
+    "ands",
+    "our",
+    "ily",
+    "ise",
+    "ize",
+    "ised",
+    "ized",
+    "ful",
+    "bly",
+    "ble",
+    "bility",
+    "less",
+    "ness",
+    "ous"
+};
+
+#define NUM_ENDINGS (sizeof endings / sizeof *endings)
+unsigned end_gains[NUM_ENDINGS];
+
+void err(char *s, ...)
+{
+#ifndef DLL
+    va_list argptr;
+    va_start(argptr,s);
+    vfprintf(stderr,s,argptr);
+    va_end(argptr);
+#endif
+#ifdef DLL
+    longjmp(ExitJump,2);
+#else
+    exit(1);
+#endif
+}
+
+void msg(char *s, ...)
+{
+#ifndef DLL
+    va_list argptr;
+    va_start(argptr,s);
+    vfprintf(stderr,s,argptr);
+    va_end(argptr);
+#endif
+}
+
+void dumpword(unsigned x,FILE *f)
+{
+    fputc(x%256,f);
+    fputc(x/256,f);
+}
+
+void dumpbyte(int x,FILE *f)
+{
+    fputc(x%256,f);
+}
+
+int checkdict(char *s,int length)
+{
+    int i;
+    for(i=0;i<numwords;i++)
+    {
+        if(word_list[i].length==length && !strncmp(word_list[i].word,s,length))
+        {
+            return i;
+        }
+    }
+    return -1;
+}
+
+int checkdictsubstring(char *s,int *length)
+{
+    int i,j;
+    int max=0;
+    int maxi;
+    for(i=0;i<numwords;i++)
+    {
+        if(!strncmp(word_list[i].word,s,3))
+        {
+            for(j=3;s[j];j++)
+            {
+                if(word_list[i].word[j]!=s[j]) break;
+            }
+            if(max<j)
+            {
+                max=j;
+                maxi=i;
+            }
+        }
+    }
+    if(max==4 && maxi<NUM_SINGLES || max>4)
+    {
+        *length=max;
+        return maxi;
+    }
+    return -1;
+}
+
+int endmatch(char *s,char *t)
+{
+    int ls,lt;
+    ls=strlen(s);
+    lt=strlen(t);
+    if(ls>lt || strcmp( s, t+lt-ls ) ) return 0;
+    return ls;
+}
+
+int checkdictending(char *s,int *length, char *upto)
+{
+    int i,j;
+    int c;
+    int max;
+    int maxi;
+    maxi=-1;
+    max=0;
+    c=*upto;
+    *upto=0;
+    for(i=0;i<numwords;i++)
+    {
+        if( (j=endmatch(word_list[i].word,s)-(i>=NUM_SINGLES)-1) > max)
+        {
+            maxi=i;
+            max=j;
+        }
+    }
+    if(maxi>=0)
+    {
+        *length=endmatch(word_list[maxi].word,s);
+    }
+    else
+        *length=0;
+    *upto=c;
+    return maxi;
+}
+
+
+void addtoken(char *s,int length)
+{
+    register int i;
+    static int toomany=0;
+    if(length<2 || length>=WORD_MAX) return;
+    i=checkdict(s,length);
+    if(i>=0)
+    {
+        word_list[i].count++;
+        return;
+    }
+    if(numwords>=MAX_WORDS)
+    {
+        if(!toomany)
+        {
+            msg("\nWarning: Too many words\n");
+            toomany=1;
+        }
+        return;
+    }
+    strncpy(word_list[numwords].word,s,length);
+    word_list[numwords].word[length]=0;
+    word_list[numwords].length=length;
+    word_list[numwords].count=1;
+    numwords++;
+}
+
+int sorttop(void)
+{
+    register int i,j,j0,j00,max,maxpos;
+    int n,delta,k;
+    int savings=0;
+    int wordsindict;
+    int count;
+    struct word_s temp;
+    for(i=0;i<MAX_DICTLEN;i++)
+    {
+        max=0;
+        if(i<NUM_SINGLES) delta=1; else delta=2;
+        for(j=i;j<numwords;j++)
+        {
+            n=(word_list[j].length-delta)*word_list[j].count-word_list[j].length;
+            if(n>max)
+            {
+                max=n;
+                maxpos=j;
+            }
+        }
+        if(max<=0)
+            break;
+        memcpy(&temp,word_list+maxpos,sizeof(struct word_s));
+        memcpy(word_list+maxpos,word_list+i,sizeof(struct word_s));
+        memcpy(word_list+i,&temp,sizeof(struct word_s));
+        savings+=max;
+    }
+    wordsindict=i;
+
+    j0=MAX_DICTLEN-NUM_ENDINGS;
+    if(j0>wordsindict) j0=wordsindict;
+    j00=j0+NUM_ENDINGS;
+    for(i=0;i<NUM_ENDINGS;i++)
+    {
+        for(k=0;k<j0;k++)
+        {
+            if(!strcmp(endings[i],word_list[k].word)) break;
+        }
+        if(k<j0) continue;
+        if(j0<NUM_SINGLES) delta=1; else delta=2;
+        n=(word_list[j0].length-delta)*word_list[j0].count-word_list[j0].length;
+        count=0;
+        for(j=j00;j<numwords;j++)
+        {
+            k=endmatch(endings[i],word_list[j].word);
+            if(k) count+=(k-delta)*word_list[j].count;
+        }
+        count-=strlen(endings[i]);
+        if(count>n)
+        {
+            savings+=count-n;
+            strcpy(word_list[j0].word,endings[i]);
+            word_list[j0].length=strlen(endings[i]);
+            j0++;
+        }
+    }
+    wordsindict=j0;
+
+    numwords=wordsindict;
+    return savings;
+}
+
+int fold(char *s)
+{
+    int i;
+    static char line1[LINE_MAX*2];
+    register unsigned char *p=s;
+    register unsigned char *out=line1;
+    int did=0;
+    while(*p)
+    {
+        while(*p==' ' && p[1]==' ') p++;
+        *p=cyrxlat(*p);
+        if(*p &0x80)
+        {
+            if(!ext)
+            {
+                did=1;
+                *p='*';
+            }
+            else
+            {
+                for(i=0;i<numext;i++)
+                    if(*p==exttable[i]) break;
+                if(i==numext)
+                {
+                    if(numext>=EXT_NUM)
+                    {
+                        did=1;
+                        *p='*';
+                    }
+                    else
+                    {
+                        exttable[numext]=*p++;
+                        *out++='|';
+                        *out++=chartable[numext];
+                        numext++;
+                        continue;
+                    }
+                }
+                *out++='|';
+                *out++=chartable[numext];
+                p++;
+                continue;
+            }
+        }
+        else if(ext && *p=='|')
+        {
+            *out++='|';
+            *out++='!';
+            continue;
+        }
+        else if(*p == '\t') *p=' ';
+        else if(*p < 32 && *p!='\n' || *p==127)
+        {
+            did=1;
+            *p='*';
+        }
+        *out++=*p++;
+    }
+    *out=0;
+    strcpy(s,line1);
+    return did;
+}
+
+int compressline(char *dest,char *src,int indexlen,int indexinfo)
+{
+    register char *out,*in,*p;
+    int i,dn,dn1;
+    int l,l1;
+    int savings0,savings1;
+    in=src;
+    out=dest;
+    if(indexlen)
+    {
+        *out++=1;
+        while(indexlen--)
+        {
+            *out++=2+(indexinfo%254);
+            indexinfo/=254;
+        }
+    }
+    else
+    {
+        *out++=0;
+    }
+    while(*in)
+    {
+        while(*in && !isalpha0(*in)) *out++=*in++;
+        if(!*in) break;
+        p=in+1;
+        while(*p && isalpha0(*p)) p++;
+        l=p-in;
+        dn=checkdict(in,l);
+        if(dn<0 && isupper(*in))
+        {
+            *in=tolower(*in);
+            dn=checkdict(in,l);
+            if(dn>=0 && (dn<NUM_SINGLES && l>2 || l>3)) *out++=128;
+              else dn=-1;
+            *in=toupper(*in);
+        }
+        if(dn<0)
+        {
+            dn=checkdictsubstring(in,&l);
+            if(dn>=0)
+            {
+                savings0=l-2-(dn>=NUM_SINGLES);
+            }
+            else savings0=0;
+            dn1=checkdictending(in,&l1,p);
+            if(dn1>=0)
+            {
+                savings1=l1-1-(dn1>=NUM_SINGLES);
+            }
+            else savings1=0;
+            if(dn>=0 && savings0>savings1)
+            {
+                *out++=129;
+                *out++=l;
+                if(dn<NUM_SINGLES) *out++=SINGLE_START+dn;
+                else if(dn<NUM_SINGLES+254)
+                {
+                    *out++=30;
+                    *out++=dn-NUM_SINGLES+2;
+                }
+                else
+                {
+                    *out++=31;
+                    *out++=dn-NUM_SINGLES-254+2;
+                }
+                in+=l;
+                dn=-1;
+            }
+            else if(dn1>=0)
+            {
+                while(in<p-l1) *out++=*in++;
+                dn=dn1;
+            }
+            else
+                dn=-1;
+        }
+        if(dn<0)
+        {
+            if(in<p)
+            {
+                while(in<p-1)
+                {
+                  *out++=*in++;
+                }
+                if(islower(*in) && in[1]==' ')
+                {
+                  *out++=*in-'a'+4;
+                  in+=2;
+                }
+                else
+                {
+                  *out++=*in++;
+                  if(!*in) return out-dest;
+    /*
+                  *out++=*in++;
+                  else return out-dest;
+    */
+                }
+            }
+        }
+        else
+        {
+            in=p;
+            if(dn<NUM_SINGLES) *out++=SINGLE_START+dn;
+            else if(dn<NUM_SINGLES+254)
+            {
+                *out++=30;
+                *out++=dn-NUM_SINGLES+2;
+            }
+            else
+            {
+                *out++=31;
+                *out++=dn-NUM_SINGLES-254+2;
+            }
+            if(*in==' ')
+            {
+                if(isalpha0(in[1]))
+                  in++;
+            }
+        }
+        if(in[1]==' ' && (*in=='.' || *in==',' || *in=='?'))
+        {
+            switch(*in)
+            {
+                case '.':
+                    *out++=3;
+                    break;
+                case ',':
+                    *out++=2;
+                    break;
+                case '?':
+                    *out++=127;
+                    break;
+            }
+            in++;
+            in++;
+        }
+    }
+    return out-dest;
+}
+
+int makedictarea(void)
+{
+    char *p=dictionary;
+    int n,i;
+    for(i=0;i<numwords;i++)
+    {
+        n=word_list[i].length;
+        strncpy(p,word_list[i].word,n);
+        p+=n;
+        p[-1] |= 0x80;
+    }
+    return p-dictionary;
+}
+
+char theline[240];
+int linepos;
+int pos;
+
+void copy(char *dest,char *src)
+{
+    char buf[256];
+    strcpy(buf,src);
+    strcpy(dest,buf);
+}
+
+void addchar(int c)
+{
+    theline[linepos++]=c;
+    theline[linepos]=0;
+}
+
+FILE *in,*out;
+
+#ifdef DEBUG
+void dump(char *in,char *s, int n)
+{
+    printf(">%s< ",in);
+    while(n)
+    {
+        printf("%02x ",(unsigned char)*s++);
+        n--;
+    }
+    putchar('\n');
+}
+#endif
+
+void dumpline(int x)
+{
+    char buf[240];
+    char dest[250];
+    register char *start;
+    int len;
+    strncpy(buf,theline,x);
+    buf[x]=0;
+    while(x>0 && buf[x-1]==' ') buf[--x]=0;
+    start=buf;
+    while(*start==' ') start++;
+    len=compressline(dest,start,0,0);
+    if(newpara)
+    {
+        dest[0]=1;
+        newpara=0;
+    }
+#ifdef DEBUG
+    dump(buf,dest,len);
+#endif
+    fwrite(dest,len,1,out);
+}
+
+int oldc=0;
+int fakechar=0;
+int reallyis=0;
+
+int charsize(unsigned char c)
+{
+    if(fakechar)
+    {
+        if(!reallyis) return 0;
+        else if(reallyis=='!')
+            return charsize0('|');
+        else return charsize0(reallyis);
+    }
+    else
+        return charsize0(c);
+}
+
+unsigned char findchar(int c)
+{
+    int i;
+    if(c=='!') return '!';
+    for(i=0;i<numext;i++) if(c==exttable[i]) return chartable[i];
+    return '!';
+}
+
+int fgetc0(FILE *f)
+{
+    int c;
+    if(oldc)
+    {
+        c=oldc;
+        oldc=0;
+        fakechar=1;
+        reallyis=c;
+        return findchar(c);
+    }
+    c=fgetc(f);
+    if(c==-1) return -1;
+    c=cyrxlat(c);
+    if(ext && ((c&0x80) || c=='|'))
+    {
+        if(c=='|') oldc='!'; else oldc=c;
+        fakechar=1;
+        reallyis=0;
+        return '|';
+    }
+    fakechar=0;
+    if(c!=' ' && c!='\t') return c;
+    while((c=fgetc(f))==' ' || c=='\t');
+    switch(c)
+    {
+        case -1:
+        case '\n':
+            return c;
+        default:
+            ungetc(c,f);
+            return ' ';
+    }
+}
+
+void compress(void)
+{
+    int i;
+    int c;
+    int wordstart;
+    int cs;
+    int newpara1;
+    wordstart=linepos=pos=0;
+    newpara1=newpara=1;
+    while(-1!=(c=fgetc0(in)))
+    {
+        if(newpara1)
+        {
+            for(i=0;i<indentnum;i++)
+            {
+                addchar(' ');
+                pos+=charsize(' ');
+                wordstart=linepos;
+            }
+            newpara1=0;
+        }
+        TRY_AGAIN:
+        switch(c)
+        {
+            case '\n':
+                if(checkforindent || eachCR)
+                {
+                    if(eachCR || (c=fgetc0(in))==' ')
+                    {
+                        dumpline(linepos);
+                        newpara1=newpara=1;
+                        wordstart=linepos=pos=0;
+                    }
+                    else
+                    {
+                        if(oldc)
+                        {
+                            ungetc(oldc,in);
+                            oldc=0;
+                        }
+                        else ungetc(c,in);
+                        c=' ';
+                        goto TRY_AGAIN;
+                    }
+                }
+                else
+                if((c=fgetc0(in))=='\n' || linepos==0)
+                {
+                    dumpline(linepos);
+                    newpara1=newpara=1;
+                    wordstart=linepos=pos=0;
+                    if(c!='\n') goto TRY_AGAIN;
+                }
+                  else
+                  {
+                        while(c==' ') c=fgetc(in);
+                        ungetc(c,in);
+                        c=' ';
+                        goto TRY_AGAIN;
+                  }
+                break;
+            case ' ':
+                if(!linepos) break;
+                pos+=charsize(' ');
+                if(pos>=WIDTH)
+                {
+                    dumpline(linepos);
+                    wordstart=linepos=pos=0;
+                }
+                else
+                {
+                    addchar(' ');
+                    wordstart=linepos;
+                }
+                break;
+            default:
+                if(c<32 || c>126) c='*';
+                cs=charsize((unsigned char)c);
+                if((pos+=cs)>WIDTH)
+                {
+                    if(wordstart==0)
+                    {
+                        dumpline(linepos);
+                        theline[linepos=0]=0;
+                        addchar(c);
+                        pos=cs;
+                    }
+                    else
+                    {
+                        dumpline(wordstart);
+                        copy(theline,theline+wordstart);
+                        linepos-=wordstart;
+                        wordstart=0;
+                        for(pos=i=0;theline[i];i++) pos+=charsize(theline[i]);
+                        goto TRY_AGAIN;
+                    }
+                }
+                else
+                {
+                    addchar(c);
+                    if(c=='-') wordstart=linepos;
+                }
+                break;
+        }
+    }
+    if(linepos) dumpline(linepos);
+}
+
+void usage(void)
+{
+    err("WizComp [-f] [-Fname | -cname | -kname] [-i] [-#] InName OutName");
+}
+
+static FILE *myfopen(char *s,char *m)
+{
+    FILE *f;
+    f=fopen(s,m);
+    if(f==NULL) err("Error opening %s.\n",s);
+    return f;
+}
+
+#ifdef DLL
+static
+#endif
+int main(int argc, char **argv)
+{
+    int folded=0;
+    int olen;
+    int dlen;
+    int hlen;
+    int i;
+    int c;
+    int flen,fontlen;
+    long length;
+    char line[LINE_MAX*2];
+    register char *p,*p2;
+    if(argc<3) usage();
+    checkforindent=indentnum=0;
+    for(i=1;i<argc-2;i++)
+    {
+        if(argv[i][0]!='-') usage();
+        if(isdigit(argv[i][1]))
+        {
+            indentnum=atoi(argv[i]+1);
+        }
+        else if(argv[i][1]=='r')
+        {
+            eachCR=1;
+        }
+        else if(argv[i][1]=='i')
+        {
+            checkforindent=1;
+        }
+        else if(argv[i][1]=='f')
+        {
+            specialfont=1;
+        }
+        else if(argv[i][1]=='x')
+        {
+            ext=1;
+        }
+        else if(argv[i][1]=='F' || argv[i][1]=='c' || argv[i][1]=='k')
+        {
+            int j;
+            specialfont=2;
+            in=myfopen(2+argv[i],"rb");
+            flen=fread(font,1,8192,in);
+            if(font[2]!=0x6f || font[3]!=0x46) err("Error in font signature.");
+            fontlen=font[4]+256*(unsigned int)font[5];
+            fsize=font[7]+1;
+            if(flen<fontlen) err("Error in font length.");
+            for(j=0;j<fsize;j++)
+                myfont_table[j]=font[12+3*j];
+            fclose(in);
+            if(argv[i][1]=='c') cyrillic=CP1251;
+                else if(argv[i][1]=='k') cyrillic=KOI8R;
+        }
+        else usage();
+    }
+    in=myfopen(argv[i],"r");
+    out=myfopen(argv[i+1],"wb");
+    msg("Scanning %s for dictionary...",argv[i]);
+    for(i=0;i<128;i++)
+    {
+        fromkoi8r[i]=fromcp1251[i]='*';
+    }
+    for(i=0;i<NUM_KOI8R;i++)
+        fromkoi8r[ from_KOI8R[i][0]-128 ]=from_KOI8R[i][1];
+    for(i=0;i<128;i++)
+    {
+        c=cp1251_to_koi8r[i];
+        if(c=='?') continue;
+        fromcp1251[i]=fromkoi8r[ c-128 ];
+    }
+    while(NULL!=fgets(line,LINE_MAX,in))
+    {
+        if(!folded && fold(line))
+        {
+            msg("\n(Losing some extended characters)\n");
+            folded=1;
+        }
+        p=line;
+        while(*p)
+        {
+            while(*p && !isalpha0(*p))
+            {
+                p++;
+            }
+            if(!*p) goto GET_NEXT;
+            p2=p+1;
+            while(*p2 && isalpha0(*p2)) p2++;
+            addtoken(p,p2-p);
+            p=p2;
+        }
+        GET_NEXT:;
+    }
+    msg("Sorting...\n");
+    msg("Expected savings from dictionary about %d\n",sorttop());
+    rewind(in);
+    msg("Writing header...\n");
+    fwrite("WizBookA",8,1,out);
+    dlen=makedictarea();
+    hlen=dlen+2+2+4+2;
+    if(specialfont==2) hlen+=fontlen;
+    if(ext) hlen+=1+EXT_NUM;
+    dumpword(hlen,out);
+     /*
+        total header length: dictionary area, plus dictionary length,
+        plus number of words in dictionary, plus indexing data length,
+        plus index data length (zero now)
+      */
+    dumpword(0,out); /* file length */
+    dumpword(0,out);
+    dumpword(numwords,out);
+
+
+    dumpword(dlen,out);
+    if(dlen) fwrite(dictionary,dlen,1,out);
+    dumpbyte(0,out); /* indexlen */
+    if(specialfont==1) indentnum|=0x80;
+     else
+        if(specialfont==2) indentnum|=0x40;
+    if(ext && numext) indentnum|=0x20;
+    dumpbyte(indentnum,out);
+    if(specialfont==2) fwrite(font,1,fontlen,out);
+    if(ext && numext)
+    {
+        for(i=0;i<EXT_NUM;i++) chartable2[i]='*';
+        for(i=0;i<numext;i++)
+            chartable2[chartable[i]-34]=exttable[i];
+        dumpbyte(EXT_NUM,out);
+        fwrite(chartable2,1,EXT_NUM,out);
+#define DEBUG
+#ifdef DEBUG
+        for(i=0;i<EXT_NUM;i++)
+            printf("%d (%c) -- %d (%c)\n",i,i+34,chartable2[i],chartable2[i]);
+#endif
+    }
+    indentnum&=0x1f;
+    msg("Compressing...\n");
+    compress();
+    length=ftell(out);
+    fseek(out,10,SEEK_SET);
+    dumpword(length%65536,out);
+    dumpword(length/65536,out);
+    fseek(out,length,SEEK_SET);
+    fclose(out);
+    msg("Output file is %ld bytes long\n",length);
+    fclose(in);
+    return 0;
+}
+
+#ifdef DLL
+int __stdcall wizardcompress(char *option1, char *option2, char *option3, char *option4, char *input, char *output)
+{
+    char *argv[7];
+    int i;
+    argv[0]="wizcomp";
+    i=1;
+    if(option1[0])
+    {
+        argv[i++]=option1;
+    }
+    if(option2[0])
+    {
+        argv[i++]=option2;
+    }
+    if(option3[0])
+    {
+        argv[i++]=option3;
+    }
+    if(option4[0])
+    {
+        argv[i++]=option4;
+    }
+    argv[i++]=input;
+    argv[i++]=output;
+    if(setjmp(ExitJump))
+        return 1;
+    else
+        return main(i,argv);
+}
+#endif
+

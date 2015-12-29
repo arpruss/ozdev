@@ -1,0 +1,139 @@
+WizBook 1.69
+.             0
+............ 1
+xxxxx.xxxxx. 2
+x....x....x. 3
+x.xx.x.xx.x. 4
+x....x....x. 5
+x.xx.x.xx.x. 6
+x....x....x. 7
+x.xx.x.xx.x. 8
+x....x....x. 9
+x.xx.x.xx.x. 10
+x....x....x. 11
+xxxxx.xxxxx. 12
+(The instructions are below the license here: read both.)
+
+BY DOWNLOADING YOU SIGNIFY YOU HAVE READ AND AGREED TO ALL OF THE
+CONDITIONS LISTED HERE.  This is a C/assembly program.  It is possible
+for a C/assembly program to damage data and even to make your organizer
+inoperable.  USE AT YOUR OWN RISK.  NO GUARANTEES ARE MADE. By
+downloading this program to your organizer you agree not to hold the
+author(s) responsible for any damage to data, hardware or anything else.
+
+IF ANY OF THESE CONDITIONS ARE NOT PERMITTED BY APPLICABLE LAW, YOU ARE
+NOT LEGALLY PERMITTED TO DOWNLOAD OR USE THE PROGRAM. This program may
+be freely distributed but only provided that this description is
+unmodified.  This program is copyright (c) 2001-2002 Alexander R Pruss.
+
+
+
+It is strongly recommended you back up your Wizard before running
+C/assembler programs.
+
+
+
+NOTE: If a C/assembly program hangs due to a bug, you may need to flip
+the battery switch on the bottom of the Wizard back and forth.  If the
+Wizard does not respond to this, taking the batteries out for half a
+minute should help.  If this doesn't help, you've read the WARNING
+above.  None of this should be necessary, but no guarantees are made.
+
+This program may not have been sufficiently tested.  Report bugs and
+suggestions to: ap85@georgetown.edu.
+
+NOTE: Any alarms going off while program is running will be missed.
+
+
+This is a simple e-book reader.  The converter for it needs as input is
+standard ASCII text with a blank line between paragraphs, and compresses
+the text down by about 49% by the time the data gets into the computer.
+To use it, double click on the WizBookConverter program and then click
+on the red book to open a book text.  When prompted for the name of the
+Wizard file, enter the name without any extension.  Any file by that
+name (with no extension) in the directory in which the book text is
+found will be overwritten, as will also be that file with extension .wzd.
+The filename will be shown on the Wizard, and cannot exceed 20 characters.
+Longer names will cause errors in transmission.
+
+When it's done, WizBookConverter will launch the Wizard downloader if
+the Wizard downloader is installed.  If the Wizard downloader is not
+installed, you will have to upload the .wzd file manually.  You must then
+run WizBook immediately before downloading any further e-books.  Downloading
+more than one e-book at a time can cause a bunch of junk memo entries and an
+incomplete file.
+
+
+The converter first compresses your file, and then converts to a
+sequence of memos dated in the year 2020.  If there is trouble somewhere
+in the process, you may need to delete all these memos.
+
+
+In WizBook, use PageUp/PageDown and the up and down arrow keys to view the
+file.  You can also use the space bar, the enter keys, the return key and the
+- key for navigation.  Press 2nd-pageup to go to the top and
+2nd-pagedown to go to the bottom. Press M to set a bookmark.  Press B to
+go to the last set bookmark (then B to go to the previous bookmark--and
+so on for a couple of bookmarks).  When you exit, your current viewing
+position and bookmark will be saved.  Press C to clear all bookmarks.
+Press S to change line spacing (this will be saved in the bookmark
+file).  Press the MENU key or H for a bit of help.  Press I for some
+information on where you are in the ebook.  Press shift-PageUp (or
+shift-up) / shift-PageDown (or shift-down) to move by 10% of the file.
+Press shift-minus or 2nd-minus to control the key click.  Press R to
+toggle the progress bar.
+
+
+WizBook is KeyTune compatible.  You can get KeyTune from home.att.net/~apruss
+and adjust keyboard repeat rates with it.
+
+
+Instead of using WizBookConverter, the advanced user can use prepare.bat.  The
+usage is: prepare inputname.ext outputname (with no extension on outputname).
+
+
+
+You may need to download the Visual Basic runtime files from
+http://download.microsoft.com/download/vb60pro/Redist/sp4/win98/EN-US/VBRun60sp4.exe
+if WizBookConverter reports a missing DLL file.
+
+
+WizBookConverter by default assumes you are inputting ASCII files where
+paragraphs are separated by completely blank lines.  The other possible
+format is that paragraphs start with a space or tab at the beginning of
+the line, and you can select this format from the File | Properties
+dialog. In that dialog, you can also choose to indent output paragraphs.
+This will increase the size of the file in proportion to how much you
+output paragraphs.  Some other options are settable there.  For instance,
+you can choose to use the pretty "Alpha-BK" font.  You can also load in
+an alternate font in .wzf format--you can download more fonts on
+home.att.net/~apruss The "Alpha-BK" font is by Rainer Zenz
+(www.rainerzenz.de/palm).  You can also load in Cyrillic texts in Windows
+CP1251 or KOI8-R encoding.  Any Roman characters in those texts will be
+transliterated to Cyrillic.  This requires a Wizard Cyrillic font.  This
+package includes two of them--vprus.wzf and malij.wzf--and you can make more
+with the Font Package at home.att.net/~apruss.
+
+
+
+NOTE 1: Ideally, your e-books should be stored in the "wb/" directory on the
+Organizer if you use tomemo manually.  The bookmarks are normally stored
+in the "bm/" directory, with the same filename as the e-book's, but no
+bookmarks will stored for e-books not in the "wb/" directory.
+
+
+NOTE 2:
+Data is stored in special schedule entries dated January 1,
+1901.  Do not modify these schedule entries yourself, but if you want to
+delete a file, feel free to delete all the schedule entries with that
+filename in the description--generally, because of certain limits, a
+given program is stored in more than one schedule entry.  You may
+occasionally experience problems synchronizing these schedule entries
+with DayTimer.  The program data inside these entries is NOT
+synchronized with DayTimer;  only the labels are.  If you delete WizBook,
+you will need to delete these schedule entries manually.  (Or, you can
+use the DELETE ALL option in WizBook before getting rid of WizBook.)
+
+
+TECHNICAL INFORMATION: This program is written in Hi-Tech C, with some
+assembly bits for i/o.

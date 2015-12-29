@@ -1,0 +1,29 @@
+void do_goto(void)
+{
+    register char *s;
+#define b ((byte*)s)
+    static char *chapter_num,*verse_num;
+    static byte bookname_len;
+    static byte best_match_len;
+    static byte f;
+    static char *t;
+    byte chapter,verse;
+    byte i;
+    byte book;
+    byte l;
+    byte ll;
+    byte ofontheight;
+    byte omyfont;
+    byte odorev;
+
+    if(!index_area_length) return;
+    ofontheight=fontheight;
+    omyfont=myfont;
+    odorev=dorev;
+    fontheight=8;
+    myfont=FONT_OZ_NORMAL;
+    getsearchbuf();
+    myfont=omyfont;
+    fontheight=ofontheight;
+    dorev=odorev;
+

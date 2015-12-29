@@ -1,0 +1,234 @@
+WizBook 1.9P
+.             0
+............ 1
+xxxxx.xxxxx. 2
+x....x....x. 3
+x.xx.x.xx.x. 4
+x....x....x. 5
+x.xx.x.xx.x. 6
+x....x....x. 7
+x.xx.x.xx.x. 8
+x....x....x. 9
+x.xx.x.xx.x. 10
+x....x....x. 11
+xxxxx.xxxxx. 12
+(The instructions are below the license here: read both.)
+
+BY DOWNLOADING YOU SIGNIFY YOU HAVE READ AND AGREED TO ALL OF THE
+CONDITIONS LISTED HERE.  This is a C/assembly program.  It is possible
+for a C/assembly program to damage data and even to make your organizer
+inoperable.  USE AT YOUR OWN RISK.  NO GUARANTEES ARE MADE. By
+downloading this program to your organizer you agree not to hold the
+author(s) responsible for any damage to data, hardware or anything else.
+
+IF ANY OF THESE CONDITIONS ARE NOT PERMITTED BY APPLICABLE LAW, YOU ARE
+NOT LEGALLY PERMITTED TO DOWNLOAD OR USE THE PROGRAM. This program may
+be freely distributed but only provided that this description is
+unmodified.  This program is copyright (c) 2001-2002 Alexander R Pruss.
+
+
+
+It is strongly recommended you back up your Wizard before running
+C/assembler programs.
+
+
+
+NOTE: If a C/assembly program hangs due to a bug, you may need to flip
+the battery switch on the bottom of the Wizard back and forth.  If the
+Wizard does not respond to this, taking the batteries out for half a
+minute should help.  If this doesn't help, you've read the WARNING
+above.  None of this should be necessary, but no guarantees are made.
+
+This program may not have been sufficiently tested.  Report bugs and
+suggestions to: ap85@georgetown.edu.
+
+NOTE: Any alarms going off while program is running will be missed.
+
+
+This is a simple e-book reader.  The converter for it needs as input is
+standard ASCII text with a blank line between paragraphs, and compresses
+the text down by about 49% by the time the data gets into the computer.
+To use it, double click on the WizBookConverter program and then click
+on the red book to open a book text.  When prompted for the name of the
+Wizard file, enter the name without any extension.  Any file by that
+name (with no extension) in the directory in which the book text is
+found will be overwritten, as will also be that file with extension .wzd.
+The filename will be shown on the Wizard, and cannot exceed 20 characters.
+Longer names will cause errors in transmission.
+
+When it's done, WizBookConverter will launch the Wizard downloader if
+the Wizard downloader is installed.  If the Wizard downloader is not
+installed, you will have to upload the .wzd file manually.  You must then
+run WizBook immediately before downloading any further e-books.  Downloading
+more than one e-book at a time can cause a bunch of junk memo entries and an
+incomplete file.
+
+
+The converter first compresses your file, and then converts to a
+sequence of memos dated in the year 2020.  If there is trouble somewhere
+in the process, you may need to delete all these memos.
+
+
+In WizBook, use PageUp/PageDown and the up and down arrow keys to view the
+file.  You can also use the space bar, the enter keys, the return key, the
+A and Z keys, and the - key for navigation.  Press 2nd-pageup to go to
+the top and 2nd-pagedown to go to the bottom. Press M to set a bookmark (you
+can have up to 50 of them). Press B to go to the last set bookmark (then
+B to go to the previous bookmark--and so on for a couple of bookmarks).
+Press V to view bookmarks (ESC to exit viewing, ENTER to select, DEL to
+delete, C to clear all, PageUp/PageDown/Up/Down to browse).  When you
+exit WizBook, your current viewing position and bookmark will be saved.
+Press C to clear all bookmarks. Press L to change line spacing (this
+will be saved in the bookmark file).  Press the MENU key or H for a bit
+of help.  Press I for some information on where you are in the ebook.
+Press shift-PageUp (or shift-up) / shift-PageDown (or shift-down) to
+move by 10% of the file. Press shift-minus or 2nd-minus to control the
+key click.  Press R to toggle the progress bar.
+
+Press N/P to move forward/backwards a chapter at a time (assuming a
+table of contents has been created).
+
+There is a word search feature.  Press S or D and enter a sequence of up to
+six words and/or numbers (using only the characters a-z and 0-9), separated
+by spaces to search from the beginning (if you press S) or from the current
+position (if you press D). All extended characters are treated as "xx"
+when searching. This searches for the first paragraph that contains all
+of the words. To search for any word beginning with a given sequence of
+characters, put a period after the sequence.  Thus, the search string
+"bit. have" searches for all paragraphs containing the word "have" and
+any word like "bit", "bits", "bitten", "bite", "bitter", etc.  All
+searches are case insensitive, so "have" also matches "hAve" and "Have".
+Press G to search again with the same search string.  The S key searches
+from the beginning.  If pressing S or D gives you a highlighted search
+string, press enter or return to search with this string, right arrow to
+edit this string, or any other key to enter a new string, replacing the
+old.  Press ESC to clear the currently entered search string, and ESC again
+to abort searching.  If you prefix all of the search string with -, only
+the first line of each paragraph is search.  This is handy if your file, say,
+contains some header line at the front of each paragraph.
+
+If you press shift-S or shift-D, your search results are not shown on
+screen but are saved to the bookmarks list, where they can be viewed
+with a V. Only one search result per paragraph is stored. It is
+recommended that you clear the bookmarks list before doing this so
+you do not run out of space.
+  
+You can press ESC to stop searching.  This does not react instantly.  Do
+NOT press ESC more than once, or you'll get out of WizBook.
+
+WizBookConverter can generate a table of contents.  If it has too many
+entries, file compression will suffer.  This is done by going to the
+OPTIONS page and entering the initial characters in those paragraphs
+that are supposed to form the headers of table of contents entries.
+For instance, one can enter "CHAPTER" (this is case sensitive) to put
+in the table of contents all paragraphs starting with the word CHAPTER.
+Or one can use a special character like ~ for this purpose.  Currently,
+this is incompatible with the Cyrillic option.  To view the table of
+contents of a file, press T in WizBook.  Press ESC to exit the table
+of contents, ENTER to go to an entry, PageUp/PageDown/Up/Down to browse.
+
+WizBookConverter has a special "dictionary" option.  What this does is
+it pairs of neighboring paragraphs into one, but keeping a line break
+between them.  This is useful so that you can produce a dictionary.  For
+instance:
+
+aardvark
+
+Definition of an aardvark
+goes right here.
+
+abacus
+
+And here comes the defintion
+of an abacus.
+
+WizBookConverter then produces an output where "aardvark" and its definition
+are one paragraph, but aardvark is still on a line by itself.  Likewise,
+"abacus" and its definition are one paragraph, but abacus is still on a
+line by itself.  Why would you want to do this?  Well, you can then use
+the - prefix to search just the first line of each paragraph, which is handy
+for dictionary lookups.  You can search for "-aardvark" and it will search
+only the paragraph headings, not the rest of the paragraphs.  This is faster
+than searching the whole of the paragraph, and won't find paragraphs where
+"aardvark" is part of the definiens rather than of the definiendum.
+
+Press F to toggle the full-screen scrolling option (whether the bottom line
+becomes the first line of the next screen or not when scrolling forward,
+and whether the top line becomes the bottom line of the next screen when
+scrolling backwards).
+
+
+WizBook is KeyTune compatible.  You can get KeyTune from home.att.net/~apruss
+and adjust keyboard repeat rates and power saving options with it.
+
+
+Instead of using WizBookConverter, the advanced user can use prepare.bat.  The
+usage is: prepare inputname.ext outputname (with no extension on outputname).
+
+
+
+You may need to download the Visual Basic runtime files from
+http://download.microsoft.com/download/vb60pro/Redist/sp4/win98/EN-US/VBRun60sp4.exe
+if WizBookConverter reports a missing DLL file.
+
+
+WizBookConverter by default assumes you are inputting ASCII files where
+paragraphs are separated by completely blank lines.  The other possible
+format is that paragraphs start with a space or tab at the beginning of
+the line, and you can select this format from the File | Properties
+dialog. In that dialog, you can also choose to indent output paragraphs.
+This will increase the size of the file in proportion to how much you
+output paragraphs.  Some other options are settable there.  For instance,
+you can choose to use the pretty "Alpha-BK" font.  You can also load in
+an alternate font in .wzf or .wrf format--you can download more fonts on
+home.att.net/~apruss .  The .wrf format fonts are for right-to-left scripts,
+such as Hebrew.  Right-to-left texts are fully supported by WizBook.  There
+is no difference between a .wzf and a .wrf font--the extension is just a
+signal to the converter whether to set the right-to-left flag on or not.
+
+The "Alpha-BK" font is by Rainer Zenz (www.rainerzenz.de/palm).
+You can also load in Cyrillic texts in Windows CP1251 or KOI8-R
+encoding.  Any Roman characters in those texts will be transliterated to
+Cyrillic.  This requires a Wizard Cyrillic font.  This package includes
+two of them--vprus.wzf and malij.wzf--and you can make more with the
+Font Package at home.att.net/~apruss.
+
+A Polish font based on Alpha-BK is in alpha_pl.wzf.  It is compatible
+with texts in ISO Central European and Windows Central European encodings
+but supports only the Polish subset.  Just turn on extended characters in
+WizBookConverter and set it to prompt for a font.
+
+
+Do NOT put the same output filename as the input filename in WizBookConverter,
+or it may destroy your input file and create a junk output file.
+
+
+
+NOTE 1: Ideally, your e-books should be stored in the "wb/" directory on the
+Organizer if you use tomemo manually.  The bookmarks are normally stored
+in the "bm/" directory, with the same filename as the e-book's, but no
+bookmarks will stored for e-books not in the "wb/" directory.
+
+
+NOTE 2:
+Data is stored in special schedule entries dated January 1,
+1901.  Do not modify these schedule entries yourself, but if you want to
+delete a file, feel free to delete all the schedule entries with that
+filename in the description--generally, because of certain limits, a
+given program is stored in more than one schedule entry.  You may
+occasionally experience problems synchronizing these schedule entries
+with DayTimer.  The program data inside these entries is NOT
+synchronized with DayTimer;  only the labels are.  If you delete WizBook,
+you will need to delete these schedule entries manually.  (Or, you can
+use the DELETE ALL option in WizBook before getting rid of WizBook.)
+
+
+NOTE 3:
+While Wizbook integrates FromMemo capabilities, it only supports FromMemo
+version 2 files, which is what the WizBookConverter creates.  If you use
+FromMemo version 1 files, you will need to run a different FromMemo importer,
+such as the original FromMemo on mywizard.com, or the one integrated into
+the Font Package.
+
+TECHNICAL INFORMATION: This program is written in Hi-Tech C, with some
+assembly bits for i/o.

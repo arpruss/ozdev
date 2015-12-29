@@ -1,0 +1,35 @@
+FILEBUF_LEN equ 8300 ;; must be at least 6720
+global _filebuf,_preparehelp,_dohelp,_background,__ozfile1buffer
+global _frommemo_buf
+global set_a000_400,restore_a000,_ozgetchblank
+
+psect beforebss
+__ozfile1buffer:
+        defs 64
+_filebuf:
+defs FILEBUF_LEN-2400-2400+1 ;; must be at least 1984-64 bytes
+_frommemo_buf:
+helpdata:
+*include helpdata.inc
+backdata:
+*include backdata.inc
+
+_background:
+        ld      hl,backdata
+copy0:
+        ld      de,0a000h
+copy:
+        call    set_a000_400
+        ld      bc,2400
+        ldir
+        jp      restore_a000
+
+_preparehelp:
+        ld      hl,helpdata
+        ld      de,0a968h
+        jr      copy
+
+_dohelp:
+        ld      hl,0a968h
+        call    copy0
+        jp      _ozgetchblank

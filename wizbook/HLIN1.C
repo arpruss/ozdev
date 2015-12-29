@@ -1,0 +1,1 @@
+				    chdir p fseek ath mkdir expando path

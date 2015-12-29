@@ -1,0 +1,68 @@
+all: wizbook.wzd wizcomp.exe wizdcomp.exe wizcomp.dll tomemo.exe
+
+OBJS2 = ozputsf.obj warn.obj putform.obj help.obj \
+        smallstr.obj misc.obj ozauxme0.obj vars2.obj \
+        search.obj dosearch.obj toc.obj ozputs.obj goto.obj
+
+wizbook.obj: wizbook.c wizbook.h
+
+selectnm.aso: selectnm.c wizbook.h ../hitech/liboz/getfile.c
+
+wizbook.lib: $(OBJS2)
+        zxecho libr.arg r wizbook.lib $(OBJS2) > libr.arg
+        xlibr libr.arg
+
+ozputsf.obj: ozputsf.as macros.inc rev.as
+
+.bmp.bin:
+        bmp2bin $*
+
+.as.obj:
+        zxas $*.as
+
+.c.obj:
+        zcc -ox -c $*.c
+
+.c.aso:
+        zcc -ox -s $*.c
+
+.aso.inc:
+        sed "s/^psect text$/psect beforebss/" < $*.aso > $*.inc
+
+vars2.obj: vars2.as selectnm.aso
+        zxas -j vars2.as
+
+.bmp.xbm:
+        c:\progra~1\imagemagick\convert $*.bmp $*.xbm
+
+helptoas.exe: helptoas.c backgr.xbm
+        bcc32 helptoas.c
+
+backdata.inc: helptoas.exe
+        helptoas.exe
+
+help.obj: help.as helpdata.inc backdata.inc frommemo.inc
+        zxas -j help.as
+
+wizcomp.dll: wizcomp.c tomemo.c mytable.c cyrxlat.c
+        bcc32 -O2 -4 -X -v- -tWD -DDLL wizcomp.c tomemo.c
+        del wizcomp.tds
+
+wizbook.wzd: wizbook.obj wizbook.lib wizbook.inf alpha_bk_qe.wzf help.bin start.bin
+        ozlink48 wizbook wizbook.lib wizbook.lib
+        makewzd -1005 wizbook @wizbook.inf
+        ozpack wizbook.wzd start.bin :screen0 alpha_bk_qe.wzf :font0 help.bin :screensys
+
+wizcomp.exe: wizcomp.c
+        bcc32 -O2 -4 -X -v- wizcomp.c
+        del wizcomp.tds
+
+wizdcomp.exe: wizdcomp.c
+        bcc32 -O2 -4 -X -v- wizdcomp.c
+        del wizcomp.tds
+
+tomemo.exe: tomemo.c
+        bcc32 -O2 -4 -X -v- tomemo.c
+        del wizcomp.tds
+
+

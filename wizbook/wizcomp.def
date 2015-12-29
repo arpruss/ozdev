@@ -1,0 +1,3 @@
+LIBRARY wizcomp.dll
+EXPORTS wizardcompress
+        tomemo
