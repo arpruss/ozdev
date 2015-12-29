@@ -1,0 +1,119 @@
+Graf 2.0
+.             0
+......x...x. 1
+......x...x. 2
+......x..x.. 3
+......x..x.. 4
+......xxx... 5
+xxxxxxxxxxxx 6
+....xxx..... 7
+...x..x..... 8
+...x..x..... 9
+..x...x..... 10
+..x...x..... 11
+xx....x..... 12
+(The instructions are below the license here: read both.)
+
+BY DOWNLOADING YOU SIGNIFY YOU HAVE READ AND AGREED TO ALL OF THE
+CONDITIONS LISTED HERE.  This is a C/assembly program.  It is possible
+for a C/assembly program to damage data and even to make your organizer
+inoperable.  USE AT YOUR OWN RISK.  NO GUARANTEES ARE MADE. By
+downloading this program to your organizer you agree not to hold the
+author(s) responsible for any damage to data, hardware or anything else.
+
+IF ANY OF THESE CONDITIONS ARE NOT PERMITTED BY APPLICABLE LAW, YOU ARE
+NOT LEGALLY PERMITTED TO DOWNLOAD OR USE THE PROGRAM. This program may
+be freely distributed but only provided that this description is
+unmodified.  This program is copyright (c) 2001-2002 Alexander R Pruss.
+
+
+
+It is strongly recommended you back up your Wizard before running
+C/assembler programs.
+
+
+
+NOTE: If a C/assembly program hangs due to a bug, you may need to flip
+the battery switch on the bottom of the Wizard back and forth.  If the
+Wizard does not respond to this, taking the batteries out for half a
+minute should help.  If this doesn't help, you've read the WARNING
+above.  None of this should be necessary, but no guarantees are made.
+
+This program has not been sufficiently tested.  Report bugs and
+suggestions to: ap85@georgetown.edu.
+
+NOTE: Any alarms going off while program is running will be missed.  The
+auto power-off and backlight auto-off won't work either.
+
+
+This is an alpha-test version of a graphing program.
+
+Graf lets you draw up to ten simultaneous function graphs on the screen.
+Functions of x are described using syntax like: sin(2*pi*x) or exp(-x^2)
+or x+x^2-3*x^3 or x^(-1).  Operators understood by graf are
+multiplication (*),division (/), addition (+), subtraction/negation (-)
+and exponentiation (^).  The function is a function of x.  You can use
+the special constants e and pi, as well as the following functions: abs,
+floor, ceil, sqrt, sinh, cosh, tanh, sin, cos, tan, arcsin, arccos,
+arctan, log10, ln and exp.  You can use asin, acos, atan, log in place
+of arcsin, arccos, arctan and log10, respectively.  You can adjust the
+scaling on the main menu.  Use a "d" after a number to convert the
+number from degrees to radians.  Thus, 360d=2*pi.  When you enter ranges
+for graphs, you can use arithmetical expressions.  Thus, you can set the
+range to be from 0 to 10*sin(1.11d+pi/2).
+
+You can use sin x as a short form for sin(x).  Be careful omitting
+parentheses, however.  Function evaluation has higher priority than
+multiplication and lower than exponentiation so that sin 2*x =
+(sin(2))*x while sin x^2=sin(x^2).
+
+You can also use parametric and polar and polar-parametric plotting.
+For a polar plot, just use "h" (=theta) as the variable, and everything will
+be taken care of, or else put r=f(h).  For instance, a spiral can be
+plotted by just plotting, say, "h/2" or "r=h/2" (for a unit circle, you need
+to plot "r=1", since if you plot just "1", "y=1" will be assumed).  For
+a rectangular parametric plot, put in something of the form
+"x=f(t),y=g(t)" (or "y=g(t),x=f(t)"--the order does not matter here), or
+just "f(t),g(t)" for short.  For a polar parametric plot, put in
+"r=f(t),h=g(t)" (or "h=g(t),r=f(t)").  You can also plot functions of y,
+by entering x=f(y) or just f(y) for short.  If you want explicitness, you
+can do standard rectangular plots by putting "y=f(x)".
+
+You can always redraw all the graphs in memory by choosing the "Redraw"
+option in the main menu.
+
+You can trace a graph, i.e., look at values of it.  This is useful for
+finding intersection points of graphs, for instance.  Use the left and
+right arrow keys to move around.  When tracing, press 2nd-left to go to
+the left side of the screen.  You can press PageUp and PageDown to move
+more quickly.
+
+The "Image screen" options sends a screen image to the serial port compatible
+with Benjamin Green's SNAP.EXE program.  If you have SNAP.EXE running on the
+PC, the screen image will appear in it.  You do NOT need SNAP.WZD on your
+Wizard to do this.  SNAP.EXE is included in Benjamin Green's SNAP package in
+the "dual platform software" section of www.ozdev.com.
+
+The main menu has some keyboard shortcuts.  NEW and DELETE create/delete
+a graph.  T gives Trace, R gives Redraw, Q quits, X and Y set X- and
+Y-ranges, Z/U give zoom/unzoom, P adjust parametric plot ranges, H
+adjusts polar plot ranges, and I sends a screen image.  These special
+keys also work when viewing or tracing graphs (except that Z/U then
+zoom/unzoom in on the currently viewed point, rather than on the center
+of the screen). You can press the space bar to interrupt a graph while
+it is being drawn, or any of the above special keys to interrupt and
+perform one of the special functions.
+
+In the range-edit menu, press S to edit the starting point, E the endpoint,
+T the tickmarks or D the delta (in polar or parametric mode), and press
+A for automatic (sets to match the other axis, so that circles look more
+or less round).
+
+This program is keytune compatible.  If the key click is off, all sound
+effects will be disabled.  If the key click is on, the program will beep
+when graphs are finished.  You can toggle the sound by pressing S while
+graphs are drawn or on the menu.
+
+TECHNICAL INFORMATION: This program is written in Hi-Tech C, with some
+assembly bits for i/o.  Get the Hi-Tech C package from www.ozdev.com.
+

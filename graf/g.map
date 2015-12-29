@@ -1,0 +1,288 @@
+Linker command line:
+
+-w9 -X -C8000h -plowpage=8000h,midpage,text,data,bss -mgraf.map -ograf.bin \
+  C:\PROGRA~1\WIZ\HITECH\compiler\32k.obj graf_tab.obj warn.obj main.obj \
+  misc.obj C:\PROGRA~1\WIZ\HITECH\compiler\libf.lib \
+  C:\PROGRA~1\WIZ\HITECH\compiler\libf.lib \
+  C:\PROGRA~1\WIZ\HITECH\compiler\libc0.lib \
+  C:\PROGRA~1\WIZ\HITECH\compiler\liboz.lib \
+  C:\PROGRA~1\WIZ\HITECH\compiler\libc0.lib \
+  C:\PROGRA~1\WIZ\HITECH\compiler\liboz.lib 
+
+Machine type is Z80
+
+		Name          Link     Load   Length Selector Space Scale
+C:\PROGRA~1\WIZ\HITECH\compiler\32k.obj
+		lowpage       8000     8000      183    8000     0
+		bss           EDFD     EDFD        1    8000     0
+		data          E4C6     E4C6        3    8000     0
+graf_tab.obj    bss           EDFE     EDFE      619    8000     0
+		data          E4C9     E4C9      57A    8000     0
+		text          8659     8659     1590    8000     0
+warn.obj        text          9BE9     9BE9      1BE    8000     0
+main.obj        bss           F417     F417      496    8000     0
+		data          EA43     EA43      269    8000     0
+		text          9DA7     9DA7      EA4    8000     0
+misc.obj        bss           F8AD     F8AD        C    8000     0
+		text          AC4B     AC4B      217    8000     0
+
+C:\PROGRA~1\WIZ\HITECH\compiler\libf.lib
+flsprint.obj    bss           F8B9     F8B9        3    8000     0
+		data          ECAC     ECAC        7    8000     0
+		text          AE62     AE62      3CA    8000     0
+atof.obj        bss           F8BC     F8BC        4    8000     0
+		text          B22C     B22C      1A9    8000     0
+sfnum.obj       bss           F8C0     F8C0       3C    8000     0
+		text          B3D5     B3D5      61E    8000     0
+ltof.obj        text          B9F3     B9F3       44    8000     0
+ftol.obj        text          BA37     BA37       2C    8000     0
+asfloat.obj     text          BA63     BA63       24    8000     0
+fbcd.obj        data          ECB3     ECB3        8    8000     0
+		text          BA87     BA87       E4    8000     0
+frndint.obj     text          BB6B     BB6B        C    8000     0
+tan.obj         text          BB77     BB77       30    8000     0
+acos.obj        text          BBA7     BBA7       33    8000     0
+asin.obj        text          BBDA     BBDA       3F    8000     0
+atan.obj        bss           F8FC     F8FC        8    8000     0
+		data          ECBB     ECBB       2C    8000     0
+		text          BC19     BC19       FD    8000     0
+cos.obj         text          BD16     BD16       22    8000     0
+sin.obj         bss           F904     F904        8    8000     0
+		data          ECE7     ECE7       28    8000     0
+		text          BD38     BD38      189    8000     0
+sinh.obj        text          BEC1     BEC1       58    8000     0
+cosh.obj        text          BF19     BF19       4C    8000     0
+tanh.obj        text          BF65     BF65       62    8000     0
+exp.obj         data          ED0F     ED0F       28    8000     0
+		text          BFC7     BFC7      18C    8000     0
+log.obj         data          ED37     ED37       24    8000     0
+		text          C153     C153       C7    8000     0
+evalpoly.obj    bss           F90C     F90C        8    8000     0
+		text          C21A     C21A       86    8000     0
+sqrt.obj        bss           F914     F914        8    8000     0
+		text          C2A0     C2A0      15F    8000     0
+frexp.obj       text          C3FF     C3FF       55    8000     0
+fabs.obj        text          C454     C454        B    8000     0
+ceil.obj        bss           F91C     F91C        4    8000     0
+		text          C45F     C45F       4D    8000     0
+floor.obj       bss           F920     F920        4    8000     0
+		text          C4AC     C4AC       50    8000     0
+float.obj       bss           F924     F924        1    8000     0
+		text          C4FC     C4FC      1FF    8000     0
+
+C:\PROGRA~1\WIZ\HITECH\compiler\libf.lib
+
+C:\PROGRA~1\WIZ\HITECH\compiler\libc0.lib
+abs.obj         text          C6FB     C6FB        F    8000     0
+allsh.obj       text          C70A     C70A       11    8000     0
+asll.obj        text          C71B     C71B        F    8000     0
+asmod.obj       text          C72A     C72A       1E    8000     0
+atoi.obj        text          C748     C748       40    8000     0
+ctype_.obj      data          ED5B     ED5B       81    8000     0
+iregset.obj     text          C788     C788       26    8000     0
+brelop.obj      text          C7AE     C7AE       14    8000     0
+frelop.obj      text          C7C2     C7C2       3A    8000     0
+ldiv.obj        text          C7FC     C7FC      120    8000     0
+alrsh.obj       text          C91C     C91C       14    8000     0
+shll.obj        text          C930     C930        D    8000     0
+strcpy.obj      text          C93D     C93D       12    8000     0
+strlen.obj      text          C94F     C94F        E    8000     0
+strncmp.obj     text          C95D     C95D       22    8000     0
+csv.obj         text          C97F     C97F       28    8000     0
+rcsv.obj        text          C9A7     C9A7       1E    8000     0
+idiv.obj        text          C9C5     C9C5       6C    8000     0
+
+C:\PROGRA~1\WIZ\HITECH\compiler\liboz.lib
+ozdel64.obj     text          CA31     CA31       25    8000     0
+ozdel64k.obj    text          CA56     CA56       3C    8000     0
+ozgetl.obj      bss           F925     F925        7    8000     0
+		text          CA92     CA92      356    8000     0
+ozgclick.obj    text          CDE8     CDE8        7    8000     0
+getch.obj       data          EDDC     EDDC        B    8000     0
+		text          CDEF     CDEF      491    8000     0
+ozmenu.obj      data          EDE7     EDE7        3    8000     0
+		text          D280     D280      826    8000     0
+ozsavscn.obj    text          DAA6     DAA6       26    8000     0
+ozlight.obj     text          DACC     DACC       36    8000     0
+ozint.obj       text          DB02     DB02       5A    8000     0
+oz_int.obj      text          DB5C     DB5C       3D    8000     0
+ozsave.obj      lowpage       8183     8183       7E    8000     0
+ozfont.obj      data          EDEA     EDEA        1    8000     0
+		text          DB99     DB99       1B    8000     0
+ozcls.obj       lowpage       8201     8201       19    8000     0
+ozputsns.obj    lowpage       821A     821A      27F    8000     0
+		bss           F92C     F92C        1    8000     0
+ozsound.obj     text          DBB4     DBB4       2C    8000     0
+ozcustom.obj    bss           F92D     F92D       19    8000     0
+		text          DBE0     DBE0      323    8000     0
+ozclick.obj     data          EDEB     EDEB        1    8000     0
+		text          DF03     DF03       1A    8000     0
+_ozboxf.obj     lowpage       8499     8499       AC    8000     0
+ozgetfh.obj     text          DF1D     DF1D       24    8000     0
+newmul.obj      text          DF41     DF41       76    8000     0
+memcpy.obj      text          DFB7     DFB7       14    8000     0
+spnum.obj       bss           F946     F946       1E    8000     0
+		data          EDEC     EDEC       11    8000     0
+		text          DFCB     DFCB      165    8000     0
+ozexitto.obj    text          E130     E130       11    8000     0
+ozkey.obj       text          E141     E141       71    8000     0
+ozdetect.obj    lowpage       8545     8545       6E    8000     0
+ozexitf.obj     text          E1B2     E1B2       1F    8000     0
+ozlcd.obj       lowpage       85B3     85B3       14    8000     0
+_ozline.obj     text          E1D1     E1D1      27F    8000     0
+ozcopy.obj      text          E450     E450       58    8000     0
+ozpoint.obj     lowpage       85C7     85C7       87    8000     0
+wrelop.obj      text          E4A8     E4A8       10    8000     0
+ozapage.obj     lowpage       864E     864E        2    8000     0
+restpage.obj    lowpage       8650     8650        9    8000     0
+alloca.obj      text          E4B8     E4B8        E    8000     0
+
+C:\PROGRA~1\WIZ\HITECH\compiler\libc0.lib
+
+C:\PROGRA~1\WIZ\HITECH\compiler\liboz.lib
+
+TOTAL		Name          Link     Load   Length
+		lowpage       8000     8000      659
+		bss           EDFD     EDFD      B67
+		data          E4C6     E4C6      937
+		text          8659     8659     5E6D
+
+
+SEGMENTS	Name		Load	Length	 Top	Selector    Space Class
+
+		lowpage         008000	007964	00F964	    8000       0        
+
+
+                                  Symbol Table
+
+$32kintoff            lowpage 814C  $32kinton             lowpage 8150
+$clearbacklighttimer  lowpage 8158  $end$pointer          lowpage 821B
+$filetypetable        lowpage 85B1  $init_unblank         lowpage 80A1
+$ozcopy               text    E467  $ozlcdstatus          lowpage 8166
+$ozsetlcdstate        lowpage 85B3  $rxxoff_hook          text    DC89
+$serial_check_hook    text    DBE2  $serial_hook          text    DC55
+$sp$                  lowpage 80E3  $swapupperpages       lowpage 80E7
+EnableKeyboard        bss     EDFD  HeapTop               (abs)   F980
+KeyBufGetPos          lowpage 8169  KeyBufPutPos          lowpage 816A
+KeyboardBuffer        lowpage 816B  Model32k              (abs)   0001
+ScrCharSet            data    E4C6  __Hbss                bss     F964
+__Hdata               data    EDFD  __Hlowpage            lowpage 8659
+__Hmidpage            midpage 8659  __Htext               text    E4C6
+__Lbss                bss     EDFD  __Ldata               data    E4C6
+__Llowpage            lowpage 8000  __Lmidpage            midpage 8659
+__Ltext               text    8659  ___fperr              bss     F924
+___y_alloca_19828a_   text    E4B8  __ctype_              data    ED5B
+__exit                lowpage 80A0  __fbcd                text    BAA3
+__frndint             text    BB6B  __oz64hz_dword        bss     F931
+__oz64hz_word         bss     F931  __ozactivepage        lowpage 864E
+__ozbacklight         lowpage 8165  __ozbox               text    9BE9
+__ozcallexitfunctions text    E1B2  __ozclick_setting     data    EDEB
+__ozcontrast          lowpage 8168  __ozcustomisr         text    DC3A
+__ozdisablepowerkey   bss     F92D  __ozfilename          lowpage 8014
+__ozfileowner         lowpage 8020  __ozfilledbox         lowpage 8499
+__ozfontniceheight    data    EDEA  __ozgreycount         bss     F92F
+__ozgreyscale         bss     F92E  __ozhline             text    AC4B
+__ozkeyrepeatdelay    text    DDE9  __ozkeyrepeatspeed    text    DE64
+__ozline              text    E1D1  __ozmodel             lowpage 85B0
+__ozpoint             text    AC83  __ozsetisr            text    DB5C
+__ozspare1end         lowpage 8093  __ozspare1start       lowpage 8022
+__ozvline             text    AC67  __sfnum               text    B3D5
+__spnum               text    DFCB  _abs                  text    C6FB
+_acos                 text    BBA7  _anykey               data    EA73
+_asin                 text    BBDA  _atan                 text    BC19
+_atof                 text    B22C  _atoi                 text    C74F
+_axes                 text    A06C  _bdos                 lowpage 80E2
+_beep                 text    9F06  _blkcpy               text    DFB7
+_ceil                 text    C45F  _compile              text    941F
+_compiled             bss     F3BC  _cos                  text    BD16
+_cosh                 text    BF19  _deletegraph          text    A871
+_do_special           data    EACC  _edit                 text    A642
+_editgraph            text    A910  _editvalue            text    A275
+_eval                 text    8FDD  _eval_poly            text    C21A
+_exit                 lowpage 8095  _exp                  text    BFC7
+_fabs                 text    C454  _flash                text    9742
+_float_error          bss     F8A9  _floor                text    C4AC
+_frexp                text    C3FF  _function_table       data    E4C9
+_functions            bss     F2B2  _getch                text    D26A
+_getoption            text    9E95  _graph                text    95B7
+_graph_select         bss     F6C8  _graphmenu            text    A77D
+_h_delta              data    EA63  _h_max                data    EA5F
+_h_min                data    EA5B  _interrupted          bss     F8AB
+_kbhit                text    D230  _ldexp                text    C42D
+_lines                bss     F462  _log                  text    C153
+_log10                text    C1F6  _main                 text    AA23
+_main_menu            data    EACE  _maxs                 data    EB0E
+_memcpy               text    DFB7  _mins                 data    EB06
+_miscstring           bss     F82C  _mypow                text    AC9A
+_newgraph             text    A675  _num_functions        bss     F416
+_num_steps            bss     F411  _num_values           bss     F406
+_numgraphs            bss     F8AC  _ozclick              text    DF03
+_ozcls                lowpage 8201  _ozdelay64hz          text    CA31
+_ozdetectmodel        lowpage 8545  _ozeditline           text    CB1E
+_ozenterisreturn      text    CDEF  _ozexitrestoreint     lowpage 8095
+_ozexitto             text    E130  _ozfont               text    DB99
+_ozgetch              text    E15B  _ozgetclick           text    CDE8
+_ozgetfont            text    DBAD  _ozgetfontheight      text    DF1D
+_ozinitsound          text    DBB4  _ozintwait            text    DBE0
+_ozisroff             text    DB96  _ozkeyclear           text    E154
+_ozkeyclick           text    DEF2  _ozkeydelay64hz       text    CA56
+_ozkeyhit             text    E141  _ozkeymapcrtolf       text    CDFB
+_ozmenu               text    D280  _ozpoint              lowpage 85C7
+_ozputch              lowpage 8488  _ozputs               lowpage 826A
+_ozputsgetend         lowpage 821A  _ozquiet              text    DBCF
+_ozrestorekeysettings lowpage 81C7  _ozrestorescreen      text    DABC
+_ozsavekeysettings    lowpage 819D  _ozsavescreen         text    DAA6
+_ozsetfont            text    DB99  _ozsetisr             text    DB02
+_ozsetlight           text    DADA  _ozsound              text    DBB9
+_oztogglelight        text    DACC  _ozungetch            text    E183
+_ozwarn               text    9C59  _pow                  text    C09A
+_quiet                bss     F8AA  _range_for            data    EB32
+_range_menu           data    EB1E  _redraw               text    A235
+_setrange             text    A34D  _setupgraph           text    9465
+_sin                  text    BD38  _sinh                 text    BEC1
+_sprintf              text    AE8E  _sqrt                 text    C2A0
+_stack                bss     F350  _strcpy               text    C93D
+_strlen               text    C94F  _strncmp              text    C95D
+_t_delta              data    EA6F  _t_max                data    EA6B
+_t_min                data    EA67  _tan                  text    BB77
+_tanh                 text    BF65  _tickoff              text    9F3A
+_tickss               data    EB16  _togglesound          text    9F1D
+_trace                text    9820  _tracegraph           text    A9E6
+_truncate_at          text    A71D  _truncate_chars       bss     F822
+_truncate_pos         bss     F6B4  _value_h              bss     F6B0
+_value_r              bss     F6F4  _value_x              bss     F72A
+_value_y              bss     F72E  _values               bss     F2EC
+_x_max                data    EA47  _x_min                data    EA43
+_x_tick               data    EA53  _y_max                data    EA4F
+_y_min                data    EA4B  _y_tick               data    EA57
+_yn                   data    EA81  _yychar               bss     F40F
+_yyerror              text    8CAB  _yylex                text    8B5A
+_yylval               bss     F3FF  _yynerrs              bss     F412
+_yyparse              text    8659  _zoom                 text    9DA7
+abtof                 text    B9FE  adiv                  text    C9D5
+aitof                 text    BA02  aldiv                 text    C848
+allsh                 text    C70A  almod                 text    C86F
+alrsh                 text    C91C  altof                 text    BA1F
+amod                  text    C9C5  amul                  text    DF4C
+asal                  text    C71B  asaldiv               text    C833
+asalmod               text    C881  asamod                text    C72A
+asfladd               text    BA63  asfldiv               text    BA7E
+asflmul               text    BA75  asflsub               text    BA6C
+asll                  text    C71B  aslldiv               text    C867
+asllmod               text    C894  aslmod                text    C739
+brelop                text    C7AE  cret                  text    C98B
+csv                   text    C97F  fladd                 text    C541
+fldiv                 text    C67D  flmul                 text    C5E8
+flsub                 text    C535  fpnorm                text    C4FC
+frelop                text    C7C2  ftol                  text    BA37
+indir                 text    C992  iregset               text    C788
+iregstore             text    C7A2  lbtof                 text    B9F3
+ldiv                  text    C9CF  litof                 text    B9F6
+lldiv                 text    C85B  lllsh                 text    C70A
+llmod                 text    C889  lltof                 text    BA13
+lmod                  text    C9CA  lmul                  text    DF4C
+lmul$d0               text    DF46  lmul$h0               text    DF41
+ncsv                  text    C993  negmant               text    C528
+rcsv                  text    C9A7  restore_a000          lowpage 8650
+shal                  text    C930  shll                  text    C930
+wrelop                text    E4A9  wrelop_ex             text    E4A8

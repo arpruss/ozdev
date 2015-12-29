@@ -1,0 +1,22 @@
+all: graf.wzd
+
+OBJS = graf_tab.obj warn.obj main.obj misc.obj
+
+graf_tab.c: graf.y
+        bison graf.y
+
+graf_tab.obj: graf_tab.c graf_inc.c graf.h
+
+warn.obj: warn.c graf.h
+
+main.obj: main.c graf.h
+
+.c.obj:
+        zcc -a -ox -c $*.c
+
+.as.obj:
+        zxas $*.as
+
+graf.wzd: $(OBJS) graf.inf
+        zcc -zf -zigraf.inf -ograf $(OBJS)
+        ozpack graf.wzd

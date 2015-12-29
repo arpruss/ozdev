@@ -1,0 +1,443 @@
+#include <oz.h>
+#include <math.h>
+#define DEF
+#include "graf.h"
+
+double x_min=-3,x_max=3,y_min=-1,y_max=1,x_tick=.5,y_tick=.5;
+double h_min=0,h_max=M_2_PI,h_delta=FROM_DEG /* one degree */;
+double t_min=0,t_max=1,t_delta=0.01;
+char anykey[]="Press any key";
+char yn[]="Yes:[ENTER]/No:[ESC]";
+static char x_range[50];
+static char y_range[50];
+static char t_range[60];
+/* static char h_range[60]; */
+#define h_range miscstring
+#define start x_range
+#define end y_range
+#define ticks t_range
+/* static char start[30];
+static char end[30];
+static char ticks[35]; */
+static char mainmenu[]="Main menu";
+static char mainmenuredraw[]="Main menu and redraw";
+static char soundon[]="Sound [on]";
+static char soundoff[]="Sound [off]";
+int do_special=-1;
+
+
+struct ozmenuentry main_menu[]=
+{
+    { KEY_NEW, "New graph"},
+    { 'e', "Edit graph"},
+    { 't', "Trace graph"},
+    { 8, "Delete graph(s)"},
+    { 'x', x_range },
+    { 'y', y_range },
+    { 'p', t_range },
+    { 'h', h_range },
+    { 'v', "View graphs"},
+    { 'z', "Zoom"},
+    { 'u', "Unzoom"},
+    { 'r', "Redraw screen"},
+    { 's', NULL },
+    { 'i', "Image screen" },
+    { 'q', "Quit"}
+};
+
+double *mins[]={ &x_min, &y_min, &t_min, &h_min };
+double *maxs[]={ &x_max, &y_max, &t_max, &h_max };
+double *tickss[]={ &x_tick, &y_tick, &t_delta, &h_delta };
+
+#define MAIN_MENU_ENTRIES (sizeof(main_menu)/sizeof(*main_menu))
+
+void zoom(double x,double y,double factor)
+{
+    static double len_x_2,len_y_2;
+    len_x_2=(x_max-x_min)*.5*factor;
+    len_y_2=(y_max-y_min)*.5*factor;
+    x_min=x-len_x_2;
+    x_max=x+len_x_2;
+    y_min=y-len_y_2;
+    y_max=y+len_y_2;
+}
+
+void getoption()
+{
+    static byte i;
+    static unsigned k;
+TOP:
+    do_special=-1;
+    k=ozgetch();
+    for(i=0;i<MAIN_MENU_ENTRIES;i++)
+    {
+        if(k==main_menu[i].key)
+        {
+            do_special=i;
+            return;
+        }
+    }
+    switch(k)
+    {
+        case KEY_MYPROGRAMS:
+        case KEY_MAIN:
+        case KEY_SCHEDULE:
+        case KEY_TELEPHONE:
+        case KEY_MEMO:
+            ozexitto(k);
+        case KEY_BACKLIGHT:
+            oztogglelight();
+            goto TOP;
+    }
+}
+
+struct ozmenuentry range_menu[]=
+    {
+        {'a',"Automatic"},
+        {'s',start},
+        {'e',end},
+        {'t',ticks},
+        {'m',mainmenu}
+    };
+
+char range_for[]="Range for .";
+
+void beep(void)
+{
+    if(quiet) return;
+    ozsound(128);
+    ozdelay64hz(3);
+    ozquiet();
+}
+
+void togglesound(void)
+{
+    quiet=!quiet;
+    ozclick(!quiet);
+    ozsavekeysettings();
+}
+
+void tickoff(byte pos,double start,double tick,byte axis)
+{
+    static double t,end;
+    static int coord;
+    if(tick<2) return;
+    end=.5+axis?239:80;
+    for(t=tick*ceil(start/tick)-start;t<end;t+=tick)
+    {
+        coord=(int)floor(.5+t);
+        if(fabs(t+start)<=1.) continue;
+        if(axis) ozpoint(pos,coord,1);
+          else ozpoint(coord,pos,1);
+    }
+}
+
+void axes(void)
+{
+    static byte x,y;
+    static double x_scale,y_scale;
+    x_scale=238./(x_max-x_min);
+    y_scale=79./(y_max-y_min);
+    if(y_min<=0 && y_max>=0)
+    {
+        y=(int)(79-floor(.5+y_scale*(-y_min)));
+        _ozhline(0,y,239,1);
+        if(y>0) y--;
+          else y=1;
+        tickoff(y,x_min*x_scale,x_tick*x_scale,0);
+    }
+    if(x_min<=0 && x_max>=0)
+    {
+        x=(int)(floor(.5+x_scale*(-x_min)));
+        _ozvline(x,0,80,1);
+        if(x<238) x++;
+          else x=237;
+        tickoff(x,y_min*y_scale,y_tick*y_scale,1);
+    }
+}
+
+void redraw(void)
+{
+    static byte i;
+    ozcls();
+    axes();
+    for(i=0;i<numgraphs;i++)
+    {
+        graph(lines[i]);
+        if(interrupted) return;
+    }
+    beep();
+    if(numgraphs) getoption();
+}
+
+
+
+byte editvalue(double *v,byte degrees)
+{
+    static int r;
+    if(degrees) sprintf(miscstring,"%.4gd",TO_DEG * (*v));
+      else sprintf(miscstring,"%.4g",*v);
+    ozsavescreen();
+    r=ozeditline(0,0,miscstring,MISC_LEN,239);
+    ozrestorescreen();
+    if(compile(miscstring) || r<=0) return 0;
+    value_y=*v;
+    eval(*v);
+    *v=value_y;
+    return 1;
+}
+
+void setrange(byte var)
+{
+    static byte change;
+    change=0;
+    range_for[sizeof(range_for)-2]="xyth"[var];
+    while(1)
+    {
+        if(var==3)
+        {
+            sprintf(start,"%.4g=%.4g\xF8",h_min,h_min*TO_DEG);
+            sprintf(end,"%.4g=%.4g\xF8",h_max,h_max*TO_DEG);
+        }
+        else
+        {
+            sprintf(start,"%.4g",*(mins[var]));
+            sprintf(end,"%.4g",*(maxs[var]));
+        }
+        switch(var)
+        {
+            case 3:
+                sprintf(ticks,"\xEB\xE9: %.4g=%.4g\xF8",h_delta,h_delta*TO_DEG);
+                range_menu[3].key='d';
+                break;
+            case 2:
+                sprintf(ticks,"\xEBt: %.4g",t_delta);
+                range_menu[3].key='d';
+                break;
+            default:
+                sprintf(ticks,"ticks: %.4g",var?y_tick:x_tick);
+                range_menu[3].key='t';
+        }
+        if(change) range_menu[4].label=mainmenuredraw;
+          else range_menu[4].label=mainmenu;
+        switch(ozmenu(0,0,range_for,0,5,range_menu,0))
+        {
+            case 0:
+                switch(var)
+                {
+                  case 0:
+                    /* make x match y */
+                    x_max=x_min+(y_max-y_min)*(239./80.);
+                    x_tick=y_tick;
+                    break;
+                  case 1:
+                    /* make y match x */
+                    y_max=y_min+(x_max-x_min)*(80./239);
+                    y_tick=x_tick;
+                    break;
+                  case 2:
+                    t_min=0;
+                    t_max=1;
+                    t_delta=0.01;
+                    break;
+                  default:
+                    h_min=0;
+                    h_max=M_2_PI;
+                    h_delta=FROM_DEG;
+                    break;
+                }
+                change=1;
+                break;
+            case 1:
+                change=editvalue(mins[var],var==3);
+                break;
+            case 2:
+                change=editvalue(maxs[var],var==3);
+                break;
+            case 3:
+                change=editvalue(tickss[var],var==3);
+                break;
+            default:
+                if(change) redraw();
+                return;
+        }
+    }
+}
+
+int edit(byte i)
+{
+   static int sel;
+   ozsavescreen();
+/*   _ozfilledbox(0,0,239,8,0); */
+   sel=ozeditline(0,0,lines[i],MAX_LINE,239);
+   ozrestorescreen();
+   return sel;
+}
+
+void newgraph(void)
+{
+    static byte i;
+    if(numgraphs>=MAX_GRAPHS)
+    {
+        if(KEY_LOWER_ENTER==ozwarn("Too many graphs. Delete first graph?",yn))
+        {
+            for(i=1;i<numgraphs;i++) strcpy(lines[i-1],lines[i]);
+            numgraphs--;
+        }
+        else return;
+    }
+    lines[numgraphs][0]=0;
+    do
+    {
+        if(edit(numgraphs)<0) return;
+    } while(graph(lines[numgraphs]));
+    numgraphs++;
+    if(!interrupted)
+    {
+        beep();
+        getoption();
+    }
+}
+
+char *truncate_at(char *_s,byte pixel)
+{
+    register char *s=_s;
+    static byte width;
+    width=0;
+    while(*s && width<pixel)
+    {
+        width+=ozputch(0,-1,*s);
+        s++;
+    }
+    if(width>=pixel && s>_s) return s-1;
+      else return s;
+}
+
+int graphmenu(char *title,char *first,byte startpos)
+{
+    static byte pos;
+    static byte i;
+    static int sel;
+    register char *p;
+    if(first!=NULL)
+    {
+        graph_select[0].label=first;
+        pos=1;
+    }
+    else pos=0;
+    for(i=0;i<numgraphs;i++,pos++)
+    {
+        p=truncate_at(graph_select[pos].label=lines[i],200);
+        truncate_chars[i]=*p;
+        truncate_pos[i]=p;
+    }
+    sel=ozmenu(0,0,title,startpos,pos,graph_select,OZMENU_NUMBERED);
+    for(i=0;i<numgraphs;i++,pos++)
+        *(truncate_pos[i])=truncate_chars[i];
+    return sel;
+}
+
+
+void deletegraph(void)
+{
+    static int selection;
+    static byte i;
+    if(!numgraphs) return;
+    if(numgraphs==1) selection=0;
+     else
+    selection=graphmenu("Delete","all",1);
+    if(selection<0 || ozwarn("Are you sure?",yn)!=KEY_LOWER_ENTER)
+        return;
+    if(selection==0)
+    {
+        numgraphs=0;
+        redraw();
+    }
+    else if(selection>0)
+    {
+        for(i=selection;i<numgraphs;i++) strcpy(lines[i-1],lines[i]);
+        numgraphs--;
+    }
+}
+
+void editgraph(void)
+{
+    static int selection,len;
+    static char line_backup[MAX_LINE];
+    static byte i;
+    if(numgraphs==1)
+        selection=0;
+    else
+        selection=graphmenu("Edit",NULL,numgraphs-1);
+    if(selection>=0)
+    {
+        strcpy(line_backup,lines[selection]);
+        do
+        {
+          len=edit(selection);
+          if(len==0)
+             {
+                for(i=selection+1;i<numgraphs;i++) strcpy(lines[i-1],lines[i]);
+                numgraphs--;
+                return;
+             }
+          if(len<=0)
+          {
+            strcpy(lines[selection],line_backup);
+            return;
+          }
+        } while(compile(lines[selection]));
+    }
+}
+
+void tracegraph(void)
+{
+    static int selection;
+    if(numgraphs==1) selection=0;
+    else
+    selection=graphmenu("Trace",NULL,numgraphs-1);
+    if(selection>=0) trace(lines[selection]);
+}
+
+main()
+{
+    static int sel;
+    ozrestorekeysettings();
+    ozfont(FONT_OZ_NORMAL);
+    quiet=!ozgetclick();
+    ozcls();
+    axes();
+    while(1)
+    {
+        sprintf(x_range,"x: %.4g\xDD%.4g (ticks: %.4g)",x_min,x_max,x_tick);
+        sprintf(y_range,"y: %.4g\xDD%.4g (ticks: %.4g)",y_min,y_max,y_tick);
+        sprintf(t_range,"t: %.4g\xDD%.4g (\xEBt: %.4g)",t_min,t_max,t_delta);
+        sprintf(h_range,"\xE9: %.4g\xF8\xDD%.4g\xF8 (\xEB\xE9: %.4g\xF8)",
+            h_min*TO_DEG,h_max*TO_DEG,h_delta*TO_DEG);
+        if(quiet) main_menu[12].label=soundoff;
+          else main_menu[12].label=soundon;
+        if(do_special>=0) sel=do_special;
+            else sel=ozmenu(0,0,"Graf!",0,MAIN_MENU_ENTRIES,main_menu,0);
+        do_special=-1;
+        switch(sel)
+        {
+            case 0: newgraph(); break;
+            case 1: editgraph(); break;
+            case 2: tracegraph(); break;
+            case 3: deletegraph(); break;
+            case 4: setrange(0); break;
+            case 5: setrange(1); break;
+            case 6: setrange(2); break;
+            case 7: setrange(3); break;
+            case 8: getoption(); break;
+            case 9: zoom((x_min+x_max)*.5,(y_min+y_max)*.5,.5);
+                    redraw(); break;
+            case 10: zoom((x_min+x_max)*.5,(y_min+y_max)*.5,2.);
+            case 11: redraw(); break;
+            case 12: togglesound(); break;
+            case 13: ozsnap(); break;
+            default: return;
+        }
+    }
+}
+
